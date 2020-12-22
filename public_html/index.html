@@ -12,10 +12,10 @@
   crossorigin="anonymous"></script>         
     </head>
     <body>
-        <video id="yourVideo" autoplay muted playsinline></video>
-        <video id="friendsVideo" autoplay playsinline></video>
-        <br />
-        <button type="button" class="btn btn-primary btn-lg" id="callbutton"><span class="glyphicon glyphicon-facetime-video" aria-hidden="true"></span> Call</button>
+        <div id="video-area">
+            <video id="yourVideo" autoplay muted playsinline></video>
+            <video id="friendsVideo" autoplay playsinline></video>
+        </div>
         <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
         <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-database.js"></script>
         <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-analytics.js"></script>

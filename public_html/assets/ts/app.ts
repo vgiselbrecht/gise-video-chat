@@ -4,6 +4,9 @@ import { IExchange } from "./Exchange/IExchange.js";
 import { Firebase } from "./Exchange/Firebase.js";
 import { ICommunication } from "./Communication/ICommunication.js";
 import { WebRTC } from "./Communication/WebRTC.js";
+import { IPartner } from "./Partner/IPartner.js";
+import { IPartners } from "./Partner/IPartners.js";
+import { Partner } from "./Partner/Partner.js";
 
 class App{
 
@@ -12,29 +15,21 @@ class App{
     exchange: IExchange;
     communication: ICommunication;
     yourVideo;
-    friendsVideo;
-    friendsConnection: RTCPeerConnection;
+    localStream: any;
+    partners: IPartners = {};
 
     constructor(){
+        console.log("Id: " + this.yourId);
         this.yourVideo = document.getElementById("yourVideo");
-        this.friendsVideo = document.getElementById("friendsVideo");
         this.exchange = new Firebase(this.room, this.yourId);
         this.exchange.addReadEvent(this.readMessage);
-        this.communication = new WebRTC();
-        this.communication.addOnaddstreamEvent(this.onaddstream);
-        this.communication.addOnicecandidateEvent(this.onicecandidate);
-        this.friendsConnection = this.communication.getPeerConnection();
     }
 
     run(){ 
         this.initialCamera();
         setTimeout(function() {
             app.CallOther();  
-        }, 1000);
-        $("#callbutton").on('click', function(){
-            app.CallOther(); 
-        });
-        
+        }, 1000);        
     }
 
     initialCamera() {
@@ -42,55 +37,59 @@ class App{
           .then(function(stream){
               // @ts-ignore
               app.yourVideo.srcObject = stream;
-              // @ts-ignore
-              app.friendsConnection.addStream(stream);
+              app.localStream = stream;
           });
       }
-      
-    CallOther() {
-        this.friendsConnection.createOffer()
-          .then(function(offer){
-              return app.friendsConnection.setLocalDescription(offer);
-           })
-          .then(function(){
-            app.exchange.sendMessage(JSON.stringify({'sdp': app.friendsConnection.localDescription}));
-           });
-      }
+
+    CallOther(){
+        this.exchange.sendMessage(JSON.stringify({'call': this.yourId}));
+    }
 
     readMessage(sender: number, dataroom: string, msg) {
-        if (msg.ice !== undefined)
+        console.log("From: " + sender)
+        console.log(msg)
+        if (!(sender in app.partners) || msg.call !== undefined)
         {
-            app.friendsConnection.addIceCandidate(new RTCIceCandidate(msg.ice));
+            app.addPartner(sender);
+        }
+        
+        var partnerConnection = app.partners[sender].connection;
+        if (msg.call !== undefined)
+        {
+            app.partners[sender].CreateOffer();
+        }
+        else if (msg.ice !== undefined)
+        {
+            partnerConnection.addIceCandidate(new RTCIceCandidate(msg.ice));
         }
         else if (msg.sdp.type === "offer")
         {
-            app.friendsConnection.setRemoteDescription(new RTCSessionDescription(msg.sdp)) 
+            partnerConnection.setRemoteDescription(new RTCSessionDescription(msg.sdp)) 
                 .then(function(){ 
-                    return app.friendsConnection.createAnswer();
+                    return partnerConnection.createAnswer();
                 })
                 .then(function(answer){
-                    return app.friendsConnection.setLocalDescription(answer);
+                    return partnerConnection.setLocalDescription(answer);
                 })
                 .then(function(){
-                    app.exchange.sendMessage(JSON.stringify({'sdp': app.friendsConnection.localDescription}));
+                    app.exchange.sendMessage(JSON.stringify({'sdp': partnerConnection.localDescription}), sender);
                 });
         }
         else if (msg.sdp.type === "answer")
         {
-            app.friendsConnection.setRemoteDescription(new RTCSessionDescription(msg.sdp));
+            partnerConnection.setRemoteDescription(new RTCSessionDescription(msg.sdp));
         }
     }
 
-    onicecandidate(candidate: any) {
-        app.exchange.sendMessage(JSON.stringify({'ice': candidate}));
-    };
-    
-    // @ts-ignore
-    onaddstream(stream: any) { 
+    addPartner(partnerId: number){
+        if(partnerId in app.partners){
+            this.partners[partnerId].connection.close();
+            this.partners[partnerId] = null;
+        }
+        this.partners[partnerId] = new Partner(partnerId, this.exchange);
         // @ts-ignore
-        app.friendsVideo.srcObject = stream;
-    };
-
+        this.partners[partnerId].connection.addStream(this.localStream);
+    }
 }
 
 var app = new App();

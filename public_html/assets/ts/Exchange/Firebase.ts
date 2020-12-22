@@ -30,16 +30,17 @@ export class Firebase implements IExchange{
     }
 
     
-    sendMessage(data: any): void{
-        var msg = this.database.push({ room: this.room, sender: this.yourId, message: data });
+    sendMessage(data: any, receiver: number = 0): void{
+        var msg = this.database.push({ room: this.room, sender: this.yourId, receiver: receiver, message: data });
         msg.remove();
     }
 
     readMessage(data, cla) {
         var msg = JSON.parse(data.val().message);
         var sender = data.val().sender;
+        var receiver = data.val().receiver;
         var dataroom = data.val().room;
-        if (dataroom === cla.room && sender !== cla.yourId) {
+        if (dataroom === cla.room && sender !== cla.yourId && (receiver == 0 || receiver == cla.yourId)) {
             cla.readCallback(sender, dataroom, msg);
         }
     }
