@@ -3,7 +3,7 @@ export class Partner {
     constructor(id, exchange) {
         this.id = id;
         this.exchange = exchange;
-        $("#video-area").append('<video id="video-' + id + '" autoplay playsinline></video>');
+        $("#video-area").append('<div class="video-item" id="video-item-' + id + '"><div class="video-wrap"><video id="video-' + id + '" autoplay playsinline></video></div></div>');
         this.videoElement = document.getElementById('video-' + id);
         var communication = new WebRTC(this);
         communication.addOnaddstreamEvent(this.onAddStream);
@@ -32,8 +32,8 @@ export class Partner {
     }
     ;
     onConnectionLosed(partner) {
-        console.log("Connection closed to: " + this.id);
-        partner.videoElement.remove();
+        console.log("Connection closed to: " + partner.id);
+        $('#video-item-' + partner.id).remove();
     }
 }
 //# sourceMappingURL=Partner.js.map

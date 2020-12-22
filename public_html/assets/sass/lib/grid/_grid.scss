@@ -1,0 +1,138 @@
+// Creds to https://github.com/kristoferjoseph/flexboxgrid
+// No gutters
+// No text alignment with justified container classes (center-xs, for example)
+
+.row {
+  @include row();
+}
+
+.row.reverse {
+  @include row-reverse();
+}
+
+.row.natural-height {
+  @include row-natural-height();
+}
+
+.row.flex-column {
+  @include row-flex-column();
+}
+
+.col {
+  @include col();
+}
+
+.col.reverse {
+  @include col-reverse();
+}
+
+.first {
+  order: -1;
+}
+
+.last {
+  order: 1;
+}
+
+.align-start {
+  align-self: flex-start;
+}
+
+.align-end {
+  align-self: flex-end;
+}
+
+.align-center {
+  align-self: center;
+}
+
+.align-baseline {
+  align-self: baseline;
+}
+
+.align-stretch {
+    align-self: stretch;
+}
+
+// Mixin to run inside of for loop - creates col/breakpoint classes * Not for developer use *
+@mixin col-factory($thisPrefix) {
+  .col-#{$thisPrefix} {
+    box-sizing: border-box;
+    flex-grow: 1;
+    flex-basis: 0;
+    max-width: 100%;
+    padding: $gutter;
+  }
+  @for $i from 1 through $grid-columns {
+    .col-#{$thisPrefix}-#{$i} {
+      box-sizing: border-box;
+      flex-basis: 100% / $grid-columns * $i;
+      max-width: 100% / $grid-columns * $i;
+      padding: $gutter;
+    }
+    .col-#{$thisPrefix}-offset-#{$i} {
+      margin-left: 100% / $grid-columns * $i;
+    }
+  }
+  .row.start-#{$thisPrefix} {
+    justify-content: flex-start;
+  }
+  .row.center-#{$thisPrefix} {
+    justify-content: center;
+  }
+  .row.end-#{$thisPrefix} {
+    justify-content: flex-end;
+  }
+  .row.top-#{$thisPrefix} {
+    align-items: flex-start;
+  }
+  .row.middle-#{$thisPrefix} {
+    align-items: center;
+  }
+  .row.bottom-#{$thisPrefix} {
+    align-items: flex-end;
+  }
+  .row.around-#{$thisPrefix} {
+    justify-content: space-around;
+  }
+  .row.between-#{$thisPrefix} {
+    justify-content: space-between;
+  }
+  .first-#{$thisPrefix} {
+    order: -1;
+  }
+  .last-#{$thisPrefix} {
+    order: 1;
+  }
+} // Mixin to run inside of for loop - creates col/breakpoint classes
+
+@for $i from 1 through length($breakpoint-up-prefixes) {
+  $thisPrefix: nth($breakpoint-up-prefixes, $i);
+  @if $thisPrefix == "xs" {
+    @include col-factory($thisPrefix);
+  } @else if $thisPrefix == "sm" {
+    @media #{$breakpoint-sm-up} {
+      @include col-factory($thisPrefix);
+    }
+  } @else if $thisPrefix == "md" {
+    @media #{$breakpoint-md-up} {
+      @include col-factory($thisPrefix);
+    }
+  } @else if $thisPrefix == "lg" {
+    @media #{$breakpoint-lg-up} {
+      @include col-factory($thisPrefix);
+    }
+  } @else if $thisPrefix == "xl" {
+    @media #{$breakpoint-xl-up} {
+      @include col-factory($thisPrefix);
+    }
+  }
+}
+
+.col-gutter-lr {
+    padding: 0 $gutter;
+}
+
+.col-no-gutter {
+    padding: 0;
+}

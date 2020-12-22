@@ -1,17 +1,56 @@
+@import 'lib/grid/main';
+
+$footer-height: 50px;
+
 html,body{
     margin: 0;
     width: 100%;
-    height: 100%;
+    height: 100%; 
 }
 
-video {
-  background-color: #ddd;
-  border-radius: 7px;
-  margin: 10px 0px 0px 10px;
-  width: 320px;
-  height: 240px;
+.maincontainer{
+  height: 100%;
+  max-height: 100%;
 }
-button {
-  margin: 5px 0px 0px 10px !important;
-  width: 654px;
+
+#main{
+  height: calc(100% - #{$footer-height});
+  > div{
+    max-height: 100%;
+  }
+  #video-area{
+    display: flex;
+    flex-wrap: wrap;
+    flex-grow: 1;
+    max-height: 100%;
+    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    .video-item {
+      flex-grow: 1;
+      flex-basis: 300px;
+      overflow: hidden;
+      margin: 2px;
+      background: #ccc;
+      .video-wrap {
+        position: relative;
+        height: 100%;
+        video{
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          margin-top: 0;
+        }
+      }
+    }
+  }
+}
+
+#footer{
+  height: $footer-height;
 }
