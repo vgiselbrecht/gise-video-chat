@@ -1,0 +1,26 @@
+{
+  "name": "chat",
+  "version": "1.0.0",
+  "type": "module",
+  "keywords": [
+    "util",
+    "functional",
+    "server",
+    "client",
+    "browser"
+  ],
+  "author": "vgise",
+  "contributors": [],
+  "dependencies": {
+    "@types/webrtc": "0.0.26"
+  },
+  "devDependencies": {
+    "@types/jquery": "^3.5.5",
+    "grunt": "~1.0.3",
+    "grunt-contrib-clean": "~2.0.0",
+    "grunt-contrib-sass": "~1.0.0",
+    "grunt-contrib-watch": "~1.1.0",
+    "grunt-ts": "*",
+    "typescript": "*"
+  }
+}

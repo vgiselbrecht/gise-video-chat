@@ -1,0 +1,17 @@
+{
+  "curly": true,
+  "eqeqeq": true,
+  "undef": true,
+  "node": true,
+  "globals": {
+    "jQuery": true,
+    "$": true,
+    "L": true,
+    "firebase": true,    
+    "document": true,  
+    "RTCPeerConnection": true,  
+    "RTCSessionDescription": true,  
+    "navigator": true,  
+    "RTCIceCandidate": true  
+  }
+}
