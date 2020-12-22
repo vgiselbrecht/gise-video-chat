@@ -11,12 +11,17 @@ export class WebRTC {
                 cla.onicecandidateEvent(event.candidate, cla.partner);
             }
             else {
-                console.log("Sent All Ice");
+                console.log("Sent All Ice to " + cla.partner.id);
             }
         };
         // @ts-ignore
         pc.onaddstream = function (event) {
             return cla.onaddstreamEvent(event.stream, cla.partner);
+        };
+        pc.oniceconnectionstatechange = function () {
+            if (pc.iceConnectionState == 'disconnected') {
+                cla.connectionLosedEvent(cla.partner);
+            }
         };
         return pc;
     }
@@ -25,6 +30,9 @@ export class WebRTC {
     }
     addOnaddstreamEvent(callback) {
         this.onaddstreamEvent = callback;
+    }
+    addConnectionLosedEvent(callback) {
+        this.connectionLosedEvent = callback;
     }
 }
 //# sourceMappingURL=WebRTC.js.map

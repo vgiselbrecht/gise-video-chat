@@ -8,4 +8,6 @@ export interface ICommunication{
 
     addOnaddstreamEvent(callback: (stream: any, partner: IPartner) => void): void;
 
+    addConnectionLosedEvent(callback: (partner: IPartner) => void): void;
+
 }

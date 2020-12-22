@@ -12,10 +12,12 @@ export class Partner implements IPartner{
     constructor(id: number, exchange: IExchange){
         this.id = id;
         this.exchange = exchange;
-        this.videoElement = document.getElementById("friendsVideo");
+        $("#video-area").append('<video id="video-'+id+'" autoplay playsinline></video>');
+        this.videoElement = document.getElementById('video-'+id);
         var communication = new WebRTC(this);
         communication.addOnaddstreamEvent(this.onaddstream);
         communication.addOnicecandidateEvent(this.onicecandidate); 
+        communication.addConnectionLosedEvent(this.onconnectionlosed);
         this.connection = communication.getPeerConnection();
     }
 
@@ -39,5 +41,10 @@ export class Partner implements IPartner{
         // @ts-ignore
         partner.videoElement.srcObject = stream;
     };
+
+    onconnectionlosed(partner: IPartner){
+        console.log("Connection closed to: "+this.id);
+        partner.videoElement.remove();
+    }
 
 }

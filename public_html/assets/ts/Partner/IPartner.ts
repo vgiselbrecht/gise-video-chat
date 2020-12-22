@@ -7,6 +7,4 @@ export interface IPartner{
     connection: RTCPeerConnection;
     exchange: IExchange;
     CreateOffer(): void;
-    onicecandidate(candidate: any, partner: IPartner);
-    onaddstream(stream: any, partner: IPartner);
 }

@@ -3,10 +3,12 @@ export class Partner {
     constructor(id, exchange) {
         this.id = id;
         this.exchange = exchange;
-        this.videoElement = document.getElementById("friendsVideo");
+        $("#video-area").append('<video id="video-' + id + '" autoplay playsinline></video>');
+        this.videoElement = document.getElementById('video-' + id);
         var communication = new WebRTC(this);
         communication.addOnaddstreamEvent(this.onaddstream);
         communication.addOnicecandidateEvent(this.onicecandidate);
+        communication.addConnectionLosedEvent(this.onconnectionlosed);
         this.connection = communication.getPeerConnection();
     }
     CreateOffer() {
@@ -29,5 +31,9 @@ export class Partner {
         partner.videoElement.srcObject = stream;
     }
     ;
+    onconnectionlosed(partner) {
+        console.log("Connection closed to: " + this.id);
+        partner.videoElement.remove();
+    }
 }
 //# sourceMappingURL=Partner.js.map

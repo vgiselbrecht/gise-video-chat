@@ -8,6 +8,7 @@ export class WebRTC implements ICommunication{
     partner: IPartner;
     onicecandidateEvent: (candidate: any, partner: IPartner) => void;
     onaddstreamEvent: (stream: any, partner: IPartner) => void;
+    connectionLosedEvent: (partner: IPartner) => void;
 
     constructor(partner: IPartner){
         this.partner = partner;
@@ -20,13 +21,18 @@ export class WebRTC implements ICommunication{
             if(event.candidate){
                 cla.onicecandidateEvent(event.candidate, cla.partner);
             }else{
-                console.log("Sent All Ice");
+                console.log("Sent All Ice to " + cla.partner.id);
             }
         };
         // @ts-ignore
         pc.onaddstream = function(event) { 
             return cla.onaddstreamEvent(event.stream, cla.partner);
         };
+        pc.oniceconnectionstatechange = function() {
+            if(pc.iceConnectionState == 'disconnected') {
+                cla.connectionLosedEvent(cla.partner);
+            }
+        }
         return pc;
     }
 
@@ -36,5 +42,9 @@ export class WebRTC implements ICommunication{
 
     addOnaddstreamEvent(callback: (stream: any, partner: IPartner) => void): void{
         this.onaddstreamEvent = callback;
+    }
+
+    addConnectionLosedEvent(callback: (partner: IPartner) => void): void{
+        this.connectionLosedEvent = callback;
     }
 }
