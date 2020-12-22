@@ -6,12 +6,12 @@ export class Partner {
         $("#video-area").append('<video id="video-' + id + '" autoplay playsinline></video>');
         this.videoElement = document.getElementById('video-' + id);
         var communication = new WebRTC(this);
-        communication.addOnaddstreamEvent(this.onaddstream);
-        communication.addOnicecandidateEvent(this.onicecandidate);
-        communication.addConnectionLosedEvent(this.onconnectionlosed);
+        communication.addOnaddstreamEvent(this.onAddStream);
+        communication.addOnicecandidateEvent(this.onIceCandidate);
+        communication.addConnectionLosedEvent(this.onConnectionLosed);
         this.connection = communication.getPeerConnection();
     }
-    CreateOffer() {
+    createOffer() {
         let cla = this;
         this.connection.createOffer()
             .then(function (offer) {
@@ -21,17 +21,17 @@ export class Partner {
             cla.exchange.sendMessage(JSON.stringify({ 'sdp': cla.connection.localDescription }), cla.id);
         });
     }
-    onicecandidate(candidate, partner) {
+    onIceCandidate(candidate, partner) {
         partner.exchange.sendMessage(JSON.stringify({ 'ice': candidate }), this.id);
     }
     ;
     // @ts-ignore
-    onaddstream(stream, partner) {
+    onAddStream(stream, partner) {
         // @ts-ignore
         partner.videoElement.srcObject = stream;
     }
     ;
-    onconnectionlosed(partner) {
+    onConnectionLosed(partner) {
         console.log("Connection closed to: " + this.id);
         partner.videoElement.remove();
     }

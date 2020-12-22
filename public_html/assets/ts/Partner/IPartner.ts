@@ -6,5 +6,5 @@ export interface IPartner{
     videoElement: HTMLElement;
     connection: RTCPeerConnection;
     exchange: IExchange;
-    CreateOffer(): void;
+    createOffer(): void;
 }

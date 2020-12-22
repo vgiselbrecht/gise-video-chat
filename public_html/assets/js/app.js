@@ -13,7 +13,7 @@ class App {
     run() {
         this.initialCamera();
         setTimeout(function () {
-            app.CallOther();
+            app.callOther();
         }, 1000);
     }
     initialCamera() {
@@ -24,7 +24,7 @@ class App {
             app.localStream = stream;
         });
     }
-    CallOther() {
+    callOther() {
         this.exchange.sendMessage(JSON.stringify({ 'call': this.yourId }));
     }
     readMessage(sender, dataroom, msg) {
@@ -35,7 +35,7 @@ class App {
         }
         var partnerConnection = app.partners[sender].connection;
         if (msg.call !== undefined) {
-            app.partners[sender].CreateOffer();
+            app.partners[sender].createOffer();
         }
         else if (msg.ice !== undefined) {
             partnerConnection.addIceCandidate(new RTCIceCandidate(msg.ice));

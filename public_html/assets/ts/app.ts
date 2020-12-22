@@ -28,7 +28,7 @@ class App{
     run(){ 
         this.initialCamera();
         setTimeout(function() {
-            app.CallOther();  
+            app.callOther();  
         }, 1000);        
     }
 
@@ -41,7 +41,7 @@ class App{
           });
       }
 
-    CallOther(){
+    callOther(){
         this.exchange.sendMessage(JSON.stringify({'call': this.yourId}));
     }
 
@@ -52,11 +52,11 @@ class App{
         {
             app.addPartner(sender);
         }
-        
+
         var partnerConnection = app.partners[sender].connection;
         if (msg.call !== undefined)
         {
-            app.partners[sender].CreateOffer();
+            app.partners[sender].createOffer();
         }
         else if (msg.ice !== undefined)
         {
