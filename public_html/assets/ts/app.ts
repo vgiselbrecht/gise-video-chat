@@ -72,7 +72,7 @@ export class App{
         else if (msg.closing !== undefined)
         {
             app.partners[sender].closeConnection();
-            app.partners[sender] = null;
+            delete app.partners[sender];
         }
         else if (msg.ice !== undefined)
         {
@@ -101,7 +101,7 @@ export class App{
         var cla = this;
         if(partnerId in app.partners){
             this.partners[partnerId].closeConnection();
-            this.partners[partnerId] = null;
+            delete this.partners[partnerId];
         }
         this.partners[partnerId] = new Partner(partnerId, this.exchange);
         this.setStreamToPartner(this.partners[partnerId], true);
@@ -119,10 +119,12 @@ export class App{
             partner.connection.addTrack(videoTrack, this.localStream);
             partner.connection.addTrack(this.localStream.getAudioTracks()[0], this.localStream);
         } else{
-            var sender = partner.connection.getSenders().find(function(s) {
-                return s.track.kind == videoTrack.kind;
-              });
-              sender.replaceTrack(videoTrack);
+            if(partner){
+                var sender = partner.connection.getSenders().find(function(s) {
+                    return s.track.kind == videoTrack.kind;
+                });
+                sender.replaceTrack(videoTrack);
+            }
         }
     }
 
@@ -130,7 +132,9 @@ export class App{
         this.exchange.sendMessage(JSON.stringify({'closing': this.yourId}));
         this.exchange.closeConnection();
         for (var id in this.partners) {
-            this.partners[id].connection.close();
+            if(this.partners[id]){
+                this.partners[id].connection.close();
+            }
         }
         $("#video-area .video-item-partner").remove();
     }
