@@ -59,10 +59,12 @@ export class Partner {
     onConnected(partner) {
         partner.connected = true;
         clearInterval(partner.offerLoop);
+        $('#video-item-' + this.id).show();
     }
     onConnectionLosed(partner) {
         partner.connected = false;
         partner.createOffer();
+        $('#video-item-' + partner.id).hide();
     }
     closeConnection() {
         this.connection.close();

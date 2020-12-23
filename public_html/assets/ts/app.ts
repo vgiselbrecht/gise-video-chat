@@ -114,11 +114,11 @@ export class App{
     }
 
     setStreamToPartner(partner: IPartner, initial: boolean = false){
+        var videoTrack = !this.screen.onScreenMode() ? this.localStream.getVideoTracks()[0] : this.localScreenStream.getVideoTracks()[0];
         if(initial){
-            partner.connection.addTrack(this.localStream.getVideoTracks()[0], this.localStream);
+            partner.connection.addTrack(videoTrack, this.localStream);
             partner.connection.addTrack(this.localStream.getAudioTracks()[0], this.localStream);
         } else{
-            var videoTrack = !this.screen.onScreenMode() ? this.localStream.getVideoTracks()[0] : this.localScreenStream.getVideoTracks()[0];
             var sender = partner.connection.getSenders().find(function(s) {
                 return s.track.kind == videoTrack.kind;
               });
