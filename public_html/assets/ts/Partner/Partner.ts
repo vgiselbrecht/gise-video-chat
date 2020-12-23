@@ -8,6 +8,8 @@ export class Partner implements IPartner{
     videoElement: HTMLElement;
     connection: RTCPeerConnection;
     exchange: IExchange
+    connected: boolean = false;
+    offerLoop: any;
 
     constructor(id: number, exchange: IExchange){
         this.id = id;
@@ -16,18 +18,38 @@ export class Partner implements IPartner{
         communication.addOnaddtrackEvent(this.onAddTrack);
         communication.addOnicecandidateEvent(this.onIceCandidate); 
         communication.addConnectionLosedEvent(this.onConnectionLosed);
+        communication.addConnectionEvent(this.onConnected);
         this.connection = communication.getPeerConnection();
     }
 
     createOffer(): void {
-        let cla = this;
-        this.connection.createOffer({iceRestart: true})
-          .then(function(offer){
-              return cla.connection.setLocalDescription(offer);
-           })
-          .then(function(){
-            cla.exchange.sendMessage(JSON.stringify({'sdp': cla.connection.localDescription}), cla.id);
-           });
+        this.createOfferInner();
+        var loop = 12;
+        var cla = this;
+        this.offerLoop = setInterval(function(){
+            if(!cla.connected){
+                if(loop == 0){
+                    clearInterval(cla.offerLoop);
+                    cla.closeConnection();
+                }else{
+                    cla.createOfferInner();
+                    loop--;
+                }
+            }
+        }, 5000);
+    }
+
+    createOfferInner(): void{
+        if(!this.connected){
+            let cla = this;
+            this.connection.createOffer({iceRestart: true})
+            .then(function(offer){
+                return cla.connection.setLocalDescription(offer);
+            })
+            .then(function(){
+                cla.exchange.sendMessage(JSON.stringify({'sdp': cla.connection.localDescription}), cla.id);
+            });
+        }
     }
 
     onIceCandidate(candidate: any, partner: IPartner) {
@@ -47,9 +69,19 @@ export class Partner implements IPartner{
         }
     }
 
-    onConnectionLosed(partner: IPartner){
-        console.log("Connection closed to: "+partner.id);
-        $('#video-item-'+partner.id).remove();
+    onConnected(partner: IPartner){
+        partner.connected = true;
+        clearInterval(partner.offerLoop);
     }
 
+    onConnectionLosed(partner: IPartner){
+        partner.connected = false;
+        partner.createOffer(); 
+    }
+
+    closeConnection(){
+        this.connection.close();
+        console.log("Connection closed to: "+this.id);
+        $('#video-item-'+this.id).remove();
+    }
 }

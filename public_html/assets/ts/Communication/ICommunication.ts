@@ -10,4 +10,6 @@ export interface ICommunication{
 
     addConnectionLosedEvent(callback: (partner: IPartner) => void): void;
 
+    addConnectionEvent(callback: (partner: IPartner) => void): void;
+
 }

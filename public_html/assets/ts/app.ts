@@ -28,6 +28,9 @@ export class App{
         this.exchange.addReadEvent(this.readMessage);
         this.controls = new Controls(this);
         this.screen = new Screen(this);
+        $(window).on("beforeunload", function() { 
+            app.hangOut();
+        })
     }
 
     run(){ 
@@ -61,11 +64,15 @@ export class App{
         {
             app.addPartner(sender);
         }
-
         var partnerConnection = app.partners[sender].connection;
         if (msg.call !== undefined)
         {
             app.partners[sender].createOffer();
+        }
+        else if (msg.closing !== undefined)
+        {
+            app.partners[sender].closeConnection();
+            app.partners[sender] = null;
         }
         else if (msg.ice !== undefined)
         {
@@ -93,7 +100,7 @@ export class App{
     addPartner(partnerId: number){
         var cla = this;
         if(partnerId in app.partners){
-            this.partners[partnerId].connection.close();
+            this.partners[partnerId].closeConnection();
             this.partners[partnerId] = null;
         }
         this.partners[partnerId] = new Partner(partnerId, this.exchange);
@@ -120,6 +127,7 @@ export class App{
     }
 
     hangOut(){
+        this.exchange.sendMessage(JSON.stringify({'closing': this.yourId}));
         this.exchange.closeConnection();
         for (var id in this.partners) {
             this.partners[id].connection.close();

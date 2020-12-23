@@ -22,6 +22,9 @@ export class WebRTC {
             if (pc.iceConnectionState == 'disconnected') {
                 cla.connectionLosedEvent(cla.partner);
             }
+            else if (pc.iceConnectionState == 'connected') {
+                cla.connectionEvent(cla.partner);
+            }
         };
         return pc;
     }
@@ -33,6 +36,9 @@ export class WebRTC {
     }
     addConnectionLosedEvent(callback) {
         this.connectionLosedEvent = callback;
+    }
+    addConnectionEvent(callback) {
+        this.connectionEvent = callback;
     }
 }
 //# sourceMappingURL=WebRTC.js.map
