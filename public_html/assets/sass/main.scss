@@ -58,7 +58,7 @@ html,body{
   height: $footer-height;
   #controls{
     text-align: center;
-    padding: 5px;
+    padding: 10px;
     span{
       color: #fff;
       background: blue;
@@ -75,6 +75,11 @@ html,body{
         background: red;
         &.green{
           background: green;
+        }
+      }
+      &.screen{
+        &.screenon{
+          background: red;
         }
       }
     }

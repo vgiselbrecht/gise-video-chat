@@ -4,7 +4,7 @@ export class Partner {
         this.id = id;
         this.exchange = exchange;
         var communication = new WebRTC(this);
-        communication.addOnaddstreamEvent(this.onAddStream);
+        communication.addOnaddtrackEvent(this.onAddTrack);
         communication.addOnicecandidateEvent(this.onIceCandidate);
         communication.addConnectionLosedEvent(this.onConnectionLosed);
         this.connection = communication.getPeerConnection();
@@ -23,8 +23,7 @@ export class Partner {
         partner.exchange.sendMessage(JSON.stringify({ 'ice': candidate }), this.id);
     }
     ;
-    // @ts-ignore
-    onAddStream(stream, partner) {
+    onAddTrack(stream, partner) {
         partner.addVideoElement();
         // @ts-ignore
         partner.videoElement.srcObject = stream;

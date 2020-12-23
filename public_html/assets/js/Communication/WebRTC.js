@@ -15,8 +15,8 @@ export class WebRTC {
             }
         };
         // @ts-ignore
-        pc.onaddstream = function (event) {
-            return cla.onaddstreamEvent(event.stream, cla.partner);
+        pc.ontrack = function (event) {
+            return cla.onaddtrackEvent(event.streams[0], cla.partner);
         };
         pc.oniceconnectionstatechange = function () {
             if (pc.iceConnectionState == 'disconnected') {
@@ -28,8 +28,8 @@ export class WebRTC {
     addOnicecandidateEvent(callback) {
         this.onicecandidateEvent = callback;
     }
-    addOnaddstreamEvent(callback) {
-        this.onaddstreamEvent = callback;
+    addOnaddtrackEvent(callback) {
+        this.onaddtrackEvent = callback;
     }
     addConnectionLosedEvent(callback) {
         this.connectionLosedEvent = callback;

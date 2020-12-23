@@ -13,7 +13,8 @@ export class Controls {
             data: {
                 microphoneOn: Cookie.getCookie(cla.microphoneCookie) == 'false' ? false : true,
                 cameraOn: Cookie.getCookie(cla.cameraCookie) == 'false' ? false : true,
-                hangouted: false
+                hangouted: false,
+                screenOn: false
             },
             methods: {
                 toogleMicrophone: function () {
@@ -33,6 +34,13 @@ export class Controls {
                     else {
                         location.reload();
                     }
+                }, toogleScreen: function () {
+                    if (cla.app.screen.onScreenMode()) {
+                        cla.app.screen.stopScreen();
+                    }
+                    else {
+                        cla.app.screen.startScreen();
+                    }
                 }
             }
         });
@@ -47,7 +55,7 @@ export class Controls {
         }
     }
     toogleStreamCamera() {
-        if (this.app.localStream != undefined) {
+        if (!this.app.localStream != undefined) {
             this.app.localStream.getVideoTracks()[0].enabled = this.controlsVueObject.cameraOn;
         }
     }

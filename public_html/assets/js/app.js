@@ -1,6 +1,7 @@
 import { Firebase } from "./Exchange/Firebase.js";
 import { Partner } from "./Partner/Partner.js";
 import { Controls } from "./Elements/Controls.js";
+import { Screen } from "./Elements/Screen.js";
 export class App {
     constructor() {
         this.room = "default";
@@ -11,21 +12,26 @@ export class App {
         this.exchange = new Firebase(this.room, this.yourId);
         this.exchange.addReadEvent(this.readMessage);
         this.controls = new Controls(this);
+        this.screen = new Screen(this);
     }
     run() {
         this.initialCamera();
-        setTimeout(function () {
-            app.callOther();
-        }, 1000);
     }
     initialCamera() {
-        navigator.mediaDevices.getUserMedia({ audio: true, video: true })
-            .then(function (stream) {
+        if (!app.localStream) {
+            navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+                .then(function (stream) {
+                // @ts-ignore
+                app.yourVideo.srcObject = stream;
+                app.localStream = stream;
+                app.controls.initialiseStream();
+                app.callOther();
+            });
+        }
+        else {
             // @ts-ignore
-            app.yourVideo.srcObject = stream;
-            app.localStream = stream;
-            app.controls.initialiseStream();
-        });
+            app.yourVideo.srcObject = app.localStream;
+        }
     }
     callOther() {
         this.exchange.sendMessage(JSON.stringify({ 'call': this.yourId }));
@@ -60,13 +66,31 @@ export class App {
         }
     }
     addPartner(partnerId) {
+        var cla = this;
         if (partnerId in app.partners) {
             this.partners[partnerId].connection.close();
             this.partners[partnerId] = null;
         }
         this.partners[partnerId] = new Partner(partnerId, this.exchange);
-        // @ts-ignore
-        this.partners[partnerId].connection.addStream(this.localStream);
+        this.setStreamToPartner(this.partners[partnerId], true);
+    }
+    setStreamToPartners() {
+        for (var id in this.partners) {
+            this.setStreamToPartner(this.partners[id]);
+        }
+    }
+    setStreamToPartner(partner, initial = false) {
+        if (initial) {
+            partner.connection.addTrack(this.localStream.getVideoTracks()[0], this.localStream);
+            partner.connection.addTrack(this.localStream.getAudioTracks()[0], this.localStream);
+        }
+        else {
+            var videoTrack = !this.screen.onScreenMode() ? this.localStream.getVideoTracks()[0] : this.localScreenStream.getVideoTracks()[0];
+            var sender = partner.connection.getSenders().find(function (s) {
+                return s.track.kind == videoTrack.kind;
+            });
+            sender.replaceTrack(videoTrack);
+        }
     }
     hangOut() {
         this.exchange.closeConnection();

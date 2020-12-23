@@ -26,6 +26,7 @@
                         <div class="col-md-4 col-xs-12" id="controls">
                             <span v-on:click="toogleMicrophone" v-bind:class="{'fa-microphone': microphoneOn, 'fa-microphone-slash': !microphoneOn}" class="microphone fas fa-microphone"></span>
                             <span v-on:click="toogleCamera" v-bind:class="{'fa-video': cameraOn, 'fa-video-slash': !cameraOn}" class="camera fas fa-video"></span>
+                            <span v-on:click="toogleScreen" v-bind:class="{'screenon': screenOn}" class="screen fas fa-desktop"></span>
                             <span v-on:click="hangOut"  v-bind:class="{'green': hangouted}" class="hangup fas fa-phone"></span>
                         </div>
                     </div>

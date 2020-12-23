@@ -7,7 +7,7 @@ export class WebRTC implements ICommunication{
     servers = {'iceServers': [{'urls': 'stun:stun.services.mozilla.com'}, {'urls': 'stun:stun.l.google.com:19302'}]};
     partner: IPartner;
     onicecandidateEvent: (candidate: any, partner: IPartner) => void;
-    onaddstreamEvent: (stream: any, partner: IPartner) => void;
+    onaddtrackEvent: (stream: any, partner: IPartner) => void;
     connectionLosedEvent: (partner: IPartner) => void;
 
     constructor(partner: IPartner){
@@ -25,8 +25,8 @@ export class WebRTC implements ICommunication{
             }
         };
         // @ts-ignore
-        pc.onaddstream = function(event) { 
-            return cla.onaddstreamEvent(event.stream, cla.partner);
+        pc.ontrack = function(event) { 
+            return cla.onaddtrackEvent(event.streams[0], cla.partner);
         };
         pc.oniceconnectionstatechange = function() {
             if(pc.iceConnectionState == 'disconnected') {
@@ -40,8 +40,8 @@ export class WebRTC implements ICommunication{
         this.onicecandidateEvent = callback;
     }
 
-    addOnaddstreamEvent(callback: (stream: any, partner: IPartner) => void): void{
-        this.onaddstreamEvent = callback;
+    addOnaddtrackEvent(callback: (stream: any, partner: IPartner) => void): void{
+        this.onaddtrackEvent = callback;
     }
 
     addConnectionLosedEvent(callback: (partner: IPartner) => void): void{
