@@ -39,6 +39,7 @@ export class App{
               // @ts-ignore
               app.yourVideo.srcObject = stream;
               app.localStream = stream;
+              app.controls.initialiseStream();
           });
       }
 

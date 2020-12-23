@@ -1,26 +1,29 @@
+import { Cookie } from "../Utils/Cookie.js";
 export class Controls {
     constructor(app) {
+        this.microphoneCookie = 'microphoneOn';
+        this.cameraCookie = 'cameraOn';
         this.app = app;
         this.initialElements();
-        this.toogleStreamMicrophone();
-        this.toogleStreamCamera();
     }
     initialElements() {
         let cla = this;
         this.controlsVueObject = new Vue({
             el: '#controls',
             data: {
-                microphoneOn: true,
-                cameraOn: true,
+                microphoneOn: Cookie.getCookie(cla.microphoneCookie) == 'false' ? false : true,
+                cameraOn: Cookie.getCookie(cla.cameraCookie) == 'false' ? false : true,
                 hangouted: false
             },
             methods: {
                 toogleMicrophone: function () {
                     this.microphoneOn = !this.microphoneOn;
+                    Cookie.setCookie(cla.microphoneCookie, this.microphoneOn);
                     cla.toogleStreamMicrophone();
                 },
                 toogleCamera: function () {
                     this.cameraOn = !this.cameraOn;
+                    Cookie.setCookie(cla.cameraCookie, this.cameraOn);
                     cla.toogleStreamCamera();
                 }, hangOut: function () {
                     if (!this.hangouted) {
@@ -33,6 +36,10 @@ export class Controls {
                 }
             }
         });
+    }
+    initialiseStream() {
+        this.toogleStreamMicrophone();
+        this.toogleStreamCamera();
     }
     toogleStreamMicrophone() {
         if (this.app.localStream != undefined) {

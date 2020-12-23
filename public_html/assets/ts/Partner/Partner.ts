@@ -21,7 +21,7 @@ export class Partner implements IPartner{
 
     createOffer(): void {
         let cla = this;
-        this.connection.createOffer()
+        this.connection.createOffer({iceRestart: true})
           .then(function(offer){
               return cla.connection.setLocalDescription(offer);
            })
