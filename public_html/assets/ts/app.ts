@@ -1,5 +1,3 @@
-export{}
-
 import { IExchange } from "./Exchange/IExchange.js";
 import { Firebase } from "./Exchange/Firebase.js";
 import { ICommunication } from "./Communication/ICommunication.js";
@@ -7,22 +5,25 @@ import { WebRTC } from "./Communication/WebRTC.js";
 import { IPartner } from "./Partner/IPartner.js";
 import { IPartners } from "./Partner/IPartners.js";
 import { Partner } from "./Partner/Partner.js";
+import { Controls } from "./Elements/Controls.js";
 
-class App{
+export class App{
 
     room: string = "default";
     yourId: number = Math.floor(Math.random()*1000000000);
     exchange: IExchange;
     communication: ICommunication;
-    yourVideo;
+    yourVideo: HTMLElement;
     localStream: any;
     partners: IPartners = {};
+    controls: Controls;
 
     constructor(){
         console.log("Id: " + this.yourId);
         this.yourVideo = document.getElementById("yourVideo");
         this.exchange = new Firebase(this.room, this.yourId);
         this.exchange.addReadEvent(this.readMessage);
+        this.controls = new Controls(this);
     }
 
     run(){ 
@@ -89,6 +90,14 @@ class App{
         this.partners[partnerId] = new Partner(partnerId, this.exchange);
         // @ts-ignore
         this.partners[partnerId].connection.addStream(this.localStream);
+    }
+
+    hangOut(){
+        this.exchange.closeConnection();
+        for (var id in this.partners) {
+            this.partners[id].connection.close();
+        }
+        $("#video-area .video-item-partner").remove();
     }
 }
 

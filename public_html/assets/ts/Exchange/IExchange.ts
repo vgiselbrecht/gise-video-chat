@@ -4,4 +4,6 @@ export interface IExchange{
  
     addReadEvent(callback: (sender: number, dataroom: string, msg: any) => void): void;
 
+    closeConnection(): void;
+
 }

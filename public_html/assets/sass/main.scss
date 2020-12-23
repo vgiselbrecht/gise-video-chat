@@ -1,6 +1,8 @@
 @import 'lib/grid/main';
+@import 'lib/webfont/fontawesome';
+@import 'lib/webfont/solid';
 
-$footer-height: 50px;
+$footer-height: 70px;
 
 html,body{
     margin: 0;
@@ -17,6 +19,7 @@ html,body{
   height: calc(100% - #{$footer-height});
   > div{
     max-height: 100%;
+    padding: 2px;
   }
   #video-area{
     display: flex;
@@ -53,4 +56,27 @@ html,body{
 
 #footer{
   height: $footer-height;
+  #controls{
+    text-align: center;
+    padding: 5px;
+    span{
+      color: #fff;
+      background: blue;
+      height: 50px;
+      display: inline-block;
+      width: 50px;
+      border-radius: 25px;
+      font-size: 20px;
+      padding-top: 15px;
+      box-sizing: border-box;
+      margin: 0px 5px;
+      cursor: pointer;
+      &.fa-phone{
+        background: red;
+        &.green{
+          background: green;
+        }
+      }
+    }
+  }
 }

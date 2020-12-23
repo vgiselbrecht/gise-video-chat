@@ -36,5 +36,8 @@ export class Firebase {
             cla.readMessage(data, cla);
         });
     }
+    closeConnection() {
+        this.database.off();
+    }
 }
 //# sourceMappingURL=Firebase.js.map

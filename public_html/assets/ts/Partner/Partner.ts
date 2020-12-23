@@ -12,8 +12,6 @@ export class Partner implements IPartner{
     constructor(id: number, exchange: IExchange){
         this.id = id;
         this.exchange = exchange;
-        $("#video-area").append('<div class="video-item" id="video-item-'+id+'"><div class="video-wrap"><video id="video-'+id+'" autoplay playsinline></video></div></div>');
-        this.videoElement = document.getElementById('video-'+id);
         var communication = new WebRTC(this);
         communication.addOnaddstreamEvent(this.onAddStream);
         communication.addOnicecandidateEvent(this.onIceCandidate); 
@@ -38,9 +36,17 @@ export class Partner implements IPartner{
     
     // @ts-ignore
     onAddStream(stream: any, partner: IPartner) { 
+        partner.addVideoElement();
         // @ts-ignore
         partner.videoElement.srcObject = stream;
     };
+
+    addVideoElement(){
+        if(this.videoElement == undefined){
+            $("#video-area").append('<div class="video-item video-item-partner" id="video-item-'+this.id+'"><div class="video-wrap"><video id="video-'+this.id+'" autoplay playsinline></video></div></div>');
+            this.videoElement = document.getElementById('video-'+this.id);
+        }
+    }
 
     onConnectionLosed(partner: IPartner){
         console.log("Connection closed to: "+partner.id);

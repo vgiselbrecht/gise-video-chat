@@ -7,4 +7,5 @@ export interface IPartner{
     connection: RTCPeerConnection;
     exchange: IExchange;
     createOffer(): void;
+    addVideoElement(): void;
 }

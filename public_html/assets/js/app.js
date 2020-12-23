@@ -1,6 +1,7 @@
 import { Firebase } from "./Exchange/Firebase.js";
 import { Partner } from "./Partner/Partner.js";
-class App {
+import { Controls } from "./Elements/Controls.js";
+export class App {
     constructor() {
         this.room = "default";
         this.yourId = Math.floor(Math.random() * 1000000000);
@@ -9,6 +10,7 @@ class App {
         this.yourVideo = document.getElementById("yourVideo");
         this.exchange = new Firebase(this.room, this.yourId);
         this.exchange.addReadEvent(this.readMessage);
+        this.controls = new Controls(this);
     }
     run() {
         this.initialCamera();
@@ -64,6 +66,13 @@ class App {
         this.partners[partnerId] = new Partner(partnerId, this.exchange);
         // @ts-ignore
         this.partners[partnerId].connection.addStream(this.localStream);
+    }
+    hangOut() {
+        this.exchange.closeConnection();
+        for (var id in this.partners) {
+            this.partners[id].connection.close();
+        }
+        $("#video-area .video-item-partner").remove();
     }
 }
 var app = new App();

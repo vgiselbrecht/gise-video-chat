@@ -53,4 +53,8 @@ export class Firebase implements IExchange{
         });
     }
 
+    closeConnection(): void{
+        this.database.off();
+    }
+
 }
