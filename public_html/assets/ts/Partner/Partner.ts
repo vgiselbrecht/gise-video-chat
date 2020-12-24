@@ -74,7 +74,7 @@ export class Partner implements IPartner{
     onConnected(partner: IPartner){
         partner.connected = true;
         clearInterval(partner.offerLoop);
-        $('#video-item-'+this.id).show();
+        $('#video-item-'+partner.id).show();
     }
 
     onConnectionLosed(partner: IPartner){

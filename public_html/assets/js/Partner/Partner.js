@@ -61,7 +61,7 @@ export class Partner {
     onConnected(partner) {
         partner.connected = true;
         clearInterval(partner.offerLoop);
-        $('#video-item-' + this.id).show();
+        $('#video-item-' + partner.id).show();
     }
     onConnectionLosed(partner) {
         partner.connected = false;
