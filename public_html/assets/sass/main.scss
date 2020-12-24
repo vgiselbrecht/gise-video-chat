@@ -87,7 +87,7 @@ html,body{
     padding: 10px;
     span{
       color: #fff;
-      background: blue;
+      background: #2d2dff;
       height: 50px;
       display: inline-block;
       width: 50px;
@@ -96,6 +96,10 @@ html,body{
       padding-top: 15px;
       box-sizing: border-box;
       margin: 0px 5px;
+      box-shadow: 0 0 3px 1px #555;
+      &:hover{
+        box-shadow: 0 0 6px 2px #555;
+      }
       cursor: pointer;
       &.fa-phone{
         background: red;
