@@ -7,6 +7,7 @@ import { IPartners } from "./Partner/IPartners.js";
 import { Partner } from "./Partner/Partner.js";
 import { Controls } from "./Elements/Controls.js";
 import { Screen } from "./Elements/Screen.js";
+import { JQueryUtils } from "./Utils/JQuery.js";
 
 export class App{
 
@@ -31,6 +32,7 @@ export class App{
         $(window).on("beforeunload", function() { 
             app.hangOut();
         })
+        JQueryUtils.addToBigfunction("yourVideoArea");
     }
 
     run(){ 

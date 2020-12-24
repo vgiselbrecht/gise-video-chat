@@ -51,7 +51,7 @@ export class Controls{
                     }
                 }
             }
-        })
+        });
     }
 
     initialiseStream(){

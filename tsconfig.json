@@ -24,6 +24,7 @@
         "public_html/assets/ts/Partner/IPartners.ts",
         "public_html/assets/ts/Partner/Partner.ts",
         "public_html/assets/ts/Utils/Cookie.ts",
+        "public_html/assets/ts/Utils/JQuery.ts",
         "node_modules/@types/jquery/dist/jquery.slim.d.ts",
         "node_modules/@types/jquery/index.d.ts",
         "node_modules/@types/jquery/JQuery.d.ts",

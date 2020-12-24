@@ -1,4 +1,5 @@
 import { WebRTC } from "../Communication/WebRTC.js";
+import { JQueryUtils } from "../Utils/JQuery.js";
 export class Partner {
     constructor(id, exchange) {
         this.connected = false;
@@ -52,8 +53,9 @@ export class Partner {
     ;
     addVideoElement() {
         if (this.videoElement == undefined) {
-            $("#video-area").append('<div class="video-item video-item-partner" id="video-item-' + this.id + '"><div class="video-wrap"><video id="video-' + this.id + '" autoplay playsinline></video></div></div>');
+            $("#video-area").append('<div class="video-item video-item-partner" id="video-item-' + this.id + '"><div class="video-wrap"><div class="video-inner-wrap"><video id="video-' + this.id + '" autoplay playsinline></video></div></div></div>');
             this.videoElement = document.getElementById('video-' + this.id);
+            JQueryUtils.addToBigfunction("video-item-" + this.id);
         }
     }
     onConnected(partner) {

@@ -1,6 +1,7 @@
 import { IPartner } from "./IPartner.js";
 import { WebRTC } from "../Communication/WebRTC.js";
 import { IExchange } from "../Exchange/IExchange.js";
+import { JQueryUtils } from "../Utils/JQuery.js";
 
 export class Partner implements IPartner{
 
@@ -64,8 +65,9 @@ export class Partner implements IPartner{
 
     addVideoElement(){
         if(this.videoElement == undefined){
-            $("#video-area").append('<div class="video-item video-item-partner" id="video-item-'+this.id+'"><div class="video-wrap"><video id="video-'+this.id+'" autoplay playsinline></video></div></div>');
+            $("#video-area").append('<div class="video-item video-item-partner" id="video-item-'+this.id+'"><div class="video-wrap"><div class="video-inner-wrap"><video id="video-'+this.id+'" autoplay playsinline></video></div></div></div>');
             this.videoElement = document.getElementById('video-'+this.id);
+            JQueryUtils.addToBigfunction("video-item-"+this.id);
         }
     }
 
