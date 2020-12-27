@@ -7,6 +7,7 @@ import { IPartners } from "./Partner/IPartners.js";
 import { Partner } from "./Partner/Partner.js";
 import { Controls } from "./Elements/Controls.js";
 import { Screen } from "./Elements/Screen.js";
+import { Devices } from "./Elements/Devices.js";
 import { JQueryUtils } from "./Utils/JQuery.js";
 
 export class App{
@@ -21,6 +22,7 @@ export class App{
     partners: IPartners = {};
     controls: Controls;
     screen: Screen;
+    devices: Devices;
 
     constructor(){
         this.setRoom();
@@ -30,6 +32,7 @@ export class App{
         this.exchange.addReadEvent(this.readMessage);
         this.controls = new Controls(this);
         this.screen = new Screen(this);
+        this.devices = new Devices(this);
         $(window).on("beforeunload", function() { 
             app.hangOut();
         })
@@ -37,7 +40,7 @@ export class App{
     }
 
     run(){ 
-        this.initialCamera();     
+        this.initialCamera(true);     
     }
 
     setRoom(): void{
@@ -50,20 +53,25 @@ export class App{
         }
     }
 
-    initialCamera() {
-        if(!app.localStream){
-            navigator.mediaDevices.getUserMedia({audio:true, video:true})
+    initialCamera(first: boolean = false) {
+        const constraints = {
+            audio: {deviceId: this.devices.devicesVueObject.audio ? {exact: this.devices.devicesVueObject.audio} : undefined},
+            video: {deviceId: this.devices.devicesVueObject.video ? {exact: this.devices.devicesVueObject.video} : undefined}
+        };
+        navigator.mediaDevices.getUserMedia(constraints)
             .then(function(stream){
                 // @ts-ignore
                 app.yourVideo.srcObject = stream;
                 app.localStream = stream;
+                if(first){
+                    navigator.mediaDevices.enumerateDevices().then(function(deviceInfos){
+                        app.devices.gotDevices(deviceInfos);
+                    });
+                    app.callOther();  
+                }
                 app.controls.initialiseStream();
-                app.callOther();  
+                app.setStreamToPartners();
             });
-        }else{
-            // @ts-ignore
-            app.yourVideo.srcObject = app.localStream;
-        }
     }
 
     callOther(){
@@ -116,7 +124,7 @@ export class App{
             this.partners[partnerId].closeConnection();
             delete this.partners[partnerId];
         }
-        this.partners[partnerId] = new Partner(partnerId, this.exchange);
+        this.partners[partnerId] = new Partner(partnerId, this.exchange, this.devices);
         this.setStreamToPartner(this.partners[partnerId], true);
     }
 
@@ -128,7 +136,10 @@ export class App{
 
     setStreamToPartner(partner: IPartner, initial: boolean = false){
         var videoTrack = !this.screen.onScreenMode() ? this.localStream.getVideoTracks()[0] : this.localScreenStream.getVideoTracks()[0];
-        if(initial){
+        var audioTrack = this.localStream.getAudioTracks()[0];
+        this.setTrackToPartner(partner, this.localStream, videoTrack);
+        this.setTrackToPartner(partner, this.localStream, audioTrack);
+        /*if(initial){
             partner.connection.addTrack(videoTrack, this.localStream);
             partner.connection.addTrack(this.localStream.getAudioTracks()[0], this.localStream);
         } else{
@@ -136,8 +147,23 @@ export class App{
                 var sender = partner.connection.getSenders().find(function(s) {
                     return s.track.kind == videoTrack.kind;
                 });
-                sender.replaceTrack(videoTrack);
+                if(sender){
+                    sender.replaceTrack(videoTrack);
+                } else {
+                    partner.connection.addTrack(videoTrack, this.localStream);
+                }
             }
+        }*/
+    }
+
+    setTrackToPartner(partner: IPartner, stream: any, track: any){
+        var sender = partner.connection.getSenders().find(function(s) {
+            return s.track.kind == track.kind;
+        });
+        if(sender){
+            sender.replaceTrack(track);
+        } else {
+            partner.connection.addTrack(track, stream);
         }
     }
 

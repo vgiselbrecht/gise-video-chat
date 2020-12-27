@@ -41,6 +41,7 @@ export class Controls{
                         cla.hangOut();
                         this.hangouted = true;
                     } else{
+                        location.hash = cla.app.room;
                         location.reload();
                     }                    
                 }, toogleScreen: function(){
@@ -55,21 +56,27 @@ export class Controls{
     }
 
     initialiseStream(){
-        this.toogleStreamMicrophone();
-        this.toogleStreamCamera(); 
+        this.toogleStreamMicrophone(false);
+        this.toogleStreamCamera(false); 
     }
 
-    toogleStreamMicrophone()
+    toogleStreamMicrophone(changeCamera: boolean = true)
     {
         if(this.app.localStream != undefined){
             this.app.localStream.getAudioTracks()[0].enabled = this.controlsVueObject.microphoneOn;
+            if(changeCamera && this.controlsVueObject.microphoneOn){
+                this.app.initialCamera();
+            }
         }
     }
 
-    toogleStreamCamera()
+    toogleStreamCamera(changeCamera: boolean = true)
     {
         if(!this.app.localStream != undefined){
             this.app.localStream.getVideoTracks()[0].enabled = this.controlsVueObject.cameraOn;
+            if(changeCamera && this.controlsVueObject.cameraOn){
+                this.app.initialCamera();
+            }
         }
     }
 

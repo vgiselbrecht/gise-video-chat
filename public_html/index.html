@@ -13,8 +13,8 @@
     </head>
     <body>
         <div class="container maincontainer" >
-            <div class="row" id="main">
-                <div class="col-md-12 col-xs-12">
+            <div class="row">
+                <div class="col-md-10 col-xs-12" id="main">
                     <div id="video-area">
                         <div class="video-item" id="yourVideoArea">
                             <div class="video-wrap">
@@ -30,6 +30,34 @@
                             <span v-on:click="toogleCamera" v-bind:class="{'fa-video': cameraOn, 'fa-video-slash': !cameraOn}" class="camera fas fa-video"></span>
                             <span v-on:click="toogleScreen" v-bind:class="{'screenon': screenOn}" class="screen fas fa-desktop"></span>
                             <span v-on:click="hangOut"  v-bind:class="{'green': hangouted}" class="hangup fas fa-phone"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 hide-xs show-md" id="sidebar">
+                    <div id="devices">
+                        <div class="row">
+                            <label class="col-xs-6 col-lg-4" >Audio:</label>
+                            <select class="col-xs-6 col-lg-8" v-model="audio" @change="onChange()">
+                                <option v-for="(option, index) in audiooptions" :key="index" v-bind:value="index">
+                                  {{ option }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="row">
+                            <label class="col-xs-6 col-lg-4" >Video:</label>
+                            <select class="col-xs-6 col-lg-8" v-model="video" @change="onChange()">
+                                <option v-for="(option, index) in videooptions" :key="index" v-bind:value="index">
+                                {{ option }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="row">
+                            <label class="col-xs-6 col-lg-4" >Sound:</label>
+                            <select class="col-xs-6 col-lg-8" v-model="sound" @change="onChange()">
+                                <option v-for="(option, index) in soundoptions" :key="index" v-bind:value="index">
+                                {{ option }}
+                                </option>
+                            </select>
                         </div>
                     </div>
                 </div>

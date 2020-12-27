@@ -1,10 +1,11 @@
 import { WebRTC } from "../Communication/WebRTC.js";
 import { JQueryUtils } from "../Utils/JQuery.js";
 export class Partner {
-    constructor(id, exchange) {
+    constructor(id, exchange, devices) {
         this.connected = false;
         this.id = id;
         this.exchange = exchange;
+        this.devices = devices;
         var communication = new WebRTC(this);
         communication.addOnaddtrackEvent(this.onAddTrack);
         communication.addOnicecandidateEvent(this.onIceCandidate);
@@ -56,6 +57,7 @@ export class Partner {
             $("#video-area").append('<div class="video-item video-item-partner" id="video-item-' + this.id + '"><div class="video-wrap"><div class="video-inner-wrap"><video id="video-' + this.id + '" autoplay playsinline></video></div></div></div>');
             this.videoElement = document.getElementById('video-' + this.id);
             JQueryUtils.addToBigfunction("video-item-" + this.id);
+            this.setSinkId(this.devices.devicesVueObject.sound);
         }
     }
     onConnected(partner) {
@@ -72,6 +74,12 @@ export class Partner {
         this.connection.close();
         console.log("Connection closed to: " + this.id);
         $('#video-item-' + this.id).remove();
+    }
+    setSinkId(sinkId) {
+        if (this.videoElement != undefined) {
+            // @ts-ignore
+            this.videoElement.setSinkId(sinkId);
+        }
     }
 }
 //# sourceMappingURL=Partner.js.map

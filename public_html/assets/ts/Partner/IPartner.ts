@@ -11,4 +11,5 @@ export interface IPartner{
     createOffer(): void;
     addVideoElement(): void;
     closeConnection(): void;
+    setSinkId(sinkId: any): void;
 }

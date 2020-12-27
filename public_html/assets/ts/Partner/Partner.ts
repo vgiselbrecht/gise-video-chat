@@ -2,19 +2,22 @@ import { IPartner } from "./IPartner.js";
 import { WebRTC } from "../Communication/WebRTC.js";
 import { IExchange } from "../Exchange/IExchange.js";
 import { JQueryUtils } from "../Utils/JQuery.js";
+import { Devices } from "../Elements/Devices.js";
 
 export class Partner implements IPartner{
 
     id: number;
     videoElement: HTMLElement;
     connection: RTCPeerConnection;
+    devices: Devices;
     exchange: IExchange
     connected: boolean = false;
     offerLoop: any;
 
-    constructor(id: number, exchange: IExchange){
+    constructor(id: number, exchange: IExchange, devices: Devices){
         this.id = id;
         this.exchange = exchange;
+        this.devices = devices;
         var communication = new WebRTC(this);
         communication.addOnaddtrackEvent(this.onAddTrack);
         communication.addOnicecandidateEvent(this.onIceCandidate); 
@@ -68,6 +71,7 @@ export class Partner implements IPartner{
             $("#video-area").append('<div class="video-item video-item-partner" id="video-item-'+this.id+'"><div class="video-wrap"><div class="video-inner-wrap"><video id="video-'+this.id+'" autoplay playsinline></video></div></div></div>');
             this.videoElement = document.getElementById('video-'+this.id);
             JQueryUtils.addToBigfunction("video-item-"+this.id);
+            this.setSinkId(this.devices.devicesVueObject.sound);
         }
     }
 
@@ -87,5 +91,12 @@ export class Partner implements IPartner{
         this.connection.close();
         console.log("Connection closed to: "+this.id);
         $('#video-item-'+this.id).remove();
+    }
+
+    setSinkId(sinkId: any): void{
+        if(this.videoElement != undefined){
+            // @ts-ignore
+            this.videoElement.setSinkId(sinkId);
+        }
     }
 }

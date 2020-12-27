@@ -2,6 +2,7 @@ import { Firebase } from "./Exchange/Firebase.js";
 import { Partner } from "./Partner/Partner.js";
 import { Controls } from "./Elements/Controls.js";
 import { Screen } from "./Elements/Screen.js";
+import { Devices } from "./Elements/Devices.js";
 import { JQueryUtils } from "./Utils/JQuery.js";
 export class App {
     constructor() {
@@ -14,13 +15,14 @@ export class App {
         this.exchange.addReadEvent(this.readMessage);
         this.controls = new Controls(this);
         this.screen = new Screen(this);
+        this.devices = new Devices(this);
         $(window).on("beforeunload", function () {
             app.hangOut();
         });
         JQueryUtils.addToBigfunction("yourVideoArea");
     }
     run() {
-        this.initialCamera();
+        this.initialCamera(true);
     }
     setRoom() {
         if (!location.hash) {
@@ -31,21 +33,25 @@ export class App {
             location.reload();
         };
     }
-    initialCamera() {
-        if (!app.localStream) {
-            navigator.mediaDevices.getUserMedia({ audio: true, video: true })
-                .then(function (stream) {
-                // @ts-ignore
-                app.yourVideo.srcObject = stream;
-                app.localStream = stream;
-                app.controls.initialiseStream();
-                app.callOther();
-            });
-        }
-        else {
+    initialCamera(first = false) {
+        const constraints = {
+            audio: { deviceId: this.devices.devicesVueObject.audio ? { exact: this.devices.devicesVueObject.audio } : undefined },
+            video: { deviceId: this.devices.devicesVueObject.video ? { exact: this.devices.devicesVueObject.video } : undefined }
+        };
+        navigator.mediaDevices.getUserMedia(constraints)
+            .then(function (stream) {
             // @ts-ignore
-            app.yourVideo.srcObject = app.localStream;
-        }
+            app.yourVideo.srcObject = stream;
+            app.localStream = stream;
+            if (first) {
+                navigator.mediaDevices.enumerateDevices().then(function (deviceInfos) {
+                    app.devices.gotDevices(deviceInfos);
+                });
+                app.callOther();
+            }
+            app.controls.initialiseStream();
+            app.setStreamToPartners();
+        });
     }
     callOther() {
         this.exchange.sendMessage(JSON.stringify({ 'call': this.yourId }));
@@ -89,7 +95,7 @@ export class App {
             this.partners[partnerId].closeConnection();
             delete this.partners[partnerId];
         }
-        this.partners[partnerId] = new Partner(partnerId, this.exchange);
+        this.partners[partnerId] = new Partner(partnerId, this.exchange, this.devices);
         this.setStreamToPartner(this.partners[partnerId], true);
     }
     setStreamToPartners() {
@@ -99,17 +105,34 @@ export class App {
     }
     setStreamToPartner(partner, initial = false) {
         var videoTrack = !this.screen.onScreenMode() ? this.localStream.getVideoTracks()[0] : this.localScreenStream.getVideoTracks()[0];
-        if (initial) {
+        var audioTrack = this.localStream.getAudioTracks()[0];
+        this.setTrackToPartner(partner, this.localStream, videoTrack);
+        this.setTrackToPartner(partner, this.localStream, audioTrack);
+        /*if(initial){
             partner.connection.addTrack(videoTrack, this.localStream);
             partner.connection.addTrack(this.localStream.getAudioTracks()[0], this.localStream);
-        }
-        else {
-            if (partner) {
-                var sender = partner.connection.getSenders().find(function (s) {
+        } else{
+            if(partner){
+                var sender = partner.connection.getSenders().find(function(s) {
                     return s.track.kind == videoTrack.kind;
                 });
-                sender.replaceTrack(videoTrack);
+                if(sender){
+                    sender.replaceTrack(videoTrack);
+                } else {
+                    partner.connection.addTrack(videoTrack, this.localStream);
+                }
             }
+        }*/
+    }
+    setTrackToPartner(partner, stream, track) {
+        var sender = partner.connection.getSenders().find(function (s) {
+            return s.track.kind == track.kind;
+        });
+        if (sender) {
+            sender.replaceTrack(track);
+        }
+        else {
+            partner.connection.addTrack(track, stream);
         }
     }
     hangOut() {
