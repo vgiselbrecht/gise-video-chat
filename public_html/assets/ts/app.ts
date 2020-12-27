@@ -11,7 +11,7 @@ import { JQueryUtils } from "./Utils/JQuery.js";
 
 export class App{
 
-    room: string = "default";
+    room: string;
     yourId: number = Math.floor(Math.random()*1000000000);
     exchange: IExchange;
     communication: ICommunication;
@@ -23,7 +23,8 @@ export class App{
     screen: Screen;
 
     constructor(){
-        console.log("Id: " + this.yourId);
+        this.setRoom();
+        console.log("Id: " + this.yourId + " Room: " + this.room);
         this.yourVideo = document.getElementById("yourVideo");
         this.exchange = new Firebase(this.room, this.yourId);
         this.exchange.addReadEvent(this.readMessage);
@@ -37,6 +38,16 @@ export class App{
 
     run(){ 
         this.initialCamera();     
+    }
+
+    setRoom(): void{
+        if (!location.hash) {
+            location.hash = Math.floor(Math.random() * 0xFFFFFF).toString(16);
+        }
+        this.room = location.hash.substring(1);
+        window.onhashchange = function() {
+            location.reload();
+        }
     }
 
     initialCamera() {

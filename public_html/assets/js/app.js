@@ -5,10 +5,10 @@ import { Screen } from "./Elements/Screen.js";
 import { JQueryUtils } from "./Utils/JQuery.js";
 export class App {
     constructor() {
-        this.room = "default";
         this.yourId = Math.floor(Math.random() * 1000000000);
         this.partners = {};
-        console.log("Id: " + this.yourId);
+        this.setRoom();
+        console.log("Id: " + this.yourId + " Room: " + this.room);
         this.yourVideo = document.getElementById("yourVideo");
         this.exchange = new Firebase(this.room, this.yourId);
         this.exchange.addReadEvent(this.readMessage);
@@ -21,6 +21,15 @@ export class App {
     }
     run() {
         this.initialCamera();
+    }
+    setRoom() {
+        if (!location.hash) {
+            location.hash = Math.floor(Math.random() * 0xFFFFFF).toString(16);
+        }
+        this.room = location.hash.substring(1);
+        window.onhashchange = function () {
+            location.reload();
+        };
     }
     initialCamera() {
         if (!app.localStream) {
