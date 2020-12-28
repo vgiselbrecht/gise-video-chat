@@ -1,5 +1,6 @@
 import { WebRTC } from "../Communication/WebRTC.js";
 import { JQueryUtils } from "../Utils/JQuery.js";
+import { Userinfo } from "../Elements/Userinfo.js";
 export class Partner {
     constructor(id, exchange, devices, textchat) {
         this.connected = false;
@@ -17,6 +18,13 @@ export class Partner {
         this.connection = communication.getPeerConnection();
         this.dataChannel = communication.getDataChannel(this.connection);
         this.setSendMessageInterval();
+    }
+    getName() {
+        var _a;
+        return (_a = this.name) !== null && _a !== void 0 ? _a : this.id.toString();
+    }
+    setName(name) {
+        this.name = name;
     }
     createOffer() {
         this.createOfferInner();
@@ -106,6 +114,9 @@ export class Partner {
         if (message.type !== undefined && message.message !== undefined) {
             if (message.type === partner.textchat.textchatMessageType) {
                 partner.textchat.addNewMessageToChat(message.message, partner);
+            }
+            else if (message.type === Userinfo.userinfoMessageType && message.message.name != undefined) {
+                partner.setName(message.message.name);
             }
         }
     }

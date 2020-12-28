@@ -36,7 +36,7 @@ export class Textchat{
 
     addNewMessageToChat(message: any, partner: IPartner){
         if(message.text !== undefined){
-            this.addTextToChat(partner.id.toString(), message.text);
+            this.addTextToChat(partner.getName(), message.text);
         }
 
     }

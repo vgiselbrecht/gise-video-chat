@@ -4,11 +4,13 @@ import { IExchange } from "../Exchange/IExchange.js";
 import { JQueryUtils } from "../Utils/JQuery.js";
 import { Devices } from "../Elements/Devices.js";
 import { Textchat } from "../Elements/Textchat.js";
+import { Userinfo } from "../Elements/Userinfo.js";
 
 
 export class Partner implements IPartner{
 
     id: number;
+    name: string;
     videoElement: HTMLElement;
     connection: RTCPeerConnection;
     dataChannel: any;
@@ -33,6 +35,14 @@ export class Partner implements IPartner{
         this.connection = communication.getPeerConnection();
         this.dataChannel = communication.getDataChannel(this.connection);
         this.setSendMessageInterval();
+    }
+
+    getName(): string{
+        return this.name ?? this.id.toString();
+    }
+
+    setName(name: string){
+        this.name = name;
     }
 
     createOffer(): void {
@@ -131,6 +141,8 @@ export class Partner implements IPartner{
         if(message.type !== undefined && message.message !== undefined){
             if(message.type === partner.textchat.textchatMessageType){
                 partner.textchat.addNewMessageToChat(message.message, partner);
+            } else if(message.type === Userinfo.userinfoMessageType && message.message.name != undefined){
+                partner.setName(message.message.name);
             }
         }
     }

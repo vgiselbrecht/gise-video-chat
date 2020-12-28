@@ -23,7 +23,7 @@ export class Textchat {
     }
     addNewMessageToChat(message, partner) {
         if (message.text !== undefined) {
-            this.addTextToChat(partner.id.toString(), message.text);
+            this.addTextToChat(partner.getName(), message.text);
         }
     }
     addTextToChat(sender, message) {

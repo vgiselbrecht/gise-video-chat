@@ -12,6 +12,8 @@ export interface IPartner{
     textchat: Textchat;
     connected: boolean;
     offerLoop: any;
+    getName(): string;
+    setName(name: string): void;
     createOffer(): void;
     addVideoElement(): void;
     closeConnection(): void;

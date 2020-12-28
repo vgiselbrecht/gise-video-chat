@@ -4,6 +4,7 @@ import { Controls } from "./Elements/Controls.js";
 import { Screen } from "./Elements/Screen.js";
 import { Devices } from "./Elements/Devices.js";
 import { Textchat } from "./Elements/Textchat.js";
+import { Userinfo } from "./Elements/Userinfo.js";
 import { JQueryUtils } from "./Utils/JQuery.js";
 export class App {
     constructor() {
@@ -18,6 +19,7 @@ export class App {
         this.screen = new Screen(this);
         this.devices = new Devices(this);
         this.textchat = new Textchat(this);
+        this.userinfo = new Userinfo(this);
         $(window).on("beforeunload", function () {
             app.hangOut();
         });
@@ -106,6 +108,7 @@ export class App {
         }
         this.partners[partnerId] = new Partner(partnerId, this.exchange, this.devices, this.textchat);
         this.setStreamToPartner(this.partners[partnerId], true);
+        this.partners[partnerId].sendMessage({ type: Userinfo.userinfoMessageType, message: { name: this.yourName } });
     }
     setStreamToPartners() {
         for (var id in this.partners) {

@@ -36,6 +36,12 @@
                     </div>
                 </div>
                 <div id="sidebar">
+                    <div id="userinfo">
+                        <div class="row">
+                            <label class="col-xs-6 col-lg-4" >Name:</label>
+                            <input class="col-xs-6 col-lg-8" v-model="name" @blur="changeUserinfo" placeholder="Ihr Name">
+                        </div>
+                    </div>
                     <div id="devices">
                         <div class="row">
                             <label class="col-xs-6 col-lg-4" >Audio:</label>
