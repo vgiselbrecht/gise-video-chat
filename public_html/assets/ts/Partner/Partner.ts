@@ -3,27 +3,36 @@ import { WebRTC } from "../Communication/WebRTC.js";
 import { IExchange } from "../Exchange/IExchange.js";
 import { JQueryUtils } from "../Utils/JQuery.js";
 import { Devices } from "../Elements/Devices.js";
+import { Textchat } from "../Elements/Textchat.js";
+
 
 export class Partner implements IPartner{
 
     id: number;
     videoElement: HTMLElement;
     connection: RTCPeerConnection;
+    dataChannel: any;
     devices: Devices;
+    textchat: Textchat;
     exchange: IExchange
     connected: boolean = false;
     offerLoop: any;
+    messages: Array<any> = Array<any>();
 
-    constructor(id: number, exchange: IExchange, devices: Devices){
+    constructor(id: number, exchange: IExchange, devices: Devices, textchat: Textchat){
         this.id = id;
         this.exchange = exchange;
         this.devices = devices;
+        this.textchat = textchat;
         var communication = new WebRTC(this);
         communication.addOnaddtrackEvent(this.onAddTrack);
         communication.addOnicecandidateEvent(this.onIceCandidate); 
         communication.addConnectionLosedEvent(this.onConnectionLosed);
         communication.addConnectionEvent(this.onConnected);
+        communication.addOnMessageEvent(this.onMessage);
         this.connection = communication.getPeerConnection();
+        this.dataChannel = communication.getDataChannel(this.connection);
+        this.setSendMessageInterval();
     }
 
     createOffer(): void {
@@ -99,4 +108,31 @@ export class Partner implements IPartner{
             this.videoElement.setSinkId(sinkId);
         }
     }
+
+    sendMessage(message: any): void{
+        this.messages.push(message);
+    }
+
+    setSendMessageInterval(){
+        var cla = this;
+        setInterval(function(){
+            if(cla.dataChannel.readyState === "open"){
+                for (var message of cla.messages) {
+                    cla.dataChannel.send(JSON.stringify(message));
+                }
+                cla.messages = Array<any>();
+            }
+        }, 100); 
+    }
+
+    onMessage(message: any, partner: IPartner){
+        console.log("Communication message from " + partner.id)
+        console.log(message);
+        if(message.type !== undefined && message.message !== undefined){
+            if(message.type === partner.textchat.textchatMessageType){
+                partner.textchat.addNewMessageToChat(message.message, partner);
+            }
+        }
+    }
+
 }

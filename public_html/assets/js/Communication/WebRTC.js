@@ -5,6 +5,10 @@ export class WebRTC {
     }
     getPeerConnection() {
         var pc = new RTCPeerConnection(this.servers);
+        this.setPCEvents(pc);
+        return pc;
+    }
+    setPCEvents(pc) {
         let cla = this;
         pc.onicecandidate = function (event) {
             if (event.candidate) {
@@ -26,7 +30,17 @@ export class WebRTC {
                 cla.connectionEvent(cla.partner);
             }
         };
-        return pc;
+    }
+    getDataChannel(pc) {
+        let cla = this;
+        var dataChannel = pc.createDataChannel("chat", { negotiated: true, id: 0 });
+        dataChannel.onerror = function (error) {
+            console.log("Error:", error);
+        };
+        dataChannel.onmessage = function (event) {
+            cla.onMessageEvent(JSON.parse(event.data), cla.partner);
+        };
+        return dataChannel;
     }
     addOnicecandidateEvent(callback) {
         this.onicecandidateEvent = callback;
@@ -39,6 +53,9 @@ export class WebRTC {
     }
     addConnectionEvent(callback) {
         this.connectionEvent = callback;
+    }
+    addOnMessageEvent(callback) {
+        this.onMessageEvent = callback;
     }
 }
 //# sourceMappingURL=WebRTC.js.map

@@ -10,6 +10,7 @@ export class WebRTC implements ICommunication{
     onaddtrackEvent: (stream: any, partner: IPartner) => void;
     connectionLosedEvent: (partner: IPartner) => void;
     connectionEvent: (partner: IPartner) => void;
+    onMessageEvent: (message: any, partner: IPartner) => void;
 
     constructor(partner: IPartner){
         this.partner = partner;
@@ -17,6 +18,11 @@ export class WebRTC implements ICommunication{
 
     getPeerConnection(): RTCPeerConnection{
         var pc = new RTCPeerConnection(this.servers);
+        this.setPCEvents(pc);
+        return pc;
+    }
+
+    setPCEvents(pc: RTCPeerConnection){
         let cla = this;
         pc.onicecandidate = function(event) {
             if(event.candidate){
@@ -36,8 +42,23 @@ export class WebRTC implements ICommunication{
                 cla.connectionEvent(cla.partner);
             }
         }
-        return pc;
     }
+
+    getDataChannel(pc: RTCPeerConnection){
+        let cla = this;
+         var dataChannel = pc.createDataChannel("chat", {negotiated: true, id: 0});
+          
+         dataChannel.onerror = function (error) { 
+            console.log("Error:", error); 
+         };
+          
+         dataChannel.onmessage = function (event) { 
+            cla.onMessageEvent(JSON.parse(event.data), cla.partner);
+         };  
+
+         return dataChannel;
+    }
+    
 
     addOnicecandidateEvent(callback: (candidate: any, partner: IPartner) => void): void{
         this.onicecandidateEvent = callback;
@@ -53,5 +74,9 @@ export class WebRTC implements ICommunication{
 
     addConnectionEvent(callback: (partner: IPartner) => void): void{
         this.connectionEvent = callback;
+    }
+
+    addOnMessageEvent(callback: (message: any, partner: IPartner) => void): void{
+        this.onMessageEvent = callback;
     }
 }

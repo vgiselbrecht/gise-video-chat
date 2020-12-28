@@ -1,17 +1,22 @@
 import { WebRTC } from "../Communication/WebRTC.js";
 import { JQueryUtils } from "../Utils/JQuery.js";
 export class Partner {
-    constructor(id, exchange, devices) {
+    constructor(id, exchange, devices, textchat) {
         this.connected = false;
+        this.messages = Array();
         this.id = id;
         this.exchange = exchange;
         this.devices = devices;
+        this.textchat = textchat;
         var communication = new WebRTC(this);
         communication.addOnaddtrackEvent(this.onAddTrack);
         communication.addOnicecandidateEvent(this.onIceCandidate);
         communication.addConnectionLosedEvent(this.onConnectionLosed);
         communication.addConnectionEvent(this.onConnected);
+        communication.addOnMessageEvent(this.onMessage);
         this.connection = communication.getPeerConnection();
+        this.dataChannel = communication.getDataChannel(this.connection);
+        this.setSendMessageInterval();
     }
     createOffer() {
         this.createOfferInner();
@@ -79,6 +84,29 @@ export class Partner {
         if (this.videoElement != undefined) {
             // @ts-ignore
             this.videoElement.setSinkId(sinkId);
+        }
+    }
+    sendMessage(message) {
+        this.messages.push(message);
+    }
+    setSendMessageInterval() {
+        var cla = this;
+        setInterval(function () {
+            if (cla.dataChannel.readyState === "open") {
+                for (var message of cla.messages) {
+                    cla.dataChannel.send(JSON.stringify(message));
+                }
+                cla.messages = Array();
+            }
+        }, 100);
+    }
+    onMessage(message, partner) {
+        console.log("Communication message from " + partner.id);
+        console.log(message);
+        if (message.type !== undefined && message.message !== undefined) {
+            if (message.type === partner.textchat.textchatMessageType) {
+                partner.textchat.addNewMessageToChat(message.message, partner);
+            }
         }
     }
 }

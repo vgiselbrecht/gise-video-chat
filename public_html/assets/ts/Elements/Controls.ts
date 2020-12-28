@@ -14,6 +14,7 @@ export class Controls{
     constructor(app: App){
         this.app = app;
         this.initialElements();
+        this.setSidebarClickRemove();
     }
 
     initialElements(){
@@ -24,7 +25,8 @@ export class Controls{
                 microphoneOn: Cookie.getCookie(cla.microphoneCookie) == 'false' ? false : true,
                 cameraOn: Cookie.getCookie(cla.cameraCookie) == 'false' ? false : true,
                 hangouted: false,
-                screenOn: false
+                screenOn: false,
+                optionOn: false 
             },
             methods: {
                 toogleMicrophone: function () {
@@ -50,6 +52,9 @@ export class Controls{
                     }else{
                         cla.app.screen.startScreen();
                     }
+                }, toogleOption: function(){
+                    this.optionOn = !this.optionOn;
+                    cla.toogleOption(); 
                 }
             }
         });
@@ -78,6 +83,19 @@ export class Controls{
                 this.app.initialCamera();
             }
         }
+    }
+
+    toogleOption(){
+        $(".maincontainer").toggleClass("opensidebar");
+    }
+
+    setSidebarClickRemove(){
+        var cla = this;
+        $("#clickbackground").on("click", function(){
+            if(cla.controlsVueObject.optionOn){
+                cla.controlsVueObject.toogleOption();
+            }
+        });
     }
 
     hangOut(){

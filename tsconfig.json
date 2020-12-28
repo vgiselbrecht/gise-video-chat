@@ -19,6 +19,7 @@
         "public_html/assets/ts/Elements/Controls.ts",
         "public_html/assets/ts/Elements/Devices.ts",
         "public_html/assets/ts/Elements/Screen.ts",
+        "public_html/assets/ts/Elements/Textchat.ts",
         "public_html/assets/ts/Exchange/Firebase.ts",
         "public_html/assets/ts/Exchange/IExchange.ts",
         "public_html/assets/ts/Partner/IPartner.ts",

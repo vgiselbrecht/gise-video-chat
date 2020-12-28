@@ -31,6 +31,7 @@ export class Devices {
             }
         }
         this.setDeviceElements();
+        this.app.initialCamera(true);
     }
     setDeviceElements() {
         var cla = this;

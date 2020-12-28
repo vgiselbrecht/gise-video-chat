@@ -14,7 +14,7 @@
     <body>
         <div class="container maincontainer" >
             <div class="row">
-                <div class="col-md-10 col-xs-12" id="main">
+                <div class="col-xs-12" id="main">
                     <div id="video-area">
                         <div class="video-item" id="yourVideoArea">
                             <div class="video-wrap">
@@ -25,15 +25,17 @@
                         </div>
                     </div>
                     <div class="row center-xs" id="footer">
-                        <div class="col-md-4 col-xs-12" id="controls">
+                        <div class="col-xs-12" id="controls">
                             <span v-on:click="toogleMicrophone" v-bind:class="{'fa-microphone': microphoneOn, 'fa-microphone-slash': !microphoneOn}" class="microphone fas fa-microphone"></span>
                             <span v-on:click="toogleCamera" v-bind:class="{'fa-video': cameraOn, 'fa-video-slash': !cameraOn}" class="camera fas fa-video"></span>
                             <span v-on:click="toogleScreen" v-bind:class="{'screenon': screenOn}" class="screen fas fa-desktop"></span>
+                            <span v-on:click="toogleOption" v-bind:class="{'optionon': optionOn}" class="option fas fa-bars"></span>
+                            <span v-on:click="toogleOption" v-bind:class="{'optiononclose': optionOn}" class="optionclose fas fa-times"></span>
                             <span v-on:click="hangOut"  v-bind:class="{'green': hangouted}" class="hangup fas fa-phone"></span>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-2 hide-xs show-md" id="sidebar">
+                <div id="sidebar">
                     <div id="devices">
                         <div class="row">
                             <label class="col-xs-6 col-lg-4" >Audio:</label>
@@ -60,7 +62,13 @@
                             </select>
                         </div>
                     </div>
+                    <div id="textchat">
+                        <div class="result" v-html="result"></div>
+                        <input v-model="message" @keypress.13.prevente="sendMessage" class="textinput" type="text">
+                        <button v-on:click="sendMessage" id="textenter">Send</button>
+                    </div>
                 </div>
+                <div id="clickbackground"></div>
             </div>
         <div>
         <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
