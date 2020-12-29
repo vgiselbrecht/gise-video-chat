@@ -20,12 +20,15 @@ export class Partner implements IPartner{
     connected: boolean = false;
     offerLoop: any;
     messages: Array<any> = Array<any>();
+    setStreamToPartner: (partner: IPartner, initial: boolean) => void;
+    doReload: boolean = false;
 
-    constructor(id: number, exchange: IExchange, devices: Devices, textchat: Textchat){
+    constructor(id: number, exchange: IExchange, devices: Devices, textchat: Textchat, setStreamToPartner: (partner: IPartner, initial: boolean) => void){
         this.id = id;
         this.exchange = exchange;
         this.devices = devices;
         this.textchat = textchat;
+        this.setStreamToPartner = setStreamToPartner;
         var communication = new WebRTC(this);
         communication.addOnaddtrackEvent(this.onAddTrack);
         communication.addOnicecandidateEvent(this.onIceCandidate); 
@@ -96,14 +99,28 @@ export class Partner implements IPartner{
 
     onConnected(partner: IPartner){
         partner.connected = true;
+        if(this.doReload){
+            this.reloadConnection();
+        }
         clearInterval(partner.offerLoop);
         $('#video-item-'+partner.id).show();
+        partner.setStreamToPartner(this, false);
     }
 
     onConnectionLosed(partner: IPartner){
         partner.connected = false;
         partner.createOffer(); 
         $('#video-item-'+partner.id).hide();
+    }
+
+    reloadConnection(){
+        if(this.connected){
+            this.connected = false;
+            this.createOffer();
+            this.doReload = false;
+        } else {
+            this.doReload = true;
+        }
     }
 
     closeConnection(){

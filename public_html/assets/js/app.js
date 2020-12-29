@@ -10,6 +10,8 @@ export class App {
     constructor() {
         this.yourId = Math.floor(Math.random() * 1000000000);
         this.partners = {};
+        this.closed = false;
+        this.called = false;
         this.setRoom();
         console.log("Id: " + this.yourId + " Room: " + this.room);
         this.yourVideo = document.getElementById("yourVideo");
@@ -26,6 +28,11 @@ export class App {
         JQueryUtils.addToBigfunction("yourVideoArea");
     }
     run() {
+        setTimeout(function () {
+            if (!app.called) {
+                app.callOther();
+            }
+        }, 1000);
         navigator.mediaDevices.enumerateDevices().then(function (deviceInfos) {
             app.devices.gotDevices(deviceInfos);
         });
@@ -52,21 +59,28 @@ export class App {
             // @ts-ignore
             app.yourVideo.srcObject = stream;
             app.localStream = stream;
-            if (first) {
-                app.callOther();
-            }
             app.controls.initialiseStream();
             app.setStreamToPartners();
+            if (first) {
+                if (!app.called) {
+                    app.callOther();
+                }
+                else {
+                    app.reloadConnections();
+                }
+            }
         })
             .catch(function (err) {
             alert("Es kann leider nicht auf die Kamera zugegriffen werden!");
+            console.log(err);
         });
     }
     callOther() {
+        this.called = true;
         this.exchange.sendMessage(JSON.stringify({ 'call': this.yourId }));
     }
     readMessage(sender, dataroom, msg) {
-        if (app !== undefined && app.localStream != undefined) {
+        if (app !== undefined && !this.closed) {
             console.log("Exchange message from: " + sender);
             console.log(msg);
             if (!(sender in app.partners) || msg.call !== undefined) {
@@ -106,7 +120,7 @@ export class App {
             this.partners[partnerId].closeConnection();
             delete this.partners[partnerId];
         }
-        this.partners[partnerId] = new Partner(partnerId, this.exchange, this.devices, this.textchat);
+        this.partners[partnerId] = new Partner(partnerId, this.exchange, this.devices, this.textchat, this.setStreamToPartner);
         this.setStreamToPartner(this.partners[partnerId], true);
         this.partners[partnerId].sendMessage({ type: Userinfo.userinfoMessageType, message: { name: this.yourName } });
     }
@@ -115,15 +129,22 @@ export class App {
             this.setStreamToPartner(this.partners[id]);
         }
     }
+    reloadConnections() {
+        for (var id in this.partners) {
+            this.partners[id].reloadConnection();
+        }
+    }
     setStreamToPartner(partner, initial = false) {
-        var videoTrack = !this.screen.onScreenMode() ? this.localStream.getVideoTracks()[0] : this.localScreenStream.getVideoTracks()[0];
-        var audioTrack = this.localStream.getAudioTracks()[0];
-        this.setTrackToPartner(partner, this.localStream, videoTrack);
-        this.setTrackToPartner(partner, this.localStream, audioTrack);
+        if (this.localStream) {
+            var videoTrack = !this.screen.onScreenMode() ? this.localStream.getVideoTracks()[0] : this.localScreenStream.getVideoTracks()[0];
+            var audioTrack = this.localStream.getAudioTracks()[0];
+            this.setTrackToPartner(partner, this.localStream, videoTrack);
+            this.setTrackToPartner(partner, this.localStream, audioTrack);
+        }
     }
     setTrackToPartner(partner, stream, track) {
         var sender = partner.connection.getSenders().find(function (s) {
-            return s.track.kind == track.kind;
+            return s.track && s.track.kind == track.kind;
         });
         if (sender) {
             sender.replaceTrack(track);
@@ -144,6 +165,7 @@ export class App {
         this.textchat.scrollToBottom();
     }
     hangOut() {
+        this.closed = true;
         this.exchange.sendMessage(JSON.stringify({ 'closing': this.yourId }));
         this.exchange.closeConnection();
         for (var id in this.partners) {

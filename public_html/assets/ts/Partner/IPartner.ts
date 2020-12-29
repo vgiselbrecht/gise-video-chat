@@ -12,11 +12,13 @@ export interface IPartner{
     textchat: Textchat;
     connected: boolean;
     offerLoop: any;
+    setStreamToPartner: (partner: IPartner, initial: boolean) => void
     getName(): string;
     setName(name: string): void;
     createOffer(): void;
     addVideoElement(): void;
     closeConnection(): void;
+    reloadConnection(): void;
     setSinkId(sinkId: any): void;
     sendMessage(message: any): void;
 }

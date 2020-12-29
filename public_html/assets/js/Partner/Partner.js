@@ -2,13 +2,15 @@ import { WebRTC } from "../Communication/WebRTC.js";
 import { JQueryUtils } from "../Utils/JQuery.js";
 import { Userinfo } from "../Elements/Userinfo.js";
 export class Partner {
-    constructor(id, exchange, devices, textchat) {
+    constructor(id, exchange, devices, textchat, setStreamToPartner) {
         this.connected = false;
         this.messages = Array();
+        this.doReload = false;
         this.id = id;
         this.exchange = exchange;
         this.devices = devices;
         this.textchat = textchat;
+        this.setStreamToPartner = setStreamToPartner;
         var communication = new WebRTC(this);
         communication.addOnaddtrackEvent(this.onAddTrack);
         communication.addOnicecandidateEvent(this.onIceCandidate);
@@ -75,13 +77,27 @@ export class Partner {
     }
     onConnected(partner) {
         partner.connected = true;
+        if (this.doReload) {
+            this.reloadConnection();
+        }
         clearInterval(partner.offerLoop);
         $('#video-item-' + partner.id).show();
+        partner.setStreamToPartner(this, false);
     }
     onConnectionLosed(partner) {
         partner.connected = false;
         partner.createOffer();
         $('#video-item-' + partner.id).hide();
+    }
+    reloadConnection() {
+        if (this.connected) {
+            this.connected = false;
+            this.createOffer();
+            this.doReload = false;
+        }
+        else {
+            this.doReload = true;
+        }
     }
     closeConnection() {
         this.connection.close();
