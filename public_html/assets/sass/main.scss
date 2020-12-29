@@ -1,8 +1,9 @@
 @import 'lib/grid/main';
 @import 'lib/webfont/fontawesome';
 @import 'lib/webfont/solid';
+@import 'lib/chat/chat';
 
-$footer-height: 70px;
+$footer-height: 70px; 
 
 html,body{
     margin: 0;
@@ -31,11 +32,11 @@ html,body{
   }
   &.opensidebar{
     #main{
-      @include col(md, 10);
+      @include col(md, 9);
     }
     #sidebar{
       display: block;
-      @include col(md, 2);
+      @include col(md, 3);
     }
     @media only screen and (max-width: $md-max + 1) { 
       #main{
@@ -47,6 +48,7 @@ html,body{
         right: 0;
         padding: 8px;
         z-index: 30;
+        box-sizing: border-box;
       }
       #clickbackground{
         display: block;
@@ -146,7 +148,7 @@ html,body{
         background: red;
         z-index: 40;
         &.optiononclose{
-          display: block;
+          //display: block;
         }
       }
     }
@@ -157,6 +159,7 @@ html,body{
   height: 100%;
   background: #fff;
   display: none;
+  overflow: hidden;
   #userinfo{
     border-bottom: 2px solid #888;
     margin-bottom: 5px;

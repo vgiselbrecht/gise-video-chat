@@ -16,6 +16,8 @@
         "public_html/assets/ts/app.ts",
         "public_html/assets/ts/Communication/ICommunication.ts",
         "public_html/assets/ts/Communication/WebRTC.ts",
+        "public_html/assets/ts/Database/IDatabase.ts",
+        "public_html/assets/ts/Database/IndexedDB.ts",
         "public_html/assets/ts/Elements/Controls.ts",
         "public_html/assets/ts/Elements/Devices.ts",
         "public_html/assets/ts/Elements/Screen.ts",

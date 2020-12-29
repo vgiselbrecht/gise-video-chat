@@ -66,7 +66,7 @@ export class App {
         this.exchange.sendMessage(JSON.stringify({ 'call': this.yourId }));
     }
     readMessage(sender, dataroom, msg) {
-        if (app.localStream) {
+        if (app !== undefined && app.localStream != undefined) {
             console.log("Exchange message from: " + sender);
             console.log(msg);
             if (!(sender in app.partners) || msg.call !== undefined) {
@@ -138,6 +138,10 @@ export class App {
                 this.partners[id].sendMessage(message);
             }
         }
+    }
+    sidebarToogle(open) {
+        $(".maincontainer").toggleClass("opensidebar");
+        this.textchat.scrollToBottom();
     }
     hangOut() {
         this.exchange.sendMessage(JSON.stringify({ 'closing': this.yourId }));

@@ -21,7 +21,7 @@ export class Partner {
     }
     getName() {
         var _a;
-        return (_a = this.name) !== null && _a !== void 0 ? _a : this.id.toString();
+        return (_a = this.name) !== null && _a !== void 0 ? _a : "Gast" + this.id.toString();
     }
     setName(name) {
         this.name = name;
@@ -113,7 +113,7 @@ export class Partner {
         console.log(message);
         if (message.type !== undefined && message.message !== undefined) {
             if (message.type === partner.textchat.textchatMessageType) {
-                partner.textchat.addNewMessageToChat(message.message, partner);
+                partner.textchat.addNewPartnerMessageToChat(message.message, partner);
             }
             else if (message.type === Userinfo.userinfoMessageType && message.message.name != undefined) {
                 partner.setName(message.message.name);

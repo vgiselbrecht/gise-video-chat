@@ -72,7 +72,7 @@ export class Controls {
         }
     }
     toogleOption() {
-        $(".maincontainer").toggleClass("opensidebar");
+        this.app.sidebarToogle(this.controlsVueObject.optionOn);
     }
     setSidebarClickRemove() {
         var cla = this;

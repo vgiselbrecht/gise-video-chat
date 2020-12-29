@@ -92,7 +92,7 @@ export class App{
     }
 
     readMessage(sender: number, dataroom: string, msg) {
-        if(app.localStream){
+        if(app !== undefined && app.localStream != undefined){
             console.log("Exchange message from: " + sender)
             console.log(msg)
             if (!(sender in app.partners) || msg.call !== undefined)
@@ -174,6 +174,11 @@ export class App{
                 this.partners[id].sendMessage(message);
             }
         }
+    }
+
+    sidebarToogle(open: boolean){
+        $(".maincontainer").toggleClass("opensidebar"); 
+        this.textchat.scrollToBottom();
     }
 
     hangOut(){

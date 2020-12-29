@@ -69,9 +69,15 @@
                         </div>
                     </div>
                     <div id="textchat">
-                        <div class="result" v-html="result"></div>
-                        <input v-model="message" @keypress.13.prevente="sendMessage" class="textinput" type="text">
-                        <button v-on:click="sendMessage" id="textenter">Send</button>
+                        <div class="msger">                              
+                            <div class="msger-chat">
+                            </div>
+                            
+                            <form class="msger-inputarea" v-on:submit.prevent="sendMessage">
+                                <input v-model="message" type="text" class="msger-input" placeholder="Ihre Nachricht...">
+                                <button type="submit" class="msger-send-btn fas fa-paper-plane"></button>
+                            </form>
+                        </div>
                     </div>
                 </div>
                 <div id="clickbackground"></div>
@@ -80,7 +86,7 @@
         <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
         <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-database.js"></script>
         <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-analytics.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
         <script type="module" src="assets/js/app.js"></script>
       </body>
 </html>

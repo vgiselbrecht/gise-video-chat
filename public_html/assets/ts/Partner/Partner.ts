@@ -38,7 +38,7 @@ export class Partner implements IPartner{
     }
 
     getName(): string{
-        return this.name ?? this.id.toString();
+        return this.name ?? "Gast" + this.id.toString();
     }
 
     setName(name: string){
@@ -140,7 +140,7 @@ export class Partner implements IPartner{
         console.log(message);
         if(message.type !== undefined && message.message !== undefined){
             if(message.type === partner.textchat.textchatMessageType){
-                partner.textchat.addNewMessageToChat(message.message, partner);
+                partner.textchat.addNewPartnerMessageToChat(message.message, partner);
             } else if(message.type === Userinfo.userinfoMessageType && message.message.name != undefined){
                 partner.setName(message.message.name);
             }
