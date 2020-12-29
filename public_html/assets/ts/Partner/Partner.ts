@@ -22,6 +22,7 @@ export class Partner implements IPartner{
     messages: Array<any> = Array<any>();
     setStreamToPartner: (partner: IPartner, initial: boolean) => void;
     doReload: boolean = false;
+    birectionalOffer: boolean = false;
 
     constructor(id: number, exchange: IExchange, devices: Devices, textchat: Textchat, setStreamToPartner: (partner: IPartner, initial: boolean) => void){
         this.id = id;
@@ -74,8 +75,27 @@ export class Partner implements IPartner{
             })
             .then(function(){
                 cla.exchange.sendMessage(JSON.stringify({'sdp': cla.connection.localDescription}), cla.id);
+                //cla.birectionalOffer = true;
             });
         }
+    }
+
+    createAnswer(offer: any): void{
+        var cla = this;
+        this.connection.setRemoteDescription(new RTCSessionDescription(offer)) 
+        .then(function(){ 
+            return cla.connection.createAnswer();
+        })
+        .then(function(answer){
+            return cla.connection.setLocalDescription(answer);
+        })
+        .then(function(){
+            cla.exchange.sendMessage(JSON.stringify({'sdp': cla.connection.localDescription}), cla.id);
+            /*
+            if(!cla.birectionalOffer){
+                cla.createOffer();
+            }*/
+        });
     }
 
     onIceCandidate(candidate: any, partner: IPartner) {

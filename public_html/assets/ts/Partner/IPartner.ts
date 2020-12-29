@@ -16,9 +16,10 @@ export interface IPartner{
     getName(): string;
     setName(name: string): void;
     createOffer(): void;
+    createAnswer(offer: any): void;
     addVideoElement(): void;
     closeConnection(): void;
-    reloadConnection(): void;
+    reloadConnection(): void; 
     setSinkId(sinkId: any): void;
     sendMessage(message: any): void;
 }

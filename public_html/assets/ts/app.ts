@@ -92,7 +92,6 @@ export class App{
                     }else{
                         app.reloadConnections();  
                     }
-                    
                 }
             })
             .catch(function(err) {
@@ -130,16 +129,7 @@ export class App{
             }
             else if (msg.sdp.type === "offer")
             {
-                partnerConnection.setRemoteDescription(new RTCSessionDescription(msg.sdp)) 
-                    .then(function(){ 
-                        return partnerConnection.createAnswer();
-                    })
-                    .then(function(answer){
-                        return partnerConnection.setLocalDescription(answer);
-                    })
-                    .then(function(){
-                        app.exchange.sendMessage(JSON.stringify({'sdp': partnerConnection.localDescription}), sender);
-                    });
+                app.partners[sender].createAnswer(msg.sdp);
             }
             else if (msg.sdp.type === "answer")
             {

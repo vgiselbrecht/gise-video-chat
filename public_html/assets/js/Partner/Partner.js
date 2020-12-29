@@ -6,6 +6,7 @@ export class Partner {
         this.connected = false;
         this.messages = Array();
         this.doReload = false;
+        this.birectionalOffer = false;
         this.id = id;
         this.exchange = exchange;
         this.devices = devices;
@@ -54,8 +55,26 @@ export class Partner {
             })
                 .then(function () {
                 cla.exchange.sendMessage(JSON.stringify({ 'sdp': cla.connection.localDescription }), cla.id);
+                //cla.birectionalOffer = true;
             });
         }
+    }
+    createAnswer(offer) {
+        var cla = this;
+        this.connection.setRemoteDescription(new RTCSessionDescription(offer))
+            .then(function () {
+            return cla.connection.createAnswer();
+        })
+            .then(function (answer) {
+            return cla.connection.setLocalDescription(answer);
+        })
+            .then(function () {
+            cla.exchange.sendMessage(JSON.stringify({ 'sdp': cla.connection.localDescription }), cla.id);
+            /*
+            if(!cla.birectionalOffer){
+                cla.createOffer();
+            }*/
+        });
     }
     onIceCandidate(candidate, partner) {
         partner.exchange.sendMessage(JSON.stringify({ 'ice': candidate }), this.id);
