@@ -5,7 +5,7 @@ export class Videogrid{
         const aspectRatio = 4 / 3;
         const screenWidth = gallery.offsetWidth;
         const screenHeight = gallery.offsetHeight;
-        const videoCount = document.getElementsByTagName("video").length;
+        const videoCount = $(gallery).find(".video-item:not(.unconnected)").length;
 
         // or use this nice lib: https://github.com/fzembow/rect-scaler
         function calculateLayout(
@@ -15,11 +15,11 @@ export class Videogrid{
             aspectRatio: number
         ): { width: number; height: number; cols: number } {
             let bestLayout = {
-            area: 0,
-            cols: 0,
-            rows: 0,
-            width: 0,
-            height: 0
+                area: 0,
+                cols: 0,
+                rows: 0,
+                width: 0,
+                height: 0
             };
 
             // brute-force search layout where video occupy the largest area of the container

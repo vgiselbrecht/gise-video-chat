@@ -29,7 +29,6 @@ export class App {
             app.hangOut();
         });
         this.yourVideoElement = new Video(document.getElementById("yourVideoArea"), null);
-        //JQueryUtils.addToBigfunction("yourVideoArea");
     }
     run() {
         setTimeout(function () {
@@ -60,8 +59,10 @@ export class App {
         }
         navigator.mediaDevices.getUserMedia(constraints)
             .then(function (stream) {
-            // @ts-ignore
-            app.yourVideo.srcObject = stream;
+            if (!app.screen.onScreenMode()) {
+                // @ts-ignore
+                app.yourVideo.srcObject = stream;
+            }
             app.localStream = stream;
             app.controls.initialiseStream();
             app.setStreamToPartners();

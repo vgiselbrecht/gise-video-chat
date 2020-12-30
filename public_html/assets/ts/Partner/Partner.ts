@@ -70,6 +70,7 @@ export class Partner implements IPartner{
                 if(!cla.connected){
                     if(loop == 0){
                         clearInterval(cla.offerLoop);
+                        cla.offerLoop = null;
                         cla.closeConnection();
                     }else{
                         cla.createOfferInner();
@@ -77,9 +78,10 @@ export class Partner implements IPartner{
                     }
                 }else{
                     clearInterval(cla.offerLoop);
+                    cla.offerLoop = null;
                     cla.closeConnection();
                 }
-            }, 5000);
+            }, 10000);
         }
     }
 
@@ -93,7 +95,6 @@ export class Partner implements IPartner{
             })
             .then(function(){
                 cla.exchange.sendMessage({'sdp': cla.connection.localDescription}, cla.id);
-                //cla.birectionalOffer = true;
             });
         }
     }
@@ -110,10 +111,6 @@ export class Partner implements IPartner{
         })
         .then(function(){
             cla.exchange.sendMessage({'sdp': cla.connection.localDescription}, cla.id);
-            /*
-            if(!cla.birectionalOffer){
-                cla.createOffer();
-            }*/
         });
     }
 
@@ -132,10 +129,9 @@ export class Partner implements IPartner{
             $("#video-area").append('<div class="video-item video-item-partner" id="video-item-'+this.id+'"><div class="video-wrap"><div class="video-inner-wrap"><video id="video-'+this.id+'" autoplay playsinline></video></div></div></div>');
             this.videoElement = document.getElementById('video-'+this.id);
             this.videoGridElement = new Video(document.getElementById('video-item-'+this.id), this);
-            //JQueryUtils.addToBigfunction("video-item-"+this.id);
-            this.setSinkId(this.devices.devicesVueObject.sound);
             this.videogrid.recalculateLayout();
         }
+        this.setSinkId(this.devices.devicesVueObject.sound);
     }
 
     onConnected(partner: IPartner){
@@ -143,7 +139,10 @@ export class Partner implements IPartner{
         if(this.doReload){
             this.reloadConnection();
         }
-        clearInterval(partner.offerLoop);
+        if(partner.offerLoop){
+            clearInterval(partner.offerLoop);
+            partner.offerLoop = null;
+        }
         $('#video-item-'+partner.id).removeClass("unconnected");
         partner.setStreamToPartner(this, false);
         partner.videogrid.recalculateLayout();
