@@ -63,7 +63,7 @@ export class Controls {
                 this.app.initialCamera();
             }
         }
-        this.app.yourVideoElement.videoVueObject.microphoneOn = this.controlsVueObject.microphoneOn;
+        this.app.yourVideoElement.videoVueObject.muted = !this.controlsVueObject.microphoneOn;
     }
     toogleStreamCamera(changeCamera = true) {
         if (!this.app.localStream != undefined) {
