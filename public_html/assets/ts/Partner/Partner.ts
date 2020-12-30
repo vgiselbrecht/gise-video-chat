@@ -13,6 +13,7 @@ export class Partner implements IPartner{
 
     id: number;
     name: string;
+    muted: boolean;
     videoElement: HTMLElement;
     connection: RTCPeerConnection;
     dataChannel: any;
@@ -28,6 +29,7 @@ export class Partner implements IPartner{
     birectionalOffer: boolean = false;
     closed: boolean = false;
     videoGridElement: Video;
+    stream: any;
 
     constructor(id: number, exchange: IExchange, devices: Devices, textchat: Textchat, videogrid: Videogrid, setStreamToPartner: (partner: IPartner, initial: boolean) => void){
         this.id = id;
@@ -46,10 +48,8 @@ export class Partner implements IPartner{
         this.dataChannel = communication.getDataChannel(this.connection);
         this.setSendMessageInterval();
         var cla = this;
-        setTimeout(function(){
-            cla.addVideoElement();
-            cla.videogrid.recalculateLayout();
-        }, 100);
+        cla.addVideoElement();
+        cla.videogrid.recalculateLayout();
     }
 
     getName(): string{
@@ -59,6 +59,11 @@ export class Partner implements IPartner{
     setName(name: string){
         this.name = name;
         this.videoGridElement.videoVueObject.name = name;
+    }
+
+    setMuted(muted: boolean){
+        this.muted = muted;
+        this.videoGridElement.videoVueObject.muted = muted;
     }
 
     createOffer(): void {
@@ -79,7 +84,6 @@ export class Partner implements IPartner{
                 }else{
                     clearInterval(cla.offerLoop);
                     cla.offerLoop = null;
-                    cla.closeConnection();
                 }
             }, 10000);
         }
@@ -125,13 +129,16 @@ export class Partner implements IPartner{
     };
 
     addVideoElement(){
+        var cla = this;
         if(this.videoElement == undefined){
             $("#video-area").append('<div class="video-item video-item-partner" id="video-item-'+this.id+'"><div class="video-wrap"><div class="video-inner-wrap"><video id="video-'+this.id+'" autoplay playsinline></video></div></div></div>');
             this.videoElement = document.getElementById('video-'+this.id);
             this.videoGridElement = new Video(document.getElementById('video-item-'+this.id), this);
             this.videogrid.recalculateLayout();
         }
-        this.setSinkId(this.devices.devicesVueObject.sound);
+        setTimeout(function(){
+            cla.setSinkId(cla.devices.devicesVueObject.sound);
+        }, 1);
     }
 
     onConnected(partner: IPartner){
@@ -144,7 +151,7 @@ export class Partner implements IPartner{
             partner.offerLoop = null;
         }
         $('#video-item-'+partner.id).removeClass("unconnected");
-        partner.setStreamToPartner(this, false);
+        partner.setStreamToPartner(partner, false);
         partner.videogrid.recalculateLayout();
     }
 
@@ -206,6 +213,7 @@ export class Partner implements IPartner{
                 partner.textchat.addNewPartnerMessageToChat(message.message, partner);
             } else if(message.type === Userinfo.userinfoMessageType && message.message.name != undefined){
                 partner.setName(message.message.name);
+                partner.setMuted(message.message.muted);
             }
         }
     }

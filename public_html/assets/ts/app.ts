@@ -157,7 +157,6 @@ export class App{
         this.partners[partnerId] = null;
         this.partners[partnerId] = new Partner(partnerId, this.exchange, this.devices, this.textchat, this.videogrid, this.setStreamToPartner); 
         this.setStreamToPartner(this.partners[partnerId], true);
-        this.partners[partnerId].sendMessage({type: Userinfo.userinfoMessageType, message: {name: this.yourName}});
         this.videogrid.recalculateLayout();
     }
 
@@ -174,12 +173,13 @@ export class App{
     }
 
     setStreamToPartner(partner: IPartner, initial: boolean = false){
-        if(this.localStream){
-            var videoTrack = !this.screen.onScreenMode() ? this.localStream.getVideoTracks()[0] : this.localScreenStream.getVideoTracks()[0];
-            var audioTrack = this.localStream.getAudioTracks()[0];
-            this.setTrackToPartner(partner, this.localStream, videoTrack);
-            this.setTrackToPartner(partner, this.localStream, audioTrack);
+        if(app.localStream){
+            var videoTrack = !app.screen.onScreenMode() ? app.localStream.getVideoTracks()[0] : app.localScreenStream.getVideoTracks()[0];
+            var audioTrack = app.localStream.getAudioTracks()[0];
+            app.setTrackToPartner(partner, app.localStream, videoTrack);
+            app.setTrackToPartner(partner, app.localStream, audioTrack);
         }
+        partner.sendMessage(app.userinfo.getUserInfo());
     }
 
     setTrackToPartner(partner: IPartner, stream: any, track: any){

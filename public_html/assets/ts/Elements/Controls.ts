@@ -33,6 +33,7 @@ export class Controls{
                     this.microphoneOn = !this.microphoneOn;
                     Cookie.setCookie(cla.microphoneCookie, this.microphoneOn);
                     cla.toogleStreamMicrophone();
+                    cla.app.sendMessageToAllPartners(cla.app.userinfo.getUserInfo());
                 },
                 toogleCamera: function () {
                     this.cameraOn = !this.cameraOn;
@@ -70,9 +71,10 @@ export class Controls{
         if(this.app.localStream != undefined){
             this.app.localStream.getAudioTracks()[0].enabled = this.controlsVueObject.microphoneOn;
             if(changeCamera && this.controlsVueObject.microphoneOn){
-                this.app.initialCamera();
+                this.app.initialCamera();  
             }
         }
+        this.app.yourVideoElement.videoVueObject.microphoneOn = this.controlsVueObject.microphoneOn;
     }
 
     toogleStreamCamera(changeCamera: boolean = true)

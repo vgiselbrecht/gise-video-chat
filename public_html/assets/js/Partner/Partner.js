@@ -24,10 +24,8 @@ export class Partner {
         this.dataChannel = communication.getDataChannel(this.connection);
         this.setSendMessageInterval();
         var cla = this;
-        setTimeout(function () {
-            cla.addVideoElement();
-            cla.videogrid.recalculateLayout();
-        }, 100);
+        cla.addVideoElement();
+        cla.videogrid.recalculateLayout();
     }
     getName() {
         var _a;
@@ -36,6 +34,10 @@ export class Partner {
     setName(name) {
         this.name = name;
         this.videoGridElement.videoVueObject.name = name;
+    }
+    setMuted(muted) {
+        this.muted = muted;
+        this.videoGridElement.videoVueObject.muted = muted;
     }
     createOffer() {
         if (!this.offerLoop) {
@@ -57,7 +59,6 @@ export class Partner {
                 else {
                     clearInterval(cla.offerLoop);
                     cla.offerLoop = null;
-                    cla.closeConnection();
                 }
             }, 10000);
         }
@@ -100,13 +101,16 @@ export class Partner {
     }
     ;
     addVideoElement() {
+        var cla = this;
         if (this.videoElement == undefined) {
             $("#video-area").append('<div class="video-item video-item-partner" id="video-item-' + this.id + '"><div class="video-wrap"><div class="video-inner-wrap"><video id="video-' + this.id + '" autoplay playsinline></video></div></div></div>');
             this.videoElement = document.getElementById('video-' + this.id);
             this.videoGridElement = new Video(document.getElementById('video-item-' + this.id), this);
             this.videogrid.recalculateLayout();
         }
-        this.setSinkId(this.devices.devicesVueObject.sound);
+        setTimeout(function () {
+            cla.setSinkId(cla.devices.devicesVueObject.sound);
+        }, 1);
     }
     onConnected(partner) {
         partner.connected = true;
@@ -118,7 +122,7 @@ export class Partner {
             partner.offerLoop = null;
         }
         $('#video-item-' + partner.id).removeClass("unconnected");
-        partner.setStreamToPartner(this, false);
+        partner.setStreamToPartner(partner, false);
         partner.videogrid.recalculateLayout();
     }
     onConnectionLosed(partner) {
@@ -175,6 +179,7 @@ export class Partner {
             }
             else if (message.type === Userinfo.userinfoMessageType && message.message.name != undefined) {
                 partner.setName(message.message.name);
+                partner.setMuted(message.message.muted);
             }
         }
     }

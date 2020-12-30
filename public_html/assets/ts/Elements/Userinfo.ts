@@ -28,12 +28,21 @@ export class Userinfo{
             },
             methods: {
                 changeUserinfo: function(){
-                    cla.app.sendMessageToAllPartners({type: Userinfo.userinfoMessageType, message: {name: this.name}}); 
+                    cla.app.sendMessageToAllPartners(cla.getUserInfo()); 
                     Cookie.setCookie(cla.nameCookie, this.name);
                     cla.app.yourName = this.name;
                 }
             }
         });
+    }
 
+    getUserInfo(){
+        return {
+            type: Userinfo.userinfoMessageType, message: 
+                {
+                    name: this.userinfoVueObject.name, 
+                    muted: !this.app.controls.controlsVueObject.microphoneOn
+                }
+            };
     }
 }
