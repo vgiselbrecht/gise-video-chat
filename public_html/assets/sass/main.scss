@@ -2,6 +2,7 @@
 @import 'lib/webfont/fontawesome';
 @import 'lib/webfont/solid';
 @import 'lib/chat/chat';
+@import 'lib/videogrid/videogrid';
 
 $footer-height: 70px; 
 
@@ -10,7 +11,7 @@ html,body{
     width: 100%;
     height: 100%; 
     background: #ccc;
-    background: linear-gradient(45deg, #1985a0, #1eeaff, #1985a0);
+    background: linear-gradient(45deg, #888, #ccc, #888);
     font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -62,39 +63,28 @@ html,body{
   max-height: 100%;
   padding: 2px !important;
   #video-area{
-    display: flex;
-    flex-wrap: wrap;
-    flex-grow: 1;
     max-height: 100%;
     height: 100%;
-    flex-direction: column;
-    justify-content: center;
-    align-items: stretch;
+    width: 100%;
+    max-width: 100%;
     position: relative;
-    .video-item {
-      flex-grow: 1;
-      flex-basis: 25%;
-      overflow: hidden;
-      margin: 2px;
+    .video-item{
       &.big{
         width: 100%;
         height: 100%;
         z-index: 10;
         position: absolute;
-      }
-      .video-wrap {
-        position: relative;
-        height: 100%;
-        video{
-          position: absolute;
-          top: 0;
-          right: 0;
-          bottom: 0;
-          left: 0;
+        .video-wrap{
           width: 100%;
           height: 100%;
-          margin-top: 0;
+          margin: 0;
         }
+      }
+      &.unconnected{
+        display: none;
+      }
+      &.unvisible{
+        visibility: hidden;
       }
     }
   }
@@ -107,7 +97,7 @@ html,body{
     padding: 10px;
     span{
       color: #fff;
-      background: #2d2dff;
+      background: #777;
       height: 50px;
       display: inline-block;
       width: 50px;
@@ -116,12 +106,12 @@ html,body{
       padding-top: 15px;
       box-sizing: border-box;
       margin: 0px 5px;
-      box-shadow: 0 0 3px 1px #555;
+      box-shadow: 0 0 5px 1px #000;
       @media only screen and (max-width: $xs-max) { 
         margin: 0px 2px;
       }
       &:hover{
-        box-shadow: 0 0 6px 2px #555;
+        box-shadow: 0 0 10px 2px #000;
       }
       cursor: pointer;
       &.fa-phone{
@@ -160,6 +150,7 @@ html,body{
   background: #fff;
   display: none;
   overflow: hidden;
+  box-shadow: 0px 0 5px 1px #000;
   #userinfo{
     border-bottom: 2px solid #888;
     margin-bottom: 5px;

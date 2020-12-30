@@ -4,8 +4,9 @@ import { Controls } from "./Elements/Controls.js";
 import { Screen } from "./Elements/Screen.js";
 import { Devices } from "./Elements/Devices.js";
 import { Textchat } from "./Elements/Textchat.js";
+import { Videogrid } from "./Elements/Videogrid.js";
+import { Video } from "./Elements/Video.js";
 import { Userinfo } from "./Elements/Userinfo.js";
-import { JQueryUtils } from "./Utils/JQuery.js";
 export class App {
     constructor() {
         this.yourId = Math.floor(Math.random() * 1000000000);
@@ -22,10 +23,13 @@ export class App {
         this.devices = new Devices(this);
         this.textchat = new Textchat(this);
         this.userinfo = new Userinfo(this);
+        this.videogrid = new Videogrid();
+        this.videogrid.init();
         $(window).on("beforeunload", function () {
             app.hangOut();
         });
-        JQueryUtils.addToBigfunction("yourVideoArea");
+        this.yourVideoElement = new Video(document.getElementById("yourVideoArea"), null);
+        //JQueryUtils.addToBigfunction("yourVideoArea");
     }
     run() {
         setTimeout(function () {
@@ -77,31 +81,33 @@ export class App {
     }
     callOther() {
         this.called = true;
-        this.exchange.sendMessage(JSON.stringify({ 'call': this.yourId }));
+        this.exchange.sendMessage({ 'call': this.yourId });
     }
     readMessage(sender, dataroom, msg) {
         if (app !== undefined && !this.closed) {
             console.log("Exchange message from: " + sender);
             console.log(msg);
-            if (!(sender in app.partners) || msg.call !== undefined) {
+            if (!(sender in app.partners) && (msg.call !== undefined || msg.sdp !== undefined)) {
                 app.addPartner(sender);
             }
-            var partnerConnection = app.partners[sender].connection;
-            if (msg.call !== undefined) {
-                app.partners[sender].createOffer();
-            }
-            else if (msg.closing !== undefined) {
-                app.partners[sender].closeConnection();
-                delete app.partners[sender];
-            }
-            else if (msg.ice !== undefined) {
-                partnerConnection.addIceCandidate(new RTCIceCandidate(msg.ice));
-            }
-            else if (msg.sdp.type === "offer") {
-                app.partners[sender].createAnswer(msg.sdp);
-            }
-            else if (msg.sdp.type === "answer") {
-                partnerConnection.setRemoteDescription(new RTCSessionDescription(msg.sdp));
+            if ((sender in app.partners) && app.partners[sender]) {
+                var partnerConnection = app.partners[sender].connection;
+                if (msg.call !== undefined) {
+                    app.partners[sender].createOffer();
+                }
+                else if (msg.closing !== undefined) {
+                    app.partners[sender].closeConnection();
+                    delete app.partners[sender];
+                }
+                else if (msg.ice !== undefined) {
+                    partnerConnection.addIceCandidate(new RTCIceCandidate(msg.ice));
+                }
+                else if (msg.sdp.type === "offer") {
+                    app.partners[sender].createAnswer(msg.sdp);
+                }
+                else if (msg.sdp.type === "answer") {
+                    partnerConnection.setRemoteDescription(new RTCSessionDescription(msg.sdp));
+                }
             }
         }
     }
@@ -111,9 +117,11 @@ export class App {
             this.partners[partnerId].closeConnection();
             delete this.partners[partnerId];
         }
-        this.partners[partnerId] = new Partner(partnerId, this.exchange, this.devices, this.textchat, this.setStreamToPartner);
+        this.partners[partnerId] = null;
+        this.partners[partnerId] = new Partner(partnerId, this.exchange, this.devices, this.textchat, this.videogrid, this.setStreamToPartner);
         this.setStreamToPartner(this.partners[partnerId], true);
         this.partners[partnerId].sendMessage({ type: Userinfo.userinfoMessageType, message: { name: this.yourName } });
+        this.videogrid.recalculateLayout();
     }
     setStreamToPartners() {
         for (var id in this.partners) {
@@ -154,17 +162,17 @@ export class App {
     sidebarToogle(open) {
         $(".maincontainer").toggleClass("opensidebar");
         this.textchat.scrollToBottom();
+        this.videogrid.recalculateLayout();
     }
     hangOut() {
         this.closed = true;
-        this.exchange.sendMessage(JSON.stringify({ 'closing': this.yourId }));
+        this.exchange.sendMessage({ 'closing': this.yourId });
         this.exchange.closeConnection();
         for (var id in this.partners) {
             if (this.partners[id]) {
-                this.partners[id].connection.close();
+                this.partners[id].closeConnection();
             }
         }
-        $("#video-area .video-item-partner").remove();
     }
 }
 var app = new App();

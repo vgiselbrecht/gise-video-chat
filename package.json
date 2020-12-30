@@ -11,8 +11,7 @@
   "author": "vgise",
   "contributors": [],
   "dependencies": {
-    "@types/webrtc": "0.0.26",
-    "vue-quick-chat": "^1.2.6"
+    "@types/webrtc": "0.0.26"
   },
   "devDependencies": {
     "@types/jquery": "^3.5.5",

@@ -6,7 +6,9 @@
         "sourceMap": true,
         "target": "es6",
         "module": "es2015",
-        "outDir": "public_html/assets/js"
+        "outDir": "public_html/assets/js",
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true
     },
     "filesGlob": [
         "public_html/assets/ts/**/*.ts",
@@ -23,6 +25,8 @@
         "public_html/assets/ts/Elements/Screen.ts",
         "public_html/assets/ts/Elements/Textchat.ts",
         "public_html/assets/ts/Elements/Userinfo.ts",
+        "public_html/assets/ts/Elements/Video.ts",
+        "public_html/assets/ts/Elements/Videogrid.ts",
         "public_html/assets/ts/Exchange/Firebase.ts",
         "public_html/assets/ts/Exchange/IExchange.ts",
         "public_html/assets/ts/Partner/IPartner.ts",

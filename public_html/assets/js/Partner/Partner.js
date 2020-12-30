@@ -1,16 +1,18 @@
 import { WebRTC } from "../Communication/WebRTC.js";
-import { JQueryUtils } from "../Utils/JQuery.js";
 import { Userinfo } from "../Elements/Userinfo.js";
+import { Video } from "../Elements/Video.js";
 export class Partner {
-    constructor(id, exchange, devices, textchat, setStreamToPartner) {
+    constructor(id, exchange, devices, textchat, videogrid, setStreamToPartner) {
         this.connected = false;
         this.messages = Array();
         this.doReload = false;
         this.birectionalOffer = false;
+        this.closed = false;
         this.id = id;
         this.exchange = exchange;
         this.devices = devices;
         this.textchat = textchat;
+        this.videogrid = videogrid;
         this.setStreamToPartner = setStreamToPartner;
         var communication = new WebRTC(this);
         communication.addOnaddtrackEvent(this.onAddTrack);
@@ -21,6 +23,11 @@ export class Partner {
         this.connection = communication.getPeerConnection();
         this.dataChannel = communication.getDataChannel(this.connection);
         this.setSendMessageInterval();
+        var cla = this;
+        setTimeout(function () {
+            cla.addVideoElement();
+            cla.videogrid.recalculateLayout();
+        }, 100);
     }
     getName() {
         var _a;
@@ -28,38 +35,47 @@ export class Partner {
     }
     setName(name) {
         this.name = name;
+        this.videoGridElement.videoVueObject.name = name;
     }
     createOffer() {
-        this.createOfferInner();
-        var loop = 12;
-        var cla = this;
-        this.offerLoop = setInterval(function () {
-            if (!cla.connected) {
-                if (loop == 0) {
+        if (!this.offerLoop) {
+            this.createOfferInner();
+            var loop = 12;
+            var cla = this;
+            this.offerLoop = setInterval(function () {
+                if (!cla.connected) {
+                    if (loop == 0) {
+                        clearInterval(cla.offerLoop);
+                        cla.closeConnection();
+                    }
+                    else {
+                        cla.createOfferInner();
+                        loop--;
+                    }
+                }
+                else {
                     clearInterval(cla.offerLoop);
                     cla.closeConnection();
                 }
-                else {
-                    cla.createOfferInner();
-                    loop--;
-                }
-            }
-        }, 5000);
+            }, 5000);
+        }
     }
     createOfferInner() {
-        if (!this.connected) {
+        if (!this.connected && !this.closed) {
+            console.log("Create Offer to: " + this.id);
             let cla = this;
             this.connection.createOffer({ iceRestart: true })
                 .then(function (offer) {
                 return cla.connection.setLocalDescription(offer);
             })
                 .then(function () {
-                cla.exchange.sendMessage(JSON.stringify({ 'sdp': cla.connection.localDescription }), cla.id);
+                cla.exchange.sendMessage({ 'sdp': cla.connection.localDescription }, cla.id);
                 //cla.birectionalOffer = true;
             });
         }
     }
     createAnswer(offer) {
+        console.log("Create Answer to: " + this.id);
         var cla = this;
         this.connection.setRemoteDescription(new RTCSessionDescription(offer))
             .then(function () {
@@ -69,7 +85,7 @@ export class Partner {
             return cla.connection.setLocalDescription(answer);
         })
             .then(function () {
-            cla.exchange.sendMessage(JSON.stringify({ 'sdp': cla.connection.localDescription }), cla.id);
+            cla.exchange.sendMessage({ 'sdp': cla.connection.localDescription }, cla.id);
             /*
             if(!cla.birectionalOffer){
                 cla.createOffer();
@@ -77,7 +93,7 @@ export class Partner {
         });
     }
     onIceCandidate(candidate, partner) {
-        partner.exchange.sendMessage(JSON.stringify({ 'ice': candidate }), this.id);
+        partner.exchange.sendMessage({ 'ice': candidate }, partner.id);
     }
     ;
     onAddTrack(stream, partner) {
@@ -90,8 +106,10 @@ export class Partner {
         if (this.videoElement == undefined) {
             $("#video-area").append('<div class="video-item video-item-partner" id="video-item-' + this.id + '"><div class="video-wrap"><div class="video-inner-wrap"><video id="video-' + this.id + '" autoplay playsinline></video></div></div></div>');
             this.videoElement = document.getElementById('video-' + this.id);
-            JQueryUtils.addToBigfunction("video-item-" + this.id);
+            this.videoGridElement = new Video(document.getElementById('video-item-' + this.id), this);
+            //JQueryUtils.addToBigfunction("video-item-"+this.id);
             this.setSinkId(this.devices.devicesVueObject.sound);
+            this.videogrid.recalculateLayout();
         }
     }
     onConnected(partner) {
@@ -100,13 +118,16 @@ export class Partner {
             this.reloadConnection();
         }
         clearInterval(partner.offerLoop);
-        $('#video-item-' + partner.id).show();
+        $('#video-item-' + partner.id).removeClass("unconnected");
         partner.setStreamToPartner(this, false);
+        partner.videogrid.recalculateLayout();
     }
     onConnectionLosed(partner) {
+        console.log("Connection losed to: " + partner.id);
         partner.connected = false;
         partner.createOffer();
-        $('#video-item-' + partner.id).hide();
+        $('#video-item-' + partner.id).addClass("unconnected");
+        partner.videogrid.recalculateLayout();
     }
     reloadConnection() {
         if (this.connected) {
@@ -119,9 +140,12 @@ export class Partner {
         }
     }
     closeConnection() {
+        this.closed = true;
         this.connection.close();
         console.log("Connection closed to: " + this.id);
+        this.videoElement = null;
         $('#video-item-' + this.id).remove();
+        this.videogrid.recalculateLayout();
     }
     setSinkId(sinkId) {
         if (this.videoElement != undefined) {

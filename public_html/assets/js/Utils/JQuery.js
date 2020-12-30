@@ -3,11 +3,11 @@ export class JQueryUtils {
         $("#video-area #" + idname).on("dblclick", function () {
             if ($(this).hasClass("big")) {
                 $(this).removeClass("big");
-                $("#video-area .video-item").show();
+                $("#video-area .video-item").removeClass("unvisible");
             }
             else {
                 $(this).addClass("big");
-                $("#video-area .video-item:not(.big)").hide();
+                $("#video-area .video-item:not(.big)").addClass("unvisible");
             }
         });
     }

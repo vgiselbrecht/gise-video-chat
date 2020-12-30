@@ -31,7 +31,9 @@ export class Firebase implements IExchange{
 
     
     sendMessage(data: any, receiver: number = 0): void{
-        var msg = this.database.push({ room: this.room, sender: this.yourId, receiver: receiver, message: data });
+        console.log("Exchange message to: " + (receiver !== 0 ? receiver : 'all'))
+        console.log(data)
+        var msg = this.database.push({ room: this.room, sender: this.yourId, receiver: receiver, message: JSON.stringify(data) });
         msg.remove();
     }
 

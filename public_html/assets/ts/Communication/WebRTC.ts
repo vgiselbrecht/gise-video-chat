@@ -49,7 +49,8 @@ export class WebRTC implements ICommunication{
          var dataChannel = pc.createDataChannel("chat", {negotiated: true, id: 0});
           
          dataChannel.onerror = function (error) { 
-            console.log("Error:", error); 
+            console.log("Data Channel is diconnected!"); 
+            cla.connectionLosedEvent(cla.partner);
          };
           
          dataChannel.onmessage = function (event) { 

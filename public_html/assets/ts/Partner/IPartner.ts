@@ -1,6 +1,7 @@
 import { IExchange } from "../Exchange/IExchange";
 import { Devices } from "../Elements/Devices.js";
 import { Textchat } from "../Elements/Textchat.js";
+import { Videogrid } from "../Elements/Videogrid";
 
 export interface IPartner{
 
@@ -12,6 +13,7 @@ export interface IPartner{
     textchat: Textchat;
     connected: boolean;
     offerLoop: any;
+    videogrid: Videogrid;
     setStreamToPartner: (partner: IPartner, initial: boolean) => void
     getName(): string;
     setName(name: string): void;

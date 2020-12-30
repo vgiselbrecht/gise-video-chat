@@ -5,6 +5,8 @@ import { JQueryUtils } from "../Utils/JQuery.js";
 import { Devices } from "../Elements/Devices.js";
 import { Textchat } from "../Elements/Textchat.js";
 import { Userinfo } from "../Elements/Userinfo.js";
+import { Videogrid } from "../Elements/Videogrid.js";
+import { Video } from "../Elements/Video.js";
 
 
 export class Partner implements IPartner{
@@ -17,18 +19,22 @@ export class Partner implements IPartner{
     devices: Devices;
     textchat: Textchat;
     exchange: IExchange
+    videogrid: Videogrid
     connected: boolean = false;
     offerLoop: any;
     messages: Array<any> = Array<any>();
     setStreamToPartner: (partner: IPartner, initial: boolean) => void;
     doReload: boolean = false;
     birectionalOffer: boolean = false;
+    closed: boolean = false;
+    videoGridElement: Video;
 
-    constructor(id: number, exchange: IExchange, devices: Devices, textchat: Textchat, setStreamToPartner: (partner: IPartner, initial: boolean) => void){
+    constructor(id: number, exchange: IExchange, devices: Devices, textchat: Textchat, videogrid: Videogrid, setStreamToPartner: (partner: IPartner, initial: boolean) => void){
         this.id = id;
         this.exchange = exchange;
         this.devices = devices;
         this.textchat = textchat;
+        this.videogrid = videogrid;
         this.setStreamToPartner = setStreamToPartner;
         var communication = new WebRTC(this);
         communication.addOnaddtrackEvent(this.onAddTrack);
@@ -39,6 +45,11 @@ export class Partner implements IPartner{
         this.connection = communication.getPeerConnection();
         this.dataChannel = communication.getDataChannel(this.connection);
         this.setSendMessageInterval();
+        var cla = this;
+        setTimeout(function(){
+            cla.addVideoElement();
+            cla.videogrid.recalculateLayout();
+        }, 100);
     }
 
     getName(): string{
@@ -47,40 +58,48 @@ export class Partner implements IPartner{
 
     setName(name: string){
         this.name = name;
+        this.videoGridElement.videoVueObject.name = name;
     }
 
     createOffer(): void {
-        this.createOfferInner();
-        var loop = 12;
-        var cla = this;
-        this.offerLoop = setInterval(function(){
-            if(!cla.connected){
-                if(loop == 0){
+        if(!this.offerLoop){
+            this.createOfferInner();
+            var loop = 12;
+            var cla = this;
+            this.offerLoop = setInterval(function(){
+                if(!cla.connected){
+                    if(loop == 0){
+                        clearInterval(cla.offerLoop);
+                        cla.closeConnection();
+                    }else{
+                        cla.createOfferInner();
+                        loop--;
+                    }
+                }else{
                     clearInterval(cla.offerLoop);
                     cla.closeConnection();
-                }else{
-                    cla.createOfferInner();
-                    loop--;
                 }
-            }
-        }, 5000);
+            }, 5000);
+        }
     }
 
     createOfferInner(): void{
-        if(!this.connected){
+        if(!this.connected && !this.closed){
+            console.log("Create Offer to: " + this.id);
             let cla = this;
             this.connection.createOffer({iceRestart: true})
             .then(function(offer){
                 return cla.connection.setLocalDescription(offer);
             })
             .then(function(){
-                cla.exchange.sendMessage(JSON.stringify({'sdp': cla.connection.localDescription}), cla.id);
+                cla.exchange.sendMessage({'sdp': cla.connection.localDescription}, cla.id);
                 //cla.birectionalOffer = true;
             });
         }
     }
 
     createAnswer(offer: any): void{
+        console.log("Create Answer to: " + this.id);
         var cla = this;
         this.connection.setRemoteDescription(new RTCSessionDescription(offer)) 
         .then(function(){ 
@@ -90,7 +109,7 @@ export class Partner implements IPartner{
             return cla.connection.setLocalDescription(answer);
         })
         .then(function(){
-            cla.exchange.sendMessage(JSON.stringify({'sdp': cla.connection.localDescription}), cla.id);
+            cla.exchange.sendMessage({'sdp': cla.connection.localDescription}, cla.id);
             /*
             if(!cla.birectionalOffer){
                 cla.createOffer();
@@ -99,7 +118,7 @@ export class Partner implements IPartner{
     }
 
     onIceCandidate(candidate: any, partner: IPartner) {
-        partner.exchange.sendMessage(JSON.stringify({'ice': candidate}), this.id);
+        partner.exchange.sendMessage({'ice': candidate}, partner.id);
     };
     
     onAddTrack(stream: any, partner: IPartner) { 
@@ -112,8 +131,10 @@ export class Partner implements IPartner{
         if(this.videoElement == undefined){
             $("#video-area").append('<div class="video-item video-item-partner" id="video-item-'+this.id+'"><div class="video-wrap"><div class="video-inner-wrap"><video id="video-'+this.id+'" autoplay playsinline></video></div></div></div>');
             this.videoElement = document.getElementById('video-'+this.id);
-            JQueryUtils.addToBigfunction("video-item-"+this.id);
+            this.videoGridElement = new Video(document.getElementById('video-item-'+this.id), this);
+            //JQueryUtils.addToBigfunction("video-item-"+this.id);
             this.setSinkId(this.devices.devicesVueObject.sound);
+            this.videogrid.recalculateLayout();
         }
     }
 
@@ -123,14 +144,17 @@ export class Partner implements IPartner{
             this.reloadConnection();
         }
         clearInterval(partner.offerLoop);
-        $('#video-item-'+partner.id).show();
+        $('#video-item-'+partner.id).removeClass("unconnected");
         partner.setStreamToPartner(this, false);
+        partner.videogrid.recalculateLayout();
     }
 
     onConnectionLosed(partner: IPartner){
+        console.log("Connection losed to: " + partner.id);
         partner.connected = false;
         partner.createOffer(); 
-        $('#video-item-'+partner.id).hide();
+        $('#video-item-'+partner.id).addClass("unconnected");
+        partner.videogrid.recalculateLayout();
     }
 
     reloadConnection(){
@@ -144,9 +168,12 @@ export class Partner implements IPartner{
     }
 
     closeConnection(){
+        this.closed = true;
         this.connection.close();
         console.log("Connection closed to: "+this.id);
+        this.videoElement = null;
         $('#video-item-'+this.id).remove();
+        this.videogrid.recalculateLayout();
     }
 
     setSinkId(sinkId: any): void{

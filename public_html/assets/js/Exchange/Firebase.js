@@ -17,7 +17,9 @@ export class Firebase {
         this.database = firebase.database().ref();
     }
     sendMessage(data, receiver = 0) {
-        var msg = this.database.push({ room: this.room, sender: this.yourId, receiver: receiver, message: data });
+        console.log("Exchange message to: " + (receiver !== 0 ? receiver : 'all'));
+        console.log(data);
+        var msg = this.database.push({ room: this.room, sender: this.yourId, receiver: receiver, message: JSON.stringify(data) });
         msg.remove();
     }
     readMessage(data, cla) {
