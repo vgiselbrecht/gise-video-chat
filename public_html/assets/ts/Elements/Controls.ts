@@ -61,6 +61,10 @@ export class Controls{
             }
         });
 
+        this.setMutedIcon();
+        this.setCameraOffIcon();
+
+
         //tabs
         $('#sidebar .tabs .tabs-header > *:first').addClass('active');
         $('#sidebar .tabs .tabs-content > *:first').addClass('active');
@@ -87,24 +91,32 @@ export class Controls{
 
     toogleStreamMicrophone(changeCamera: boolean = true)
     {
-        if(this.app.localStream != undefined){
+        if(this.app.localStream !== undefined){
             this.app.localStream.getAudioTracks()[0].enabled = this.controlsVueObject.microphoneOn;
             if(changeCamera && this.controlsVueObject.microphoneOn){
                 this.app.initialCamera();  
             }
         }
-        this.app.yourVideoElement.videoVueObject.muted = !this.controlsVueObject.microphoneOn;
-        this.app.partnerListElement.partnerListElementVueObject.muted = !this.controlsVueObject.microphoneOn;
+        this.setMutedIcon();
     }
 
     toogleStreamCamera(changeCamera: boolean = true)
     {
-        if(!this.app.localStream != undefined){
+        if(this.app.localStream !== undefined){
             this.app.localStream.getVideoTracks()[0].enabled = this.controlsVueObject.cameraOn;
             if(changeCamera && this.controlsVueObject.cameraOn){
                 this.app.initialCamera();
             }
         }
+        this.setCameraOffIcon();
+    }
+
+    setMutedIcon(){
+        this.app.yourVideoElement.videoVueObject.muted = !this.controlsVueObject.microphoneOn;
+        this.app.partnerListElement.partnerListElementVueObject.muted = !this.controlsVueObject.microphoneOn;
+    }
+
+    setCameraOffIcon(){
         this.app.yourVideoElement.videoVueObject.cameraOff = !this.controlsVueObject.cameraOn;
         this.app.partnerListElement.partnerListElementVueObject.cameraOff = !this.controlsVueObject.cameraOn;
     }

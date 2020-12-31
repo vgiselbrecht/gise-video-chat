@@ -43,6 +43,8 @@ export class App{
         this.yourVideo = document.getElementById("yourVideo");
         this.exchange = new Firebase(this.room, this.yourId);
         this.exchange.addReadEvent(this.readMessage);
+        this.yourVideoElement = new Video(document.getElementById("yourVideoArea"), null);
+        this.partnerListElement = new PartnerListElement(null);
         this.controls = new Controls(this);
         this.screen = new Screen(this);
         this.devices = new Devices(this);
@@ -53,8 +55,6 @@ export class App{
         $(window).on("beforeunload", function() { 
             app.hangOut();
         });
-        this.yourVideoElement = new Video(document.getElementById("yourVideoArea"), null);
-        this.partnerListElement = new PartnerListElement(null);
     }
 
     run(){ 
