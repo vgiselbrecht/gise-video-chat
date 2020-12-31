@@ -1,0 +1,29 @@
+ .tabs{
+    height: 100%;
+     .tabs-header{
+         margin-bottom: 10px;
+         > *{
+            text-align: center;
+            border-bottom: 2px solid;
+            font-weight: bold;
+            color: $passive-color;
+            cursor: pointer;
+            &.active{
+                cursor: default;
+                color: $active-color;
+            }
+            &:not(.active):hover{
+                color: $active-hover-color;
+            }
+         }
+     }
+     .tabs-content{
+         > *{
+            height: 100%;
+            display: none;
+            &.active{
+                display: block;
+            }
+         }
+     }
+ }

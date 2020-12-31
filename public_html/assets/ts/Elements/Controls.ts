@@ -59,6 +59,24 @@ export class Controls{
                 }
             }
         });
+
+        //tabs
+        $('#sidebar .tabs .tabs-header > *:first').addClass('active');
+        $('#sidebar .tabs .tabs-content > *:first').addClass('active');
+            
+        $('#sidebar .tabs .tabs-header > *').on('click', function(){
+            var t = $(this).attr('tab');
+            cla.activateSidebarTab(t);
+        });
+
+    }
+
+    activateSidebarTab(type: string){
+        $('#sidebar .tabs .tabs-header > *').removeClass('active');           
+        $('#sidebar .tabs .tabs-header > [tab=' + type + '] ').addClass('active');
+
+        $('#sidebar .tabs .tabs-content > *').removeClass('active');  
+        $('#sidebar .tabs .tabs-content > #tab-'+ type ).addClass('active');
     }
 
     initialiseStream(){

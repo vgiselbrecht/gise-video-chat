@@ -1,20 +1,19 @@
 $chat-body-bg: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
 $chat-msger-bg: #fff;
-$chat-border: 2px solid #888;
 $chat-left-msg-bg: #ececec;
 $chat-right-msg-bg: #579ffb;
 
 #textchat{
 
-  height: calc(100% - 85px);
+  height: 100%;
 
   .msger {
     display: flex;
     flex-flow: column wrap;
     justify-content: space-between;
     width: 100%;
-    height: calc(100% - 50px);
-    border: $chat-border;
+    height: 100%;
+    border: 2px solid #555;
     background: $chat-msger-bg;
     box-sizing: border-box;
   }
@@ -92,7 +91,7 @@ $chat-right-msg-bg: #579ffb;
   .msger-inputarea {
     display: flex;
     padding: 10px;
-    border-top: $chat-border;
+    border-top: 1px solid #555;
     background: #eee;
     max-width: 100%;
     box-sizing: border-box; 
@@ -109,13 +108,13 @@ $chat-right-msg-bg: #579ffb;
     flex: 1;
   }
   .msger-send-btn {
-    background: rgb(0, 196, 65);
+    background: $active-color;
     color: #fff;
     font-weight: bold;
     cursor: pointer;
     transition: background 0.23s;
   }
   .msger-send-btn:hover {
-    background: rgb(0, 180, 50);
+    background: $active-hover-color;
   }
 }

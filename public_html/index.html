@@ -36,47 +36,61 @@
                     </div>
                 </div>
                 <div id="sidebar">
-                    <div id="userinfo">
-                        <div class="row">
-                            <label class="col-xs-6 col-lg-4" >Name:</label>
-                            <input class="col-xs-6 col-lg-8" v-model="name" @blur="changeUserinfo" placeholder="Ihr Name">
+                    <div class="tabs">
+                        <div class="tabs-header row">
+                            <div tab="chat" class="col-xs-4">Chat</div>
+                            <div tab="settings" class="col-xs-4">Einstellungen</div>
+                            <div tab="partner" class="col-xs-4">Partner</div>
                         </div>
-                    </div>
-                    <div id="devices">
-                        <div class="row">
-                            <label class="col-xs-6 col-lg-4" >Audio:</label>
-                            <select class="col-xs-6 col-lg-8" v-model="audio" @change="onChange()">
-                                <option v-for="(option, index) in audiooptions" :key="index" v-bind:value="index">
-                                  {{ option }}
-                                </option>
-                            </select>
-                        </div>
-                        <div class="row">
-                            <label class="col-xs-6 col-lg-4" >Video:</label>
-                            <select class="col-xs-6 col-lg-8" v-model="video" @change="onChange()">
-                                <option v-for="(option, index) in videooptions" :key="index" v-bind:value="index">
-                                {{ option }}
-                                </option>
-                            </select>
-                        </div>
-                        <div class="row">
-                            <label class="col-xs-6 col-lg-4" >Sound:</label>
-                            <select class="col-xs-6 col-lg-8" v-model="sound" @change="onChange()">
-                                <option v-for="(option, index) in soundoptions" :key="index" v-bind:value="index">
-                                {{ option }}
-                                </option>
-                            </select>
-                        </div>
-                    </div>
-                    <div id="textchat">
-                        <div class="msger">                              
-                            <div class="msger-chat">
+                        <div class="tabs-content">
+                            <div id="tab-chat">
+                                <div id="textchat">
+                                    <div class="msger">                              
+                                        <div class="msger-chat">
+                                        </div>
+                                        
+                                        <form class="msger-inputarea" v-on:submit.prevent="sendMessage">
+                                            <input v-model="message" type="text" class="msger-input" placeholder="Ihre Nachricht...">
+                                            <button type="submit" class="msger-send-btn fas fa-paper-plane"></button>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
-                            
-                            <form class="msger-inputarea" v-on:submit.prevent="sendMessage">
-                                <input v-model="message" type="text" class="msger-input" placeholder="Ihre Nachricht...">
-                                <button type="submit" class="msger-send-btn fas fa-paper-plane"></button>
-                            </form>
+                            <div id="tab-settings">
+                                <div id="userinfo">
+                                    <div class="row">
+                                        <label class="col-xs-6 col-lg-4" >Name:</label>
+                                        <input class="col-xs-6 col-lg-8" v-model="name" @blur="changeUserinfo" placeholder="Ihr Name">
+                                    </div>
+                                </div>
+                                <div id="devices">
+                                    <div class="row">
+                                        <label class="col-xs-6 col-lg-4" >Mikrofon:</label>
+                                        <select class="col-xs-6 col-lg-8" v-model="audio" @change="onChange()">
+                                            <option v-for="(option, index) in audiooptions" :key="index" v-bind:value="index">
+                                            {{ option }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="row">
+                                        <label class="col-xs-6 col-lg-4" >Video:</label>
+                                        <select class="col-xs-6 col-lg-8" v-model="video" @change="onChange()">
+                                            <option v-for="(option, index) in videooptions" :key="index" v-bind:value="index">
+                                            {{ option }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="row">
+                                        <label class="col-xs-6 col-lg-4" >Lautsprecher:</label>
+                                        <select class="col-xs-6 col-lg-8" v-model="sound" @change="onChange()">
+                                            <option v-for="(option, index) in soundoptions" :key="index" v-bind:value="index">
+                                            {{ option }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="tab-partner"></div>
                         </div>
                     </div>
                 </div>

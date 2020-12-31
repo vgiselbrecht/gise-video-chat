@@ -1,10 +1,10 @@
+@import 'settings';
 @import 'lib/grid/main';
 @import 'lib/webfont/fontawesome';
 @import 'lib/webfont/solid';
 @import 'lib/chat/chat';
 @import 'lib/videogrid/videogrid';
-
-$footer-height: 70px; 
+@import 'lib/tabs/tabs';
 
 html,body{
     margin: 0;
@@ -133,12 +133,18 @@ html,body{
       &.optionclose{
         display: none;
         position: absolute;
-        right: 8px;
-        bottom: 8px;
-        background: red;
+        right: 4px;
+        top: 4px;
+        background: transparent;
+        color: #555;
+        border-radius: 0;
+        box-shadow: none;
         z-index: 40;
+        padding: 0;
+        width: auto;
+        height: auto;
         &.optiononclose{
-          //display: block;
+          display: block;
         }
       }
     }
@@ -151,30 +157,48 @@ html,body{
   display: none;
   overflow: hidden;
   box-shadow: 0px 0 5px 1px #000;
+
+  .tabs-content{
+    height: calc(100% - #{$footer-height});
+  }
+
   #userinfo{
     border-bottom: 2px solid #888;
-    margin-bottom: 5px;
+    margin-top: 20px;
+    margin-bottom: 20px;
     label{
       font-weight: bold;
       padding: 3px;
+      font-size: 18px;
+      padding-top: 7px;
     }
     input{
       width: 100%;
-      padding: 3px;
-      margin-bottom: 5px;
+      padding: 6px;
+      font-size: 18px;
+      margin-bottom: 20px;
+      &:focus{
+        outline: none;
+      }
     }
   }
   #devices{
     border-bottom: 2px solid #888;
-    margin-bottom: 5px;
+    margin-bottom: 20px;
     label{
       font-weight: bold;
       padding: 3px;
+      font-size: 18px;
+      padding-top: 7px; 
     }
     select{
       width: 100%;
-      padding: 3px;
-      margin-bottom: 5px;
+      padding: 6px;
+      margin-bottom: 20px;
+      font-size: 18px;
+      &:focus{
+        outline: none;
+      }
     }
   }
 }
