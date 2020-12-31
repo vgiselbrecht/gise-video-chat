@@ -13,8 +13,8 @@
     </head>
     <body>
         <div class="container maincontainer" >
-            <div class="row">
-                <div class="col-xs-12" id="main">
+            <div class="mainrow">
+                <div class="" id="main">
                     <div id="video-area">
                         <div class="video-item" id="yourVideoArea">
                             <div class="video-wrap">
@@ -34,12 +34,11 @@
                             <span v-on:click="hangOut"  v-bind:class="{'green': hangouted}" class="hangup fas fa-phone"></span>
                         </div>
                     </div>
-                </div>
-                <div id="sidebar">
+                </div><div id="sidebar">
                     <div class="tabs">
                         <div class="tabs-header row">
-                            <div tab="chat" class="col-xs-4">Chat</div>
-                            <div tab="settings" class="col-xs-4">Einstellungen</div>
+                            <div tab="chat" class="col-xs-3">Chat</div>
+                            <div tab="settings" class="col-xs-5">Einstellungen</div>
                             <div tab="partner" class="col-xs-4">Partner</div>
                         </div>
                         <div class="tabs-content">
@@ -59,30 +58,30 @@
                             <div id="tab-settings">
                                 <div id="userinfo">
                                     <div class="row">
-                                        <label class="col-xs-6 col-lg-4" >Name:</label>
-                                        <input class="col-xs-6 col-lg-8" v-model="name" @blur="changeUserinfo" placeholder="Ihr Name">
+                                        <label class="col-xs-6" >Name:</label>
+                                        <input class="col-xs-6" v-model="name" @blur="changeUserinfo" placeholder="Ihr Name">
                                     </div>
                                 </div>
                                 <div id="devices">
                                     <div class="row">
-                                        <label class="col-xs-6 col-lg-4" >Mikrofon:</label>
-                                        <select class="col-xs-6 col-lg-8" v-model="audio" @change="onChange()">
+                                        <label class="col-xs-6" >Mikrofon:</label>
+                                        <select class="col-xs-6" v-model="audio" @change="onChange()">
                                             <option v-for="(option, index) in audiooptions" :key="index" v-bind:value="index">
                                             {{ option }}
                                             </option>
                                         </select>
                                     </div>
                                     <div class="row">
-                                        <label class="col-xs-6 col-lg-4" >Video:</label>
-                                        <select class="col-xs-6 col-lg-8" v-model="video" @change="onChange()">
+                                        <label class="col-xs-6" >Video:</label>
+                                        <select class="col-xs-6" v-model="video" @change="onChange()">
                                             <option v-for="(option, index) in videooptions" :key="index" v-bind:value="index">
                                             {{ option }}
                                             </option>
                                         </select>
                                     </div>
                                     <div class="row">
-                                        <label class="col-xs-6 col-lg-4" >Lautsprecher:</label>
-                                        <select class="col-xs-6 col-lg-8" v-model="sound" @change="onChange()">
+                                        <label class="col-xs-6" >Lautsprecher:</label>
+                                        <select class="col-xs-6" v-model="sound" @change="onChange()">
                                             <option v-for="(option, index) in soundoptions" :key="index" v-bind:value="index">
                                             {{ option }}
                                             </option>
