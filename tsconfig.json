@@ -22,6 +22,7 @@
         "public_html/assets/ts/Database/IndexedDB.ts",
         "public_html/assets/ts/Elements/Controls.ts",
         "public_html/assets/ts/Elements/Devices.ts",
+        "public_html/assets/ts/Elements/PartnerListElement.ts",
         "public_html/assets/ts/Elements/Screen.ts",
         "public_html/assets/ts/Elements/Textchat.ts",
         "public_html/assets/ts/Elements/Userinfo.ts",

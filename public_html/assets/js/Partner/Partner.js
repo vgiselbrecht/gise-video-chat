@@ -1,8 +1,9 @@
 import { WebRTC } from "../Communication/WebRTC.js";
 import { Userinfo } from "../Elements/Userinfo.js";
 import { Video } from "../Elements/Video.js";
+import { PartnerListElement } from "../Elements/PartnerListElement.js";
 export class Partner {
-    constructor(id, exchange, devices, textchat, videogrid, setStreamToPartner) {
+    constructor(id, exchange, devices, textchat, videogrid, onConnectedEvent, onConnectionClosedEvent, onConnectionLosedEvent) {
         this.connected = false;
         this.messages = Array();
         this.doReload = false;
@@ -13,7 +14,9 @@ export class Partner {
         this.devices = devices;
         this.textchat = textchat;
         this.videogrid = videogrid;
-        this.setStreamToPartner = setStreamToPartner;
+        this.onConnectedEvent = onConnectedEvent;
+        this.onConnectionClosedEvent = onConnectionClosedEvent;
+        this.onConnectionLosedEvent = onConnectionLosedEvent;
         var communication = new WebRTC(this);
         communication.addOnaddtrackEvent(this.onAddTrack);
         communication.addOnicecandidateEvent(this.onIceCandidate);
@@ -34,10 +37,12 @@ export class Partner {
     setName(name) {
         this.name = name;
         this.videoGridElement.videoVueObject.name = name;
+        this.partnerListElement.partnerListElementVueObject.name = name;
     }
     setMuted(muted) {
         this.muted = muted;
         this.videoGridElement.videoVueObject.muted = muted;
+        this.partnerListElement.partnerListElementVueObject.muted = muted;
     }
     createOffer() {
         if (!this.offerLoop) {
@@ -106,6 +111,7 @@ export class Partner {
             $("#video-area").append('<div class="video-item video-item-partner" id="video-item-' + this.id + '"><div class="video-wrap"><div class="video-inner-wrap"><video id="video-' + this.id + '" autoplay playsinline></video></div></div></div>');
             this.videoElement = document.getElementById('video-' + this.id);
             this.videoGridElement = new Video(document.getElementById('video-item-' + this.id), this);
+            this.partnerListElement = new PartnerListElement(this);
             this.videogrid.recalculateLayout();
         }
         setTimeout(function () {
@@ -122,7 +128,8 @@ export class Partner {
             partner.offerLoop = null;
         }
         $('#video-item-' + partner.id).removeClass("unconnected");
-        partner.setStreamToPartner(partner, false);
+        partner.onConnectedEvent(partner);
+        partner.partnerListElement.partnerListElementVueObject.connected = true;
         partner.videogrid.recalculateLayout();
     }
     onConnectionLosed(partner) {
@@ -130,6 +137,8 @@ export class Partner {
         partner.connected = false;
         partner.createOffer();
         $('#video-item-' + partner.id).addClass("unconnected");
+        partner.onConnectionLosedEvent(partner);
+        partner.partnerListElement.partnerListElementVueObject.connected = false;
         partner.videogrid.recalculateLayout();
     }
     reloadConnection() {
@@ -148,6 +157,7 @@ export class Partner {
         console.log("Connection closed to: " + this.id);
         this.videoElement = null;
         $('#video-item-' + this.id).remove();
+        this.onConnectionLosedEvent(this);
         this.videogrid.recalculateLayout();
     }
     setSinkId(sinkId) {

@@ -6,6 +6,7 @@ import { Devices } from "./Elements/Devices.js";
 import { Textchat } from "./Elements/Textchat.js";
 import { Videogrid } from "./Elements/Videogrid.js";
 import { Video } from "./Elements/Video.js";
+import { PartnerListElement } from "./Elements/PartnerListElement.js";
 import { Userinfo } from "./Elements/Userinfo.js";
 export class App {
     constructor() {
@@ -29,6 +30,7 @@ export class App {
             app.hangOut();
         });
         this.yourVideoElement = new Video(document.getElementById("yourVideoArea"), null);
+        this.partnerListElement = new PartnerListElement(null);
     }
     run() {
         setTimeout(function () {
@@ -119,9 +121,19 @@ export class App {
             delete this.partners[partnerId];
         }
         this.partners[partnerId] = null;
-        this.partners[partnerId] = new Partner(partnerId, this.exchange, this.devices, this.textchat, this.videogrid, this.setStreamToPartner);
+        this.partners[partnerId] = new Partner(partnerId, this.exchange, this.devices, this.textchat, this.videogrid, this.partnerOnConnected, this.partnerOnConnectionClosed, this.partnerOnConnectionLosed);
         this.setStreamToPartner(this.partners[partnerId], true);
         this.videogrid.recalculateLayout();
+    }
+    partnerOnConnected(partner) {
+        app.setStreamToPartner(partner);
+    }
+    partnerOnConnectionLosed(partner) {
+    }
+    partnerOnConnectionClosed(partner) {
+        if (partner.id in app.partners) {
+            delete this.partners[partner.id];
+        }
     }
     setStreamToPartners() {
         for (var id in this.partners) {

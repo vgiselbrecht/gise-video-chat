@@ -22,7 +22,7 @@ export class Controls {
                 toogleMicrophone: function () {
                     this.microphoneOn = !this.microphoneOn;
                     Cookie.setCookie(cla.microphoneCookie, this.microphoneOn);
-                    cla.toogleStreamMicrophone();
+                    cla.toogleStreamMicrophone(false);
                     cla.app.sendMessageToAllPartners(cla.app.userinfo.getUserInfo());
                 },
                 toogleCamera: function () {
@@ -77,6 +77,7 @@ export class Controls {
             }
         }
         this.app.yourVideoElement.videoVueObject.muted = !this.controlsVueObject.microphoneOn;
+        this.app.partnerListElement.partnerListElementVueObject.muted = !this.controlsVueObject.microphoneOn;
     }
     toogleStreamCamera(changeCamera = true) {
         if (!this.app.localStream != undefined) {

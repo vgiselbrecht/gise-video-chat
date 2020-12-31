@@ -3,6 +3,7 @@ import { Devices } from "../Elements/Devices.js";
 import { Textchat } from "../Elements/Textchat.js";
 import { Videogrid } from "../Elements/Videogrid";
 import { Video } from "../Elements/Video";
+import { PartnerListElement } from "../Elements/PartnerListElement";
 
 export interface IPartner{
 
@@ -16,7 +17,10 @@ export interface IPartner{
     offerLoop: any;
     videogrid: Videogrid;
     videoGridElement: Video;
-    setStreamToPartner: (partner: IPartner, initial: boolean) => void
+    partnerListElement: PartnerListElement;
+    onConnectedEvent: (partner: IPartner) => void;
+    onConnectionClosedEvent: (partner: IPartner) => void;
+    onConnectionLosedEvent: (partner: IPartner) => void;
     getName(): string;
     setName(name: string): void;
     setMuted(muted: boolean): void;

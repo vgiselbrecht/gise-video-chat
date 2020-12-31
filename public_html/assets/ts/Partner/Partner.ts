@@ -7,6 +7,7 @@ import { Textchat } from "../Elements/Textchat.js";
 import { Userinfo } from "../Elements/Userinfo.js";
 import { Videogrid } from "../Elements/Videogrid.js";
 import { Video } from "../Elements/Video.js";
+import { PartnerListElement } from "../Elements/PartnerListElement.js";
 
 
 export class Partner implements IPartner{
@@ -24,32 +25,45 @@ export class Partner implements IPartner{
     connected: boolean = false;
     offerLoop: any;
     messages: Array<any> = Array<any>();
-    setStreamToPartner: (partner: IPartner, initial: boolean) => void;
+    onConnectedEvent: (partner: IPartner) => void;
+    onConnectionClosedEvent: (partner: IPartner) => void;
+    onConnectionLosedEvent: (partner: IPartner) => void;
     doReload: boolean = false;
     birectionalOffer: boolean = false;
     closed: boolean = false;
     videoGridElement: Video;
+    partnerListElement: PartnerListElement;
     stream: any;
 
-    constructor(id: number, exchange: IExchange, devices: Devices, textchat: Textchat, videogrid: Videogrid, setStreamToPartner: (partner: IPartner, initial: boolean) => void){
-        this.id = id;
-        this.exchange = exchange;
-        this.devices = devices;
-        this.textchat = textchat;
-        this.videogrid = videogrid;
-        this.setStreamToPartner = setStreamToPartner;
-        var communication = new WebRTC(this);
-        communication.addOnaddtrackEvent(this.onAddTrack);
-        communication.addOnicecandidateEvent(this.onIceCandidate); 
-        communication.addConnectionLosedEvent(this.onConnectionLosed);
-        communication.addConnectionEvent(this.onConnected);
-        communication.addOnMessageEvent(this.onMessage);
-        this.connection = communication.getPeerConnection();
-        this.dataChannel = communication.getDataChannel(this.connection);
-        this.setSendMessageInterval();
-        var cla = this;
-        cla.addVideoElement();
-        cla.videogrid.recalculateLayout();
+    constructor(
+        id: number, 
+        exchange: IExchange, 
+        devices: Devices, 
+        textchat: Textchat, 
+        videogrid: Videogrid, 
+        onConnectedEvent: (partner: IPartner) => void,
+        onConnectionClosedEvent: (partner: IPartner) => void,
+        onConnectionLosedEvent: (partner: IPartner) => void){
+            this.id = id;
+            this.exchange = exchange;
+            this.devices = devices;
+            this.textchat = textchat;
+            this.videogrid = videogrid;
+            this.onConnectedEvent = onConnectedEvent;
+            this.onConnectionClosedEvent = onConnectionClosedEvent;
+            this.onConnectionLosedEvent = onConnectionLosedEvent;
+            var communication = new WebRTC(this);
+            communication.addOnaddtrackEvent(this.onAddTrack);
+            communication.addOnicecandidateEvent(this.onIceCandidate); 
+            communication.addConnectionLosedEvent(this.onConnectionLosed);
+            communication.addConnectionEvent(this.onConnected);
+            communication.addOnMessageEvent(this.onMessage);
+            this.connection = communication.getPeerConnection();
+            this.dataChannel = communication.getDataChannel(this.connection);
+            this.setSendMessageInterval();
+            var cla = this;
+            cla.addVideoElement();
+            cla.videogrid.recalculateLayout();
     }
 
     getName(): string{
@@ -59,11 +73,13 @@ export class Partner implements IPartner{
     setName(name: string){
         this.name = name;
         this.videoGridElement.videoVueObject.name = name;
+        this.partnerListElement.partnerListElementVueObject.name = name;
     }
 
     setMuted(muted: boolean){
         this.muted = muted;
         this.videoGridElement.videoVueObject.muted = muted;
+        this.partnerListElement.partnerListElementVueObject.muted = muted;
     }
 
     createOffer(): void {
@@ -134,6 +150,7 @@ export class Partner implements IPartner{
             $("#video-area").append('<div class="video-item video-item-partner" id="video-item-'+this.id+'"><div class="video-wrap"><div class="video-inner-wrap"><video id="video-'+this.id+'" autoplay playsinline></video></div></div></div>');
             this.videoElement = document.getElementById('video-'+this.id);
             this.videoGridElement = new Video(document.getElementById('video-item-'+this.id), this);
+            this.partnerListElement = new PartnerListElement(this);
             this.videogrid.recalculateLayout();
         }
         setTimeout(function(){
@@ -151,7 +168,8 @@ export class Partner implements IPartner{
             partner.offerLoop = null;
         }
         $('#video-item-'+partner.id).removeClass("unconnected");
-        partner.setStreamToPartner(partner, false);
+        partner.onConnectedEvent(partner);
+        partner.partnerListElement.partnerListElementVueObject.connected = true;
         partner.videogrid.recalculateLayout();
     }
 
@@ -160,6 +178,8 @@ export class Partner implements IPartner{
         partner.connected = false;
         partner.createOffer(); 
         $('#video-item-'+partner.id).addClass("unconnected");
+        partner.onConnectionLosedEvent(partner);
+        partner.partnerListElement.partnerListElementVueObject.connected = false;
         partner.videogrid.recalculateLayout();
     }
 
@@ -179,6 +199,8 @@ export class Partner implements IPartner{
         console.log("Connection closed to: "+this.id);
         this.videoElement = null;
         $('#video-item-'+this.id).remove();
+        this.onConnectionLosedEvent(this);
+        partner.partnerListElement.partnerListElementVueObject.connected = false;
         this.videogrid.recalculateLayout();
     }
 

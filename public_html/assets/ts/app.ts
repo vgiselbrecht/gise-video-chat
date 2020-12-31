@@ -11,6 +11,7 @@ import { Devices } from "./Elements/Devices.js";
 import { Textchat } from "./Elements/Textchat.js";
 import { Videogrid } from "./Elements/Videogrid.js";
 import { Video } from "./Elements/Video.js";
+import { PartnerListElement } from "./Elements/PartnerListElement.js";
 import { Userinfo } from "./Elements/Userinfo.js";
 import { JQueryUtils } from "./Utils/JQuery.js";
 
@@ -34,6 +35,7 @@ export class App{
     closed: boolean = false;
     called: boolean = false;
     yourVideoElement: Video;
+    partnerListElement: PartnerListElement;
 
     constructor(){
         this.setRoom();
@@ -52,6 +54,7 @@ export class App{
             app.hangOut();
         });
         this.yourVideoElement = new Video(document.getElementById("yourVideoArea"), null);
+        this.partnerListElement = new PartnerListElement(null);
     }
 
     run(){ 
@@ -155,9 +158,22 @@ export class App{
             delete this.partners[partnerId];
         }
         this.partners[partnerId] = null;
-        this.partners[partnerId] = new Partner(partnerId, this.exchange, this.devices, this.textchat, this.videogrid, this.setStreamToPartner); 
+        this.partners[partnerId] = new Partner(partnerId, this.exchange, this.devices, this.textchat, this.videogrid, this.partnerOnConnected, this.partnerOnConnectionClosed, this.partnerOnConnectionLosed); 
         this.setStreamToPartner(this.partners[partnerId], true);
         this.videogrid.recalculateLayout();
+    }
+
+    partnerOnConnected(partner: IPartner){
+        app.setStreamToPartner(partner);
+    }
+
+    partnerOnConnectionLosed(partner: IPartner){
+    }
+
+    partnerOnConnectionClosed(partner: IPartner){
+        if(partner.id in app.partners){
+            delete this.partners[partner.id];
+        }
     }
 
     setStreamToPartners(){

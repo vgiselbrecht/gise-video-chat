@@ -5,6 +5,7 @@
 @import 'lib/chat/chat';
 @import 'lib/videogrid/videogrid';
 @import 'lib/tabs/tabs';
+@import 'lib/partnerlist/partnerlist';
 
 html,body{
     margin: 0;
@@ -171,7 +172,7 @@ html,body{
   }
 
   #userinfo{
-    border-bottom: 2px solid #888;
+    border-bottom: 2px solid #ccc;
     margin-top: 20px;
     margin-bottom: 20px;
     label{
@@ -191,7 +192,7 @@ html,body{
     }
   }
   #devices{
-    border-bottom: 2px solid #888;
+    //border-bottom: 2px solid #ccc;
     margin-bottom: 20px;
     label{
       font-weight: bold;

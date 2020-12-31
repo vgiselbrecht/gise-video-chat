@@ -4,16 +4,18 @@
          margin-bottom: 10px;
          > *{
             text-align: center;
-            border-bottom: 2px solid;
+            border-bottom: 2px solid #aaa;
             font-weight: bold;
             color: $passive-color;
             cursor: pointer;
             &.active{
                 cursor: default;
                 color: $active-color;
+                border-bottom: 2px solid $active-color;
             }
             &:not(.active):hover{
                 color: $active-hover-color;
+                border-bottom: 2px solid $active-hover-color;
             }
          }
      }
