@@ -16,6 +16,7 @@ export class Partner implements IPartner{
     name: string;
     muted: boolean;
     cameraOff: boolean;
+    screenSharing: boolean;
     videoElement: HTMLElement;
     connection: RTCPeerConnection;
     dataChannel: any;
@@ -87,6 +88,12 @@ export class Partner implements IPartner{
         this.cameraOff = cameraOff;
         this.videoGridElement.videoVueObject.cameraOff = cameraOff;
         this.partnerListElement.partnerListElementVueObject.cameraOff = cameraOff;
+    }
+
+    setScreenSharing(screenSharing: boolean){
+        this.screenSharing = screenSharing;
+        this.videoGridElement.videoVueObject.screenSharing = screenSharing;
+        this.partnerListElement.partnerListElementVueObject.screenSharing = screenSharing;
     }
 
     createOffer(): void {
@@ -244,6 +251,7 @@ export class Partner implements IPartner{
                 partner.setName(message.message.name);
                 partner.setMuted(message.message.muted);
                 partner.setCameraOff(message.message.cameraOff);
+                partner.setScreenSharing(message.message.screenSharing);
             }
         }
     }

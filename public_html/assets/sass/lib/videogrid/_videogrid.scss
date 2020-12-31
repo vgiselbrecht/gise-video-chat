@@ -7,20 +7,28 @@
         width: var(--width);
         height: var(--height);
         .video-wrap{
-            background: #666;
+            background: $video-background;
             margin: 4px;
             width: calc(var(--width) - 8px);
             height: calc(var(--height) - 8px);
-            box-shadow: 0 0 5px 1px #000;
+            box-shadow: 0 0 4px 1px #000;
             position: relative;
             .video-inner-wrap{
-                
+                overflow: hidden;
+                video{
+                    width: calc(100% + 2px);
+                    height: calc(100% + 2px);
+                    margin: -1px;
+                }
             }
             .video-info-wrap{
                 position: absolute;
                 top: 0;
                 *{
                     border-radius: 0;
+                }
+                &.cammeraoff{
+                    background: $video-background;
                 }
                 .video-name{
                     position: absolute;
@@ -31,7 +39,10 @@
                     color: #fff;
                     background: rgba(0,0,0,0.2);
                     padding: 3px 0px;
-                    .microphone, .camera{
+                    border-radius: 0 0 5px 5px;
+                    .microphone, 
+                    .camera,
+                    .screen{
                         display: inline;
                         margin-left: 5px;
                         &.on{

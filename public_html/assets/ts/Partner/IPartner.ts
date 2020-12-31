@@ -25,6 +25,7 @@ export interface IPartner{
     setName(name: string): void;
     setMuted(muted: boolean): void;
     setCameraOff(cameraOff: boolean);
+    setScreenSharing(screenSharing: boolean);
     createOffer(): void;
     createAnswer(offer: any): void;
     addVideoElement(): void;

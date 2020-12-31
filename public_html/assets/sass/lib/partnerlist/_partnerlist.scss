@@ -3,11 +3,13 @@
         list-style: none; 
         padding: 0;
         font-size: 18px;
-        border-top: 1px solid #aaa;
+        border-top: 1px solid $active-color;
         li{
             padding: 10px;
-            border-bottom: 1px solid #aaa;
-            .microphone,.camera{
+            border-bottom: 1px solid $active-color;
+            .microphone,
+            .camera,
+            .screen{
                 display: inline; 
                 &.on{
                     display: none; 

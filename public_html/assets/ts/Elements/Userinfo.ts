@@ -43,6 +43,7 @@ export class Userinfo{
                     name: this.userinfoVueObject.name, 
                     muted: !this.app.controls.controlsVueObject.microphoneOn,
                     cameraOff: !this.app.controls.controlsVueObject.cameraOn,
+                    screenSharing: this.app.screen.onScreenMode()
                 }
             };
     }

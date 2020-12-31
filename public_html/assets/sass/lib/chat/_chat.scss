@@ -13,7 +13,7 @@ $chat-right-msg-bg: #579ffb;
     justify-content: space-between;
     width: 100%;
     height: 100%;
-    border: 2px solid #555;
+    border: 2px solid $active-color;
     background: $chat-msger-bg;
     box-sizing: border-box;
   }
@@ -91,7 +91,7 @@ $chat-right-msg-bg: #579ffb;
   .msger-inputarea {
     display: flex;
     padding: 10px;
-    border-top: 1px solid #555;
+    border-top: 1px solid $active-color;
     background: #eee;
     max-width: 100%;
     box-sizing: border-box; 

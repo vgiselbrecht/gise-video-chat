@@ -15,6 +15,9 @@ export class Screen {
         // @ts-ignore
         this.app.yourVideo.srcObject = this.app.localStream;
         this.app.setStreamToPartners();
+        this.app.yourVideoElement.videoVueObject.screenSharing = false;
+        this.app.partnerListElement.partnerListElementVueObject.screenSharing = false;
+        this.app.sendMessageToAllPartners(this.app.userinfo.getUserInfo());
     }
     initialScreen() {
         var cal = this;
@@ -31,6 +34,9 @@ export class Screen {
                 cal.app.localScreenStream.getTracks()[0].onended = function () {
                     cal.stopScreen(true);
                 };
+                cal.app.yourVideoElement.videoVueObject.screenSharing = true;
+                cal.app.partnerListElement.partnerListElementVueObject.screenSharing = true;
+                cal.app.sendMessageToAllPartners(cal.app.userinfo.getUserInfo());
             });
         }
         else {

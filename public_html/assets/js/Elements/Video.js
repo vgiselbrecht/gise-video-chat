@@ -7,8 +7,12 @@ export class Video {
     }
     addCodeToVideoElement() {
         $(this.element).find(".video-wrap").append(`
-            <div class="video-info-wrap" v-on:dblclick="expand">
-                <div class="video-name">{{name}} <span v-bind:class="{'on': !muted}" class="microphone fas fa-microphone-slash"></span> <span v-bind:class="{'on': !cameraOff}" class="camera fas fa-video-slash"></span></div>
+            <div class="video-info-wrap" v-on:dblclick="expand" v-bind:class="{'cammeraoff': cameraOff  && !screenSharing}">
+                <div class="video-name">{{name}} 
+                <span v-bind:class="{'on': !muted}" class="microphone fas fa-microphone-slash"></span> 
+                <span v-bind:class="{'on': !cameraOff}" class="camera fas fa-video-slash"></span>
+                <span v-bind:class="{'on': !screenSharing}" class="screen fas fa-desktop"></span>
+                </div>
                 <div v-on:click="expand" v-bind:class="{'fa-compress-arrows-alt': expanded, 'fa-expand-arrows-alt': !expanded}" class="expand fas"></div>
             </div>
         `);
@@ -21,7 +25,8 @@ export class Video {
                 name: cla.partner ? cla.partner.getName() : "Du",
                 expanded: false,
                 muted: false,
-                cameraOff: false
+                cameraOff: false,
+                screenSharing: false
             },
             methods: {
                 expand: function () {
