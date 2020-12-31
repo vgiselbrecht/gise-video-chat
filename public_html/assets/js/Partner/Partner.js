@@ -44,6 +44,11 @@ export class Partner {
         this.videoGridElement.videoVueObject.muted = muted;
         this.partnerListElement.partnerListElementVueObject.muted = muted;
     }
+    setCameraOff(cameraOff) {
+        this.cameraOff = cameraOff;
+        this.videoGridElement.videoVueObject.cameraOff = cameraOff;
+        this.partnerListElement.partnerListElementVueObject.cameraOff = cameraOff;
+    }
     createOffer() {
         if (!this.offerLoop) {
             this.createOfferInner();
@@ -158,6 +163,7 @@ export class Partner {
         this.videoElement = null;
         $('#video-item-' + this.id).remove();
         this.onConnectionLosedEvent(this);
+        this.partnerListElement.partnerListElementVueObject.connected = false;
         this.videogrid.recalculateLayout();
     }
     setSinkId(sinkId) {
@@ -190,6 +196,7 @@ export class Partner {
             else if (message.type === Userinfo.userinfoMessageType && message.message.name != undefined) {
                 partner.setName(message.message.name);
                 partner.setMuted(message.message.muted);
+                partner.setCameraOff(message.message.cameraOff);
             }
         }
     }

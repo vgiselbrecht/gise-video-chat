@@ -29,6 +29,7 @@ export class Controls {
                     this.cameraOn = !this.cameraOn;
                     Cookie.setCookie(cla.cameraCookie, this.cameraOn);
                     cla.toogleStreamCamera();
+                    cla.app.sendMessageToAllPartners(cla.app.userinfo.getUserInfo());
                 }, hangOut: function () {
                     if (!this.hangouted) {
                         cla.hangOut();
@@ -86,6 +87,8 @@ export class Controls {
                 this.app.initialCamera();
             }
         }
+        this.app.yourVideoElement.videoVueObject.cameraOff = !this.controlsVueObject.cameraOn;
+        this.app.partnerListElement.partnerListElementVueObject.cameraOff = !this.controlsVueObject.cameraOn;
     }
     toogleOption() {
         this.app.sidebarToogle(this.controlsVueObject.optionOn);

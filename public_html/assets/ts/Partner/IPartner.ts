@@ -24,6 +24,7 @@ export interface IPartner{
     getName(): string;
     setName(name: string): void;
     setMuted(muted: boolean): void;
+    setCameraOff(cameraOff: boolean);
     createOffer(): void;
     createAnswer(offer: any): void;
     addVideoElement(): void;

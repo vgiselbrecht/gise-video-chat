@@ -7,7 +7,7 @@ export class PartnerListElement {
     addCodeToVideoElement() {
         $("#partnerlist ul").append(`
             <li id="partnerlistelement-${this.partner ? this.partner.id : 0}" v-bind:class="{'unconnected': !connected}">
-                {{ name }} <span v-bind:class="{'on': !muted}" class="microphone fas fa-microphone-slash"></span>
+                {{ name }} <span v-bind:class="{'on': !muted}" class="microphone fas fa-microphone-slash"></span> <span v-bind:class="{'on': !cameraOff}" class="camera fas fa-video-slash"></span>
             </li>
         `);
     }
@@ -19,6 +19,7 @@ export class PartnerListElement {
                 name: cla.partner ? cla.partner.getName() : "Du",
                 muted: false,
                 connected: true,
+                cameraOff: false
             },
             methods: {}
         });

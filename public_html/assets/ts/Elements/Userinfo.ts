@@ -41,7 +41,8 @@ export class Userinfo{
             type: Userinfo.userinfoMessageType, message: 
                 {
                     name: this.userinfoVueObject.name, 
-                    muted: !this.app.controls.controlsVueObject.microphoneOn
+                    muted: !this.app.controls.controlsVueObject.microphoneOn,
+                    cameraOff: !this.app.controls.controlsVueObject.cameraOn,
                 }
             };
     }

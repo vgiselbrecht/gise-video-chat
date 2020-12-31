@@ -15,6 +15,7 @@ export class Partner implements IPartner{
     id: number;
     name: string;
     muted: boolean;
+    cameraOff: boolean;
     videoElement: HTMLElement;
     connection: RTCPeerConnection;
     dataChannel: any;
@@ -80,6 +81,12 @@ export class Partner implements IPartner{
         this.muted = muted;
         this.videoGridElement.videoVueObject.muted = muted;
         this.partnerListElement.partnerListElementVueObject.muted = muted;
+    }
+
+    setCameraOff(cameraOff: boolean){
+        this.cameraOff = cameraOff;
+        this.videoGridElement.videoVueObject.cameraOff = cameraOff;
+        this.partnerListElement.partnerListElementVueObject.cameraOff = cameraOff;
     }
 
     createOffer(): void {
@@ -200,7 +207,7 @@ export class Partner implements IPartner{
         this.videoElement = null;
         $('#video-item-'+this.id).remove();
         this.onConnectionLosedEvent(this);
-        partner.partnerListElement.partnerListElementVueObject.connected = false;
+        this.partnerListElement.partnerListElementVueObject.connected = false;
         this.videogrid.recalculateLayout();
     }
 
@@ -236,6 +243,7 @@ export class Partner implements IPartner{
             } else if(message.type === Userinfo.userinfoMessageType && message.message.name != undefined){
                 partner.setName(message.message.name);
                 partner.setMuted(message.message.muted);
+                partner.setCameraOff(message.message.cameraOff);
             }
         }
     }
