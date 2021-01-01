@@ -38,8 +38,8 @@
                     <div class="tabs">
                         <div class="tabs-header row">
                             <div tab="chat" class="col-xs-3">Chat</div>
-                            <div tab="settings" class="col-xs-5">Einstellungen</div>
                             <div tab="partner" class="col-xs-4">Partner</div>
+                            <div tab="settings" class="col-xs-5">Einstellungen</div>
                         </div>
                         <div class="tabs-content">
                             <div id="tab-chat">
@@ -52,7 +52,7 @@
                                             <span class="close fas fa-times" v-on:click="closeExtra"></span>
                                         </div>
                                         <form class="msger-inputarea" v-on:submit.prevent="sendMessage">
-                                            <textarea v-model="message" type="text" class="msger-input" placeholder="Ihre Nachricht..."
+                                            <textarea v-model="message" type="text" class="msger-input" placeholder="Deine Nachricht..."
                                             @keydown.enter.exact.prevent
                                             @keyup.enter.exact="sendMessage"></textarea>
                                             <label class="msger-imgupload fas fa-file-image">
@@ -61,6 +61,13 @@
                                             <button type="submit" class="msger-send-btn fas fa-paper-plane"></button>
                                         </form>
                                     </div>
+                                </div>
+                            </div>
+                            <div id="tab-partner">
+                                <div id="partnerlist">
+                                    <ul>
+                                        
+                                    </ul>
                                 </div>
                             </div>
                             <div id="tab-settings">
@@ -95,13 +102,6 @@
                                             </option>
                                         </select>
                                     </div>
-                                </div>
-                            </div>
-                            <div id="tab-partner">
-                                <div id="partnerlist">
-                                    <ul>
-                                        
-                                    </ul>
                                 </div>
                             </div>
                         </div>

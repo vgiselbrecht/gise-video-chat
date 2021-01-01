@@ -172,6 +172,7 @@ html,body{
   box-shadow: 0px 0 10px 1px #555;
   padding: 8px;
   box-sizing: border-box;
+  max-width: 100%;
   .tabs-content{
     height: calc(100% - #{$sidebar-header-height});
   }
