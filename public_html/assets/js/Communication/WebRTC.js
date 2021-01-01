@@ -35,11 +35,14 @@ export class WebRTC {
         let cla = this;
         var dataChannel = pc.createDataChannel("chat", { negotiated: true, id: 0 });
         dataChannel.onerror = function (error) {
-            console.log("Data Channel is diconnected!");
-            cla.connectionLosedEvent(cla.partner);
+            console.log(error);
         };
         dataChannel.onmessage = function (event) {
             cla.onMessageEvent(JSON.parse(event.data), cla.partner);
+        };
+        dataChannel.onclose = function (event) {
+            console.log("Data Channel is diconnected!");
+            //cla.connectionLosedEvent(cla.partner); 
         };
         return dataChannel;
     }

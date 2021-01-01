@@ -37,7 +37,7 @@ $chat-right-msg-bg: #579ffb;
   .msg {
     display: flex;
     align-items: flex-end;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
   }
   .msg:last-of-type {
     margin: 0;
@@ -53,17 +53,56 @@ $chat-right-msg-bg: #579ffb;
     border-radius: 50%;
   }
   .msg-bubble {
-    max-width: 450px;
-    padding: 15px;
-    border-radius: 15px;
+    max-width: 220px;
+    padding: 10px;
+    border-radius: 10px;
+    box-sizing: border-box;
     background: $chat-left-msg-bg;
   }
   .msg-info {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
   }
+  .msg-image{
+    margin-bottom: 5px;
+    border-radius: 5px;
+    display:block;
+    overflow:hidden;
+    cursor: pointer;
+    img{
+      max-width: 100%;
+      width: 100%;
+      height:auto;
+      vertical-align:middle;
+    }
+  }
+  .msg-text{
+    overflow: hidden;
+    line-break: anywhere;
+    a{
+      text-decoration: none;
+      color: #333;
+      &:hover{
+        color: #000;
+      }
+    }
+  }
+
+  .left-msg{
+    .msg-text{
+      overflow: hidden;
+      a{
+        text-decoration: none;
+        color: #777;
+        &:hover{
+          color: #444;
+        }
+      }
+    }
+  }
+
   .msg-info-name {
     margin-right: 10px;
     font-weight: bold;
@@ -106,6 +145,8 @@ $chat-right-msg-bg: #579ffb;
   }
   .msger-input {
     flex: 1;
+    height: 15px;
+    resize: none;
   }
   .msger-send-btn {
     background: $active-color;
@@ -116,5 +157,51 @@ $chat-right-msg-bg: #579ffb;
   }
   .msger-send-btn:hover {
     background: $active-hover-color;
+  }
+  .msger-extrainfo{
+    display: flex;
+    padding: 0px;
+    border-top: 1px solid $active-color;
+    background: #eee;
+    max-width: 100%;
+    box-sizing: border-box; 
+    max-height: 150px;
+    text-align: center;
+    background: #888;
+    position: relative;
+    &.hidden{
+      display: none;
+    }
+    img{
+      max-height: 100%;
+      max-width: 100%;
+    }
+    .close{
+      color: #555;
+      margin: 2px 4px;
+      position: absolute;
+      right: 0;
+      cursor: pointer;
+      &:hover{
+        color: $active-hover-color;
+      }
+    }
+  }
+  .msger-imgupload{
+    background: #fff;
+    color: #555;
+    transition: color 0.3s ease-in-out;
+    cursor: pointer;
+    &:hover{
+      color: #000;
+    }
+    input{
+      width: 0.1px;
+      height: 0.1px;
+      opacity: 0;
+      overflow: hidden;
+      position: absolute;
+      z-index: -1;
+    }
   }
 }

@@ -13,6 +13,7 @@ import { Videogrid } from "./Elements/Videogrid.js";
 import { Video } from "./Elements/Video.js";
 import { PartnerListElement } from "./Elements/PartnerListElement.js";
 import { Userinfo } from "./Elements/Userinfo.js";
+import { Lightbox } from "./Elements/Lightbox.js";
 import { JQueryUtils } from "./Utils/JQuery.js";
 
 export class App{
@@ -32,6 +33,7 @@ export class App{
     textchat: Textchat;
     userinfo: Userinfo;
     videogrid: Videogrid;
+    lightbox: Lightbox;
     closed: boolean = false;
     called: boolean = false;
     yourVideoElement: Video;
@@ -50,6 +52,7 @@ export class App{
         this.devices = new Devices(this);
         this.textchat = new Textchat(this);
         this.userinfo = new Userinfo(this);
+        this.lightbox = new Lightbox(this);
         this.videogrid = new Videogrid();
         this.videogrid.init();
         $(window).on("beforeunload", function() { 

@@ -8,6 +8,7 @@ import { Videogrid } from "./Elements/Videogrid.js";
 import { Video } from "./Elements/Video.js";
 import { PartnerListElement } from "./Elements/PartnerListElement.js";
 import { Userinfo } from "./Elements/Userinfo.js";
+import { Lightbox } from "./Elements/Lightbox.js";
 export class App {
     constructor() {
         this.yourId = Math.floor(Math.random() * 1000000000);
@@ -26,6 +27,7 @@ export class App {
         this.devices = new Devices(this);
         this.textchat = new Textchat(this);
         this.userinfo = new Userinfo(this);
+        this.lightbox = new Lightbox(this);
         this.videogrid = new Videogrid();
         this.videogrid.init();
         $(window).on("beforeunload", function () {

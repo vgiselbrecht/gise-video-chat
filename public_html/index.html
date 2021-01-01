@@ -47,9 +47,17 @@
                                     <div class="msger">                              
                                         <div class="msger-chat">
                                         </div>
-                                        
+                                        <div class="msger-extrainfo" v-bind:class="{'hidden': !extrainfoVisible}">
+                                            <span v-html="extrainfo"></span>
+                                            <span class="close fas fa-times" v-on:click="closeExtra"></span>
+                                        </div>
                                         <form class="msger-inputarea" v-on:submit.prevent="sendMessage">
-                                            <input v-model="message" type="text" class="msger-input" placeholder="Ihre Nachricht...">
+                                            <textarea v-model="message" type="text" class="msger-input" placeholder="Ihre Nachricht..."
+                                            @keydown.enter.exact.prevent
+                                            @keyup.enter.exact="sendMessage"></textarea>
+                                            <label class="msger-imgupload fas fa-file-image">
+                                                <input type="file"  accept="image/*" @change="addfile">
+                                            </label>
                                             <button type="submit" class="msger-send-btn fas fa-paper-plane"></button>
                                         </form>
                                     </div>
@@ -101,7 +109,10 @@
                 </div>
                 <div id="clickbackground"></div>
             </div>
-        <div>
+        <div id="lightbox" v-on:dblclick="closeLightbox" v-bind:class="{'open': !closed}">
+            <img :src="image">
+            <span class="close fas fa-times" v-on:click="closeLightbox"></span>
+        </div>
         <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
         <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-database.js"></script>
         <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-analytics.js"></script>

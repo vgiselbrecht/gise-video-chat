@@ -18,7 +18,10 @@ export class Textchat{
     readonly textchatDatabaseName: string = 'chat';
     readonly textchatDatabaseObjectName: string = 'textchat';
     
-    readonly textchatMessageTypetext: string = 'texz';
+    readonly textchatMessageTypeText: string = 'text';
+    readonly textchatMessageTypeImage: string = 'image';
+
+    readonly textchatMaxImageSize: number = 800;
     
     app: App;
     textchatVueObject: any; 
@@ -30,6 +33,7 @@ export class Textchat{
         this.app = app;
         this.initialElements();
         this.initialDatabase();
+        var cla = this;
     }
 
     initialElements(){ 
@@ -39,12 +43,77 @@ export class Textchat{
             data: {
                 message: "",
                 result: "",
+                extrainfo: "",
+                extrainfoVisible: false,
+                image: null
             },
             methods: {
                 sendMessage: function(){
-                    cla.app.sendMessageToAllPartners({type: cla.textchatMessageType, message: {text: this.message}}); 
-                    cla.addMessage("Du", this.message, new Date(), true);
+                    if(this.image){
+                        var message = {
+                            image: {
+                                image: this.image,
+                                text: this.message
+                            }
+                        }
+                        var data = {type: cla.textchatMessageType, message: message};
+                        if(cla.checkSize(data)){
+                            cla.app.sendMessageToAllPartners(data); 
+                            cla.addMessage("Du", message.image, new Date(), true, cla.textchatMessageTypeImage);
+                        } else {
+                            alert("Datei ist zu groß für den Versand, die Datei darf nur 256kb groß sein!");
+                            return;
+                        }
+                    } else if(this.message){
+                        cla.app.sendMessageToAllPartners({type: cla.textchatMessageType, message: {text: this.message}}); 
+                        cla.addMessage("Du", this.message, new Date(), true);
+                    }
+                    this.image = null;
+                    this.extrainfoVisible = false;
                     this.message = "";
+                },
+                addfile: function(e){
+                    var vue = this;
+                    var fileList = e.target.files;
+                    if (!fileList.length) return;
+                    let reader = new FileReader();
+                    if(fileList[0] && fileList[0].type.match(/image.*/)) {
+                        reader.onload = (readerEvent) => {
+                            /*vue.image = reader.result.toString();
+                            cla.setImageToExtra(vue.image);*/
+                            var image = new Image();
+                            image.onload = function (imageEvent) {
+                                var canvas = document.createElement('canvas'),
+                                    max_size = cla.textchatMaxImageSize,
+                                    width = image.width,
+                                    height = image.height;
+                                if (width > height) {
+                                    if (width > max_size) {
+                                        height *= max_size / width;
+                                        width = max_size;
+                                    }
+                                } else {
+                                    if (height > max_size) {
+                                        width *= max_size / height;
+                                        height = max_size;
+                                    }
+                                }
+                                canvas.width = width;
+                                canvas.height = height;
+                                canvas.getContext('2d').drawImage(image, 0, 0, width, height);
+                                var dataUrl = canvas.toDataURL('image/jpeg');
+                                cla.setImageToExtra(dataUrl);
+                                vue.image = dataUrl;
+                            }
+                            image.src = readerEvent.target.result.toString();
+                        }
+                        reader.readAsDataURL(fileList[0]);
+                    }
+                    e.target.value = "";
+                },
+                closeExtra: function(){
+                    this.image = null;
+                    this.extrainfoVisible = false;
                 }
             }
         });
@@ -116,10 +185,12 @@ export class Textchat{
     addNewPartnerMessageToChat(message: any, partner: IPartner){
         if(message.text !== undefined){
             this.addMessage(partner.getName(), message.text);
+        } else if(message.image !== undefined){
+            this.addMessage(partner.getName(), message.image, new Date(), false, this.textchatMessageTypeImage);
         }
     }
 
-    addMessage(sender: string, message: string, datetime: Date = new Date(), self: boolean = false, type: string = this.textchatMessageTypetext){
+    addMessage(sender: string, message: any, datetime: Date = new Date(), self: boolean = false, type: string = this.textchatMessageTypeText){
         this.addMessageToChat(sender, message, datetime, self, type);
         var data = {
             room: this.app.room,
@@ -136,9 +207,11 @@ export class Textchat{
         }, this);
     }
 
-    addMessageToChat(sender: string, message: string, datetime: Date = new Date(), self: boolean = false, type: string = this.textchatMessageTypetext){
-        if(type === this.textchatMessageTypetext){
+    addMessageToChat(sender: string, message: any, datetime: Date = new Date(), self: boolean = false, type: string = this.textchatMessageTypeText){
+        if(type === this.textchatMessageTypeText){
             this.addTextToChat(sender, message, datetime, self);
+        } else if(type === this.textchatMessageTypeImage){
+            this.addImageToChat(sender, message, datetime, self);
         }
     }
 
@@ -148,8 +221,8 @@ export class Textchat{
             <div class="msg ${side}-msg">
             <div class="msg-bubble">
                 <div class="msg-info">
-                <div class="msg-info-name">${sender}</div>
-                <div class="msg-info-time">${this.formatDate(datetime)}</div>
+                    <div class="msg-info-name">${sender}</div>
+                    <div class="msg-info-time">${this.formatDate(datetime)}</div>
                 </div>
 
                 <div class="msg-text">${this.formatMessage(message)}</div>
@@ -158,6 +231,36 @@ export class Textchat{
         `;
         $("#textchat .msger-chat").append(msgHTML);
         this.scrollToBottom();
+    }
+
+    addImageToChat(sender: string, message: any, datetime: Date = new Date(), self: boolean = false){
+        var cla = this;
+        var side = self ? "right" : "left";
+        const msgHTML = `
+            <div class="msg ${side}-msg">
+            <div class="msg-bubble">
+                <div class="msg-info">
+                    <div class="msg-info-name">${sender}</div>
+                    <div class="msg-info-time">${this.formatDate(datetime)}</div>
+                </div>
+                <div class="msg-image"><img src="${message.image}"/></div>
+                <div class="msg-text">${this.formatMessage(message.text)}</div>
+            </div>
+            </div>
+        `;
+        $("#textchat .msger-chat").append(msgHTML);
+        setTimeout(function(){
+            cla.scrollToBottom();
+        }, 100);
+        $("#textchat img").off();
+        $("#textchat img").on("click", function(){
+            cla.app.lightbox.addImage($(this).attr("src"));
+        });
+    }
+
+    setImageToExtra(image: string){
+        this.textchatVueObject.extrainfo = '<img src="'+image+'"/>';
+        this.textchatVueObject.extrainfoVisible = true;
     }
 
     scrollToBottom(){
@@ -169,6 +272,7 @@ export class Textchat{
         message = message.replace(urlRegex, function(url) {
           return '<a target="_blank" href="' + url + '">' + url + '</a>';
         })
+        message = message.replaceAll("\n", "<br>");
         return message;
     }
 
@@ -177,6 +281,13 @@ export class Textchat{
         const m = "0" + date.getMinutes();
       
         return `${h.slice(-2)}:${m.slice(-2)}`;
+    }
+
+    checkSize(data: any): boolean{
+        var dataJson = JSON.stringify(data);
+        var size = new Blob([dataJson]).size;
+        console.log("File size: " + size + "kb");
+        return size < (256 * 1024);
     }
 
 }
