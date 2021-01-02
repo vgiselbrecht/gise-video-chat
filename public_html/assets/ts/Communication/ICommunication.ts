@@ -1,4 +1,4 @@
-import { IPartner } from "../Partner/IPartner.js";
+import { IPartner } from "../Partner/IPartner";
 
 export interface ICommunication{
 

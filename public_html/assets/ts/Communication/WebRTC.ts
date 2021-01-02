@@ -1,6 +1,6 @@
 
-import { ICommunication } from "./ICommunication.js";
-import { IPartner } from "../Partner/IPartner.js";
+import { ICommunication } from "./ICommunication";
+import { IPartner } from "../Partner/IPartner";
 
 export class WebRTC implements ICommunication{
     

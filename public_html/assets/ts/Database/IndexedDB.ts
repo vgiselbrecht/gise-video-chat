@@ -1,9 +1,9 @@
-import { IDatabase } from "./IDatabase.js";
-import { IDatabaseStructure } from "./IDatabase.js";
-import { IDatabaseObject } from "./IDatabase.js";
-import { IDatabaseObjectElement } from "./IDatabase.js";
-import { IDatabaseObjectElementList } from "./IDatabase.js";
-import { IDatabaseQuery } from "./IDatabase.js";
+import { IDatabase } from "./IDatabase";
+import { IDatabaseStructure } from "./IDatabase";
+import { IDatabaseObject } from "./IDatabase";
+import { IDatabaseObjectElement } from "./IDatabase";
+import { IDatabaseObjectElementList } from "./IDatabase";
+import { IDatabaseQuery } from "./IDatabase";
 
 export class IndexedDB implements IDatabase{
 

@@ -1,5 +1,5 @@
 
-import { IExchange } from "./IExchange.js";
+import { IExchange } from "./IExchange";
 
 declare var firebase: any; 
 

@@ -1,4 +1,4 @@
-import { App } from "../app.js";
+import { App } from "../app";
 
 declare var Vue: any;
 
@@ -22,7 +22,7 @@ export class Lightbox{
                 closed: true
             },
             methods: {
-                closeLightbox () {
+                closeLightbox () { 
                     this.closed = true
                 }
             }

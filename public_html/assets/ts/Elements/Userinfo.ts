@@ -1,5 +1,5 @@
-import { App } from "../app.js";
-import { Cookie } from "../Utils/Cookie.js";
+import { App } from "../app";
+import { Cookie } from "../Utils/Cookie";
 
 declare var Vue: any;
 

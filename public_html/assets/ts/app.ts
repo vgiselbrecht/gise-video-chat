@@ -1,20 +1,20 @@
-import { IExchange } from "./Exchange/IExchange.js";
-import { Firebase } from "./Exchange/Firebase.js";
-import { ICommunication } from "./Communication/ICommunication.js";
-import { WebRTC } from "./Communication/WebRTC.js";
-import { IPartner } from "./Partner/IPartner.js";
-import { IPartners } from "./Partner/IPartners.js";
-import { Partner } from "./Partner/Partner.js";
-import { Controls } from "./Elements/Controls.js";
-import { Screen } from "./Elements/Screen.js";
-import { Devices } from "./Elements/Devices.js";
-import { Textchat } from "./Elements/Textchat.js";
-import { Videogrid } from "./Elements/Videogrid.js";
-import { Video } from "./Elements/Video.js";
-import { PartnerListElement } from "./Elements/PartnerListElement.js";
-import { Userinfo } from "./Elements/Userinfo.js";
-import { Lightbox } from "./Elements/Lightbox.js";
-import { JQueryUtils } from "./Utils/JQuery.js";
+import { IExchange } from "./Exchange/IExchange";
+import { Firebase } from "./Exchange/Firebase";
+import { ICommunication } from "./Communication/ICommunication";
+import { WebRTC } from "./Communication/WebRTC";
+import { IPartner } from "./Partner/IPartner";
+import { IPartners } from "./Partner/IPartners";
+import { Partner } from "./Partner/Partner";
+import { Controls } from "./Elements/Controls";
+import { Screen } from "./Elements/Screen";
+import { Devices } from "./Elements/Devices";
+import { Textchat } from "./Elements/Textchat";
+import { Videogrid } from "./Elements/Videogrid";
+import { Video } from "./Elements/Video";
+import { PartnerListElement } from "./Elements/PartnerListElement";
+import { Userinfo } from "./Elements/Userinfo";
+import { Lightbox } from "./Elements/Lightbox";
+import { JQueryUtils } from "./Utils/JQuery";
 
 export class App{
 

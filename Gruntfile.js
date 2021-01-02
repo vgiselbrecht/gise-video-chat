@@ -1,4 +1,7 @@
 'use strict';
+
+const path = require('path');
+
 module.exports = function(grunt) {
 
   grunt.initConfig({
@@ -16,13 +19,42 @@ module.exports = function(grunt) {
         }
       }
     },
-    ts: {
-        default: {
-          tsconfig: true,
-          out: "public_html/assets/js/app.js",
-          options: {
-            allowJs: true
-        }
+    webpack: {
+      myconfig: {
+        mode: "none",
+        devtool: 'source-map',
+        entry: "./public_html/assets/ts/app.ts",
+        module: {
+          rules: [
+            {
+              test: /\.tsx?$/,
+              use: 'ts-loader',
+              exclude: /node_modules/,
+            },
+          ],
+        },
+        resolve: {
+          extensions: [ '.tsx', '.ts', '.js' ],
+        },
+        output: {
+          path: path.resolve(__dirname, 'public_html/assets/js'),
+          filename: "bundle.js"
+        },
+      },
+    },
+    replace: {
+      dist: {
+        options: {
+          patterns: [
+            {
+              match: 'version',
+              replacement: new Date().getTime()
+            }
+          ]
+        },
+        files: [
+          {src: ['public_html/index.tmp.html'], dest: 'public_html/index.html'}
+        ]
       }
     },
     watch: {
@@ -39,12 +71,13 @@ module.exports = function(grunt) {
          files: [
           'public_html/assets/ts/**/*.ts'
         ],
-        tasks: ['ts'] 
+        tasks: ['webpack'] 
       },
       html: {
         files: [
-          '**/*.html'
-        ]
+          'public_html/index.tmp.html'
+        ],
+        tasks: ['replace'] 
       }
     },
     clean: {
@@ -60,12 +93,15 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks("grunt-ts");
+  grunt.loadNpmTasks('grunt-webpack');
+  grunt.loadNpmTasks('grunt-replace');
 
   // Register tasks
   grunt.registerTask('default', [
     'clean',
     'sass',
-    'ts'
+    'webpack',
+    'replace'
   ]);
   grunt.registerTask('dev', [
     'watch'

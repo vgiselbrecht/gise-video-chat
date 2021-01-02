@@ -1,6 +1,6 @@
-import { App } from "../app.js";
-import { IPartner } from "../Partner/IPartner.js";
-import { IPartners } from "../Partner/IPartners.js";
+import { App } from "../app";
+import { IPartner } from "../Partner/IPartner";
+import { IPartners } from "../Partner/IPartners";
 
 declare var Vue: any;
 

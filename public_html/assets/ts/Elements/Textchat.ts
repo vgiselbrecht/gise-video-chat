@@ -1,12 +1,12 @@
-import { App } from "../app.js";
-import { IPartner } from "../Partner/IPartner.js";
-import { IDatabase } from "../Database/IDatabase.js";
-import { IDatabaseStructure } from "../Database/IDatabase.js";
-import { IDatabaseObject } from "../Database/IDatabase.js";
-import { IDatabaseObjectElement } from "../Database/IDatabase.js";
-import { IDatabaseObjectElementList } from "../Database/IDatabase.js";
-import { IDatabaseQuery } from "../Database/IDatabase.js";
-import { IndexedDB } from "../Database/IndexedDB.js";
+import { App } from "../app";
+import { IPartner } from "../Partner/IPartner";
+import { IDatabase } from "../Database/IDatabase";
+import { IDatabaseStructure } from "../Database/IDatabase";
+import { IDatabaseObject } from "../Database/IDatabase";
+import { IDatabaseObjectElement } from "../Database/IDatabase";
+import { IDatabaseObjectElementList } from "../Database/IDatabase";
+import { IDatabaseQuery } from "../Database/IDatabase";
+import { IndexedDB } from "../Database/IndexedDB";
 
 declare var Vue: any;
 

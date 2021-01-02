@@ -1,13 +1,13 @@
-import { IPartner } from "./IPartner.js";
-import { WebRTC } from "../Communication/WebRTC.js";
-import { IExchange } from "../Exchange/IExchange.js";
-import { JQueryUtils } from "../Utils/JQuery.js";
-import { Devices } from "../Elements/Devices.js";
-import { Textchat } from "../Elements/Textchat.js";
-import { Userinfo } from "../Elements/Userinfo.js";
-import { Videogrid } from "../Elements/Videogrid.js";
-import { Video } from "../Elements/Video.js";
-import { PartnerListElement } from "../Elements/PartnerListElement.js";
+import { IPartner } from "./IPartner";
+import { WebRTC } from "../Communication/WebRTC";
+import { IExchange } from "../Exchange/IExchange";
+import { JQueryUtils } from "../Utils/JQuery";
+import { Devices } from "../Elements/Devices";
+import { Textchat } from "../Elements/Textchat";
+import { Userinfo } from "../Elements/Userinfo";
+import { Videogrid } from "../Elements/Videogrid";
+import { Video } from "../Elements/Video";
+import { PartnerListElement } from "../Elements/PartnerListElement";
 
 
 export class Partner implements IPartner{
