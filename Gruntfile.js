@@ -5,25 +5,11 @@ const path = require('path');
 module.exports = function(grunt) {
 
   grunt.initConfig({
-    sass: {
-      dist: {
-        options: {
-          style: 'compressed',
-          compass: false,
-          sourcemap: true
-        },
-        files: {
-          'public_html/assets/css/main.min.css': [
-              'public_html/assets/sass/main.scss'
-          ]
-        }
-      }
-    },
     webpack: {
       myconfig: {
-        mode: "none",
+        mode: 'production', 
         devtool: 'source-map',
-        entry: "./public_html/assets/ts/app.ts",
+        entry: "./src/assets/ts/app.ts",
         module: {
           rules: [
             {
@@ -31,15 +17,41 @@ module.exports = function(grunt) {
               use: 'ts-loader',
               exclude: /node_modules/,
             },
+            {
+              test: /\.s[ac]ss$/i,
+              use: [
+                "style-loader",
+                "css-loader",
+                "sass-loader",
+              ],
+            },
+            {
+              test: /\.(eot|svg|ttf|woff|woff2|png|jpg|jpeg)$/i,
+              use: [
+                {
+                  loader: 'url-loader',
+                  options: {
+                    limit: 8192
+                  }
+                }
+              ]
+            },
+            {
+              test: /chat\.png$/,
+              use: 'file-loader?name=[name].[ext]',
+            },
           ],
         },
         resolve: {
           extensions: [ '.tsx', '.ts', '.js' ],
         },
         output: {
-          path: path.resolve(__dirname, 'public_html/assets/js'),
+          path: path.resolve(__dirname, 'dist/assets'),
           filename: "bundle.js"
         },
+        performance: {
+          hints: false 
+        }
       },
     },
     replace: {
@@ -53,7 +65,7 @@ module.exports = function(grunt) {
           ]
         },
         files: [
-          {src: ['public_html/index.tmp.html'], dest: 'public_html/index.html'}
+          {src: ['src/index.html'], dest: 'dist/index.html'}
         ]
       }
     },
@@ -63,27 +75,27 @@ module.exports = function(grunt) {
       },
       sass: {
         files: [
-          'public_html/assets/sass/**/*.scss'
+          'src/assets/sass/**/*.scss'
         ],
-        tasks: ['sass']
+        tasks: ['webpack']
       },
       ts: {
          files: [
-          'public_html/assets/ts/**/*.ts'
+          'src/assets/ts/**/*.ts'
         ],
         tasks: ['webpack'] 
       },
       html: {
         files: [
-          'public_html/index.tmp.html'
+          'src/index.html'
         ],
         tasks: ['replace'] 
       }
     },
     clean: {
       dist: [
-        'public_html/assets/css/main.min.css',
-        'public_html/assets/js/app.min.js'
+        'src/assets/css/main.min.css',
+        'src/assets/js/app.min.js'
       ]
     }
   });
@@ -91,7 +103,6 @@ module.exports = function(grunt) {
   // Load tasks
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks("grunt-ts");
   grunt.loadNpmTasks('grunt-webpack');
   grunt.loadNpmTasks('grunt-replace');
@@ -99,10 +110,15 @@ module.exports = function(grunt) {
   // Register tasks
   grunt.registerTask('default', [
     'clean',
-    'sass',
     'webpack',
     'replace'
   ]);
+
+  grunt.registerTask('deploy', [
+    'webpack',
+    'replace'
+  ]);
+
   grunt.registerTask('dev', [
     'watch'
   ]);

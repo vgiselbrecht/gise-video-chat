@@ -1,3 +1,6 @@
+import "../sass/main.scss";
+import '../images/chat.png'; 
+
 import { IExchange } from "./Exchange/IExchange";
 import { Firebase } from "./Exchange/Firebase";
 import { ICommunication } from "./Communication/ICommunication";
@@ -255,5 +258,8 @@ export class App{
     }
 }
 
-var app = new App();
-app.run();
+var app = null;
+$(function() {
+    app = new App();
+    app.run();
+});

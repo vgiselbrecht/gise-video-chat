@@ -2,6 +2,7 @@ export class Videogrid{
 
     recalculateLayout() {
         const gallery = document.getElementById("video-area");
+        if (!gallery) return;
         const aspectRatio = 4 / 3;
         const screenWidth = gallery.offsetWidth;
         const screenHeight = gallery.offsetHeight;

@@ -1,6 +1,6 @@
 import { IExchange } from "../Exchange/IExchange";
 import { Devices } from "../Elements/Devices";
-import { Textchat } from "../Elements/Textchat";
+import { Textchat } from "../Elements/Textchat"; 
 import { Videogrid } from "../Elements/Videogrid";
 import { Video } from "../Elements/Video";
 import { PartnerListElement } from "../Elements/PartnerListElement";
