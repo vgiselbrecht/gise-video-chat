@@ -279,8 +279,17 @@ export class Textchat{
     formatDate(date) {
         const h = "0" + date.getHours();
         const m = "0" + date.getMinutes();
-      
-        return `${h.slice(-2)}:${m.slice(-2)}`;
+
+        const d = "0" + date.getDate();
+        const mo = "0" + (date.getMonth()+1);
+        const y = date.getFullYear();
+
+        const currentDate = new Date();
+
+        if(date.getDate() == currentDate.getDate() && date.getMonth() == currentDate.getMonth() && date.getFullYear() == currentDate.getFullYear()){
+            return `${h.slice(-2)}:${m.slice(-2)}`;
+        }      
+        return `${d.slice(-2)}.${mo.slice(-2)}.${y} ${h.slice(-2)}:${m.slice(-2)}`;
     }
 
     checkSize(data: any): boolean{
