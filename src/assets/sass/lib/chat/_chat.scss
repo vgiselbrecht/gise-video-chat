@@ -60,6 +60,7 @@ $chat-right-msg-bg: $active-color;
     border-radius: 10px;
     box-sizing: border-box;
     background: $chat-left-msg-bg;
+    border: 1px solid #ccc;
   }
   .msg-info {
     display: flex;
@@ -111,6 +112,7 @@ $chat-right-msg-bg: $active-color;
     background: $chat-right-msg-bg;
     color: #fff;
     border-bottom-right-radius: 0;
+    border: 1px solid #888;
   }
   .right-msg .msg-img {
     margin: 0 0 0 10px;
