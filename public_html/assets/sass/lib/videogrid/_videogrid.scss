@@ -42,7 +42,8 @@
                     border-radius: 0 0 5px 5px;
                     .microphone, 
                     .camera,
-                    .screen{
+                    .screen,
+                    .listener{
                         display: inline;
                         margin-left: 5px;
                         &.on{

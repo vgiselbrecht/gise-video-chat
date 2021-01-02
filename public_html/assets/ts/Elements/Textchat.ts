@@ -287,7 +287,7 @@ export class Textchat{
         var dataJson = JSON.stringify(data);
         var size = new Blob([dataJson]).size;
         console.log("File size: " + size + "kb");
-        return size < (256 * 1024);
+        return size < 262000;
     }
 
 }

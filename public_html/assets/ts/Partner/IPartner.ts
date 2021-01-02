@@ -18,6 +18,7 @@ export interface IPartner{
     videogrid: Videogrid;
     videoGridElement: Video;
     partnerListElement: PartnerListElement;
+    stream: any;
     onConnectedEvent: (partner: IPartner) => void;
     onConnectionClosedEvent: (partner: IPartner) => void;
     onConnectionLosedEvent: (partner: IPartner) => void;
@@ -26,7 +27,8 @@ export interface IPartner{
     setMuted(muted: boolean): void;
     setCameraOff(cameraOff: boolean);
     setScreenSharing(screenSharing: boolean);
-    createOffer(): void;
+    setListener(listener: boolean);
+    createOffer(doLoop: boolean): void;
     createAnswer(offer: any): void;
     addVideoElement(): void;
     closeConnection(): void;

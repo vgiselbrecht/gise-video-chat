@@ -9,7 +9,8 @@
             border-bottom: 1px solid $active-color;
             .microphone,
             .camera,
-            .screen{
+            .screen,
+            .listener{
                 display: inline; 
                 &.on{
                     display: none; 

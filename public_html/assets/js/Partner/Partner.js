@@ -17,6 +17,9 @@ export class Partner {
         this.onConnectedEvent = onConnectedEvent;
         this.onConnectionClosedEvent = onConnectionClosedEvent;
         this.onConnectionLosedEvent = onConnectionLosedEvent;
+        var cla = this;
+        cla.addVideoElement();
+        cla.videogrid.recalculateLayout();
         var communication = new WebRTC(this);
         communication.addOnaddtrackEvent(this.onAddTrack);
         communication.addOnicecandidateEvent(this.onIceCandidate);
@@ -26,9 +29,6 @@ export class Partner {
         this.connection = communication.getPeerConnection();
         this.dataChannel = communication.getDataChannel(this.connection);
         this.setSendMessageInterval();
-        var cla = this;
-        cla.addVideoElement();
-        cla.videogrid.recalculateLayout();
     }
     getName() {
         var _a;
@@ -54,35 +54,42 @@ export class Partner {
         this.videoGridElement.videoVueObject.screenSharing = screenSharing;
         this.partnerListElement.partnerListElementVueObject.screenSharing = screenSharing;
     }
-    createOffer() {
+    setListener(listener) {
+        this.listener = listener;
+        this.videoGridElement.videoVueObject.listener = listener;
+        this.partnerListElement.partnerListElementVueObject.listener = listener;
+    }
+    createOffer(doLoop = false) {
         if (!this.offerLoop) {
             this.createOfferInner();
             var loop = 12;
             var cla = this;
-            this.offerLoop = setInterval(function () {
-                if (!cla.connected) {
-                    if (loop == 0) {
-                        clearInterval(cla.offerLoop);
-                        cla.offerLoop = null;
-                        cla.closeConnection();
+            if (doLoop) {
+                this.offerLoop = setInterval(function () {
+                    if (!cla.connected) {
+                        if (loop == 0) {
+                            clearInterval(cla.offerLoop);
+                            cla.offerLoop = null;
+                            cla.closeConnection();
+                        }
+                        else {
+                            cla.createOfferInner();
+                            loop--;
+                        }
                     }
                     else {
-                        cla.createOfferInner();
-                        loop--;
+                        clearInterval(cla.offerLoop);
+                        cla.offerLoop = null;
                     }
-                }
-                else {
-                    clearInterval(cla.offerLoop);
-                    cla.offerLoop = null;
-                }
-            }, 10000);
+                }, 10000);
+            }
         }
     }
     createOfferInner() {
-        if (!this.connected && !this.closed) {
+        if ((!this.connected && !this.closed) || this.doReload) {
             console.log("Create Offer to: " + this.id);
             let cla = this;
-            this.connection.createOffer({ iceRestart: true })
+            this.connection.createOffer({ iceRestart: true, offerToReceiveAudio: true, offerToReceiveVideo: true })
                 .then(function (offer) {
                 return cla.connection.setLocalDescription(offer);
             })
@@ -141,11 +148,22 @@ export class Partner {
         partner.onConnectedEvent(partner);
         partner.partnerListElement.partnerListElementVueObject.connected = true;
         partner.videogrid.recalculateLayout();
+        //start playing video with sound
+        var videoplayInterval = setInterval(function () {
+            // @ts-ignore
+            if (partner.videoElement.paused) {
+                // @ts-ignore
+                partner.videoElement.play();
+            }
+            else {
+                clearInterval(videoplayInterval);
+            }
+        }, 100);
     }
     onConnectionLosed(partner) {
         console.log("Connection losed to: " + partner.id);
         partner.connected = false;
-        partner.createOffer();
+        partner.createOffer(true);
         $('#video-item-' + partner.id).addClass("unconnected");
         partner.onConnectionLosedEvent(partner);
         partner.partnerListElement.partnerListElementVueObject.connected = false;
@@ -153,7 +171,7 @@ export class Partner {
     }
     reloadConnection() {
         if (this.connected) {
-            this.connected = false;
+            this.doReload = true;
             this.createOffer();
             this.doReload = false;
         }
@@ -203,6 +221,7 @@ export class Partner {
                 partner.setMuted(message.message.muted);
                 partner.setCameraOff(message.message.cameraOff);
                 partner.setScreenSharing(message.message.screenSharing);
+                partner.setListener(message.message.listener);
             }
         }
     }

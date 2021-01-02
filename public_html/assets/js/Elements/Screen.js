@@ -31,6 +31,9 @@ export class Screen {
                 cal.app.localScreenStream = stream;
                 cal.app.controls.controlsVueObject.screenOn = true;
                 cal.app.setStreamToPartners();
+                if (!cal.app.localStream) {
+                    cal.app.reloadConnections();
+                }
                 cal.app.localScreenStream.getTracks()[0].onended = function () {
                     cal.stopScreen(true);
                 };

@@ -20,8 +20,9 @@ export class PartnerListElement{
         $("#partnerlist ul").append(`
             <li id="partnerlistelement-${this.partner ? this.partner.id : 0}" v-bind:class="{'unconnected': !connected}">
                 {{ name }} 
-                <span v-bind:class="{'on': !muted}" class="microphone fas fa-microphone-slash"></span> 
-                <span v-bind:class="{'on': !cameraOff}" class="camera fas fa-video-slash"></span>
+                <span v-bind:class="{'on': !listener}" class="listener fas fa-eye"></span>
+                <span v-bind:class="{'on': !muted || listener}" class="microphone fas fa-microphone-slash"></span> 
+                <span v-bind:class="{'on': !cameraOff || listener}" class="camera fas fa-video-slash"></span>
                 <span v-bind:class="{'on': !screenSharing}" class="screen fas fa-desktop"></span>
             </li>
         `);
@@ -36,7 +37,8 @@ export class PartnerListElement{
                 muted: false,
                 connected: true,
                 cameraOff: false,
-                screenSharing: false
+                screenSharing: false,
+                listener: false
             },
             methods: { 
             }

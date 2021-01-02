@@ -12,6 +12,7 @@ import { Lightbox } from "./Elements/Lightbox.js";
 export class App {
     constructor() {
         this.yourId = Math.floor(Math.random() * 1000000000);
+        this.listener = false;
         this.partners = {};
         this.closed = false;
         this.called = false;
@@ -63,6 +64,7 @@ export class App {
         }
         navigator.mediaDevices.getUserMedia(constraints)
             .then(function (stream) {
+            app.setAsListener(false);
             if (!app.screen.onScreenMode()) {
                 // @ts-ignore
                 app.yourVideo.srcObject = stream;
@@ -80,7 +82,11 @@ export class App {
             }
         })
             .catch(function (err) {
-            alert("Es kann leider nicht auf die Kamera zugegriffen werden!");
+            alert("Es kann leider nicht auf die Kamera zugegriffen werden! \nSie sind daher nur als Zuhörer dabei!");
+            app.setAsListener(true);
+            if (!app.called) {
+                app.callOther();
+            }
             console.log(err);
         });
     }
@@ -98,7 +104,7 @@ export class App {
             if ((sender in app.partners) && app.partners[sender]) {
                 var partnerConnection = app.partners[sender].connection;
                 if (msg.call !== undefined) {
-                    app.partners[sender].createOffer();
+                    app.partners[sender].createOffer(false);
                 }
                 else if (msg.closing !== undefined) {
                     app.partners[sender].closeConnection();
@@ -154,11 +160,17 @@ export class App {
             app.setTrackToPartner(partner, app.localStream, videoTrack);
             app.setTrackToPartner(partner, app.localStream, audioTrack);
         }
+        else if (app.localScreenStream) {
+            var videoTrack = app.localScreenStream.getVideoTracks()[0];
+            //var audioTrack = app.localScreenStream.getAudioTracks()[0];
+            app.setTrackToPartner(partner, app.localScreenStream, videoTrack);
+            //app.setTrackToPartner(partner, app.localScreenStream, audioTrack);
+        }
         partner.sendMessage(app.userinfo.getUserInfo());
     }
     setTrackToPartner(partner, stream, track) {
         var sender = partner.connection.getSenders().find(function (s) {
-            return s.track && s.track.kind == track.kind;
+            return s.track && track && s.track.kind == track.kind;
         });
         if (sender) {
             sender.replaceTrack(track);
@@ -178,6 +190,11 @@ export class App {
         $(".maincontainer").toggleClass("opensidebar");
         this.textchat.scrollToBottom();
         this.videogrid.recalculateLayout();
+    }
+    setAsListener(listener) {
+        this.listener = listener;
+        this.yourVideoElement.videoVueObject.listener = listener;
+        this.partnerListElement.partnerListElementVueObject.listener = listener;
     }
     hangOut() {
         this.closed = true;
