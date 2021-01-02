@@ -7,8 +7,8 @@ export class Partner {
         this.connected = false;
         this.messages = Array();
         this.doReload = false;
-        this.birectionalOffer = false;
         this.closed = false;
+        this.gotTracks = false;
         this.id = id;
         this.exchange = exchange;
         this.devices = devices;
@@ -120,21 +120,9 @@ export class Partner {
         partner.addVideoElement();
         // @ts-ignore
         partner.videoElement.srcObject = stream;
+        partner.gotTracks = true;
     }
     ;
-    addVideoElement() {
-        var cla = this;
-        if (this.videoElement == undefined) {
-            $("#video-area").append('<div class="video-item video-item-partner" id="video-item-' + this.id + '"><div class="video-wrap"><div class="video-inner-wrap"><video id="video-' + this.id + '" autoplay playsinline></video></div></div></div>');
-            this.videoElement = document.getElementById('video-' + this.id);
-            this.videoGridElement = new Video(document.getElementById('video-item-' + this.id), this);
-            this.partnerListElement = new PartnerListElement(this);
-            this.videogrid.recalculateLayout();
-        }
-        setTimeout(function () {
-            cla.setSinkId(cla.devices.devicesVueObject.sound);
-        }, 1);
-    }
     onConnected(partner) {
         partner.connected = true;
         if (this.doReload) {
@@ -148,6 +136,11 @@ export class Partner {
         partner.onConnectedEvent(partner);
         partner.partnerListElement.partnerListElementVueObject.connected = true;
         partner.videogrid.recalculateLayout();
+        setTimeout(function () {
+            if (!partner.gotTracks && !partner.listener) {
+                partner.reloadConnection();
+            }
+        }, 2000);
         //start playing video with sound
         var videoplayInterval = setInterval(function () {
             // @ts-ignore
@@ -224,6 +217,19 @@ export class Partner {
                 partner.setListener(message.message.listener);
             }
         }
+    }
+    addVideoElement() {
+        var cla = this;
+        if (this.videoElement == undefined) {
+            $("#video-area").append('<div class="video-item video-item-partner" id="video-item-' + this.id + '"><div class="video-wrap"><div class="video-inner-wrap"><video id="video-' + this.id + '" autoplay playsinline></video></div></div></div>');
+            this.videoElement = document.getElementById('video-' + this.id);
+            this.videoGridElement = new Video(document.getElementById('video-item-' + this.id), this);
+            this.partnerListElement = new PartnerListElement(this);
+            this.videogrid.recalculateLayout();
+        }
+        setTimeout(function () {
+            cla.setSinkId(cla.devices.devicesVueObject.sound);
+        }, 1);
     }
 }
 //# sourceMappingURL=Partner.js.map

@@ -104,7 +104,7 @@ export class App {
             if ((sender in app.partners) && app.partners[sender]) {
                 var partnerConnection = app.partners[sender].connection;
                 if (msg.call !== undefined) {
-                    app.partners[sender].createOffer(false);
+                    app.partners[sender].createOffer(true);
                 }
                 else if (msg.closing !== undefined) {
                     app.partners[sender].closeConnection();

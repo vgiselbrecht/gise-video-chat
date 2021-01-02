@@ -8,6 +8,11 @@ import { PartnerListElement } from "../Elements/PartnerListElement";
 export interface IPartner{
 
     id: number;
+    name: string;
+    muted: boolean;
+    cameraOff: boolean;
+    screenSharing: boolean;
+    listener: boolean;
     videoElement: HTMLElement;
     connection: RTCPeerConnection;
     exchange: IExchange;
@@ -19,6 +24,7 @@ export interface IPartner{
     videoGridElement: Video;
     partnerListElement: PartnerListElement;
     stream: any;
+    gotTracks: boolean;
     onConnectedEvent: (partner: IPartner) => void;
     onConnectionClosedEvent: (partner: IPartner) => void;
     onConnectionLosedEvent: (partner: IPartner) => void;

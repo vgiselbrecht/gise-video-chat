@@ -31,9 +31,11 @@ export class Partner implements IPartner{
     onConnectedEvent: (partner: IPartner) => void;
     onConnectionClosedEvent: (partner: IPartner) => void;
     onConnectionLosedEvent: (partner: IPartner) => void;
+    
     doReload: boolean = false;
-    birectionalOffer: boolean = false;
     closed: boolean = false;
+    gotTracks: boolean = false;
+    
     videoGridElement: Video;
     partnerListElement: PartnerListElement;
     stream: any;
@@ -167,21 +169,8 @@ export class Partner implements IPartner{
         partner.addVideoElement();
         // @ts-ignore
         partner.videoElement.srcObject = stream;
+        partner.gotTracks = true;
     };
-
-    addVideoElement(){
-        var cla = this;
-        if(this.videoElement == undefined){
-            $("#video-area").append('<div class="video-item video-item-partner" id="video-item-'+this.id+'"><div class="video-wrap"><div class="video-inner-wrap"><video id="video-'+this.id+'" autoplay playsinline></video></div></div></div>');
-            this.videoElement = document.getElementById('video-'+this.id);
-            this.videoGridElement = new Video(document.getElementById('video-item-'+this.id), this);
-            this.partnerListElement = new PartnerListElement(this);
-            this.videogrid.recalculateLayout();
-        }
-        setTimeout(function(){
-            cla.setSinkId(cla.devices.devicesVueObject.sound);
-        }, 1);
-    }
 
     onConnected(partner: IPartner){
         partner.connected = true;
@@ -197,6 +186,13 @@ export class Partner implements IPartner{
         partner.onConnectedEvent(partner);
         partner.partnerListElement.partnerListElementVueObject.connected = true;
         partner.videogrid.recalculateLayout();
+
+        setTimeout(function(){
+            if(!partner.gotTracks && !partner.listener){
+                partner.reloadConnection();
+            }
+        }, 2000);
+
 
         //start playing video with sound
         var videoplayInterval = setInterval(function(){
@@ -279,6 +275,20 @@ export class Partner implements IPartner{
                 partner.setListener(message.message.listener);
             }
         }
+    }
+
+    addVideoElement(){
+        var cla = this;
+        if(this.videoElement == undefined){
+            $("#video-area").append('<div class="video-item video-item-partner" id="video-item-'+this.id+'"><div class="video-wrap"><div class="video-inner-wrap"><video id="video-'+this.id+'" autoplay playsinline></video></div></div></div>');
+            this.videoElement = document.getElementById('video-'+this.id);
+            this.videoGridElement = new Video(document.getElementById('video-item-'+this.id), this);
+            this.partnerListElement = new PartnerListElement(this);
+            this.videogrid.recalculateLayout();
+        }
+        setTimeout(function(){
+            cla.setSinkId(cla.devices.devicesVueObject.sound);
+        }, 1);
     }
 
 }
