@@ -26,7 +26,8 @@ export class Controls{
                 cameraOn: Cookie.getCookie(cla.cameraCookie) == 'false' ? false : true,
                 hangouted: false,
                 screenOn: false,
-                optionOn: false 
+                optionOn: false,
+                screenSharingNotAllowed: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
             },
             methods: {
                 toogleMicrophone: function () {

@@ -133,6 +133,9 @@ html,body{
           background: red;
           color: #fff;
         }
+        &.disabled{
+          display: none;
+        }
       }
       &.option{
         &.optionon{
@@ -213,6 +216,12 @@ html,body{
       font-size: 18px;
       &:focus{
         outline: none;
+      }
+    }
+    .row.sound{
+      display: none;
+      &.allowed{
+        display: flex;
       }
     }
   }

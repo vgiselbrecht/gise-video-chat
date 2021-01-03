@@ -54,7 +54,9 @@ export class Devices{
                     video: null,
                     videooptions: {},
                     sound: null,
-                    soundoptions: {}
+                    soundoptions: {},
+                    // @ts-ignore
+                    soundAllowed: typeof cla.app.yourVideo.sinkId !== 'undefined' 
                 },
                 methods: {
                     onChange() {

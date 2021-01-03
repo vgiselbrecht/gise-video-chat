@@ -30,7 +30,7 @@
                         <div class="col-xs-12" id="controls">
                             <span v-on:click="toogleMicrophone" v-bind:class="{'fa-microphone': microphoneOn, 'fa-microphone-slash': !microphoneOn}" class="microphone fas fa-microphone"></span>
                             <span v-on:click="toogleCamera" v-bind:class="{'fa-video': cameraOn, 'fa-video-slash': !cameraOn}" class="camera fas fa-video"></span>
-                            <span v-on:click="toogleScreen" v-bind:class="{'screenon': screenOn}" class="screen fas fa-desktop"></span>
+                            <span v-on:click="toogleScreen" v-bind:class="{'screenon': screenOn, 'disabled': screenSharingNotAllowed}" class="screen fas fa-desktop"></span>
                             <span v-on:click="toogleOption" v-bind:class="{'optionon': optionOn}" class="option fas fa-bars"></span>
                             <span v-on:click="toogleOption" v-bind:class="{'optiononclose': optionOn}" class="optionclose fas fa-times"></span>
                             <span v-on:click="hangOut"  v-bind:class="{'green': hangouted}" class="hangup fas fa-phone"></span>
@@ -96,7 +96,7 @@
                                             </option>
                                         </select>
                                     </div>
-                                    <div class="row">
+                                    <div class="row sound" v-bind:class="{'allowed': soundAllowed}" >
                                         <label class="col-xs-6" >Lautsprecher:</label>
                                         <select class="col-xs-6" v-model="sound" @change="onChange()">
                                             <option v-for="(option, index) in soundoptions" :key="index" v-bind:value="index">
