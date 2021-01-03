@@ -21,19 +21,44 @@ export class Firebase implements IExchange{
     partnerDatbases: {} = {};
     room: string;
     yourId: number;
+    isAuthenticated: boolean = false;
     readCallback: (sender: number, dataroom: string, msg: any) => void;
 
-    constructor(room: string, yourId: number){
+    constructor(room: string, yourId: number, authenticated: () => void){
+        var cla = this;
         this.room = room;
         this.yourId = yourId;
         firebase.initializeApp(this.firebaseConfig);
         firebase.analytics();
-        this.roomDatabase = firebase.database().ref('rooms/' + this.room + "/partners/all");
-        this.ownDatabase = firebase.database().ref('rooms/' + this.room + "/partners/" + yourId);
+        firebase.auth().signInAnonymously()
+            .then(() => {
+                cla.roomDatabase = firebase.database().ref('rooms/' + room + "/partners/all");
+                cla.ownDatabase = firebase.database().ref('rooms/' + room + "/partners/" + yourId);
+                cla.isAuthenticated = true;
+                authenticated();
+            })
+            .catch((error) => {
+                console.log(error);
+                alert("Autentifizierungsfehler bei Firebase!");
+            });
     }
 
     
     sendMessage(data: any, receiver: number = 0): void{
+        var cla = this;
+        if(cla.isAuthenticated){
+            cla.sendMessageInner(data, receiver);
+        } else{
+            var authIntervall = setInterval(function(){
+                if(cla.isAuthenticated){
+                    cla.sendMessageInner(data, receiver);
+                    clearInterval(authIntervall);
+                }
+            }, 100)
+        }
+    }
+
+    sendMessageInner(data: any, receiver: number = 0){
         console.log("Exchange message to: " + (receiver !== 0 ? receiver : 'all'))
         console.log(data)
         var ref = this.getDatabaseRef(receiver);

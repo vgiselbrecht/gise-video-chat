@@ -47,8 +47,9 @@ export class App{
         this.setRoom();
         console.log("Id: " + this.yourId + " Room: " + this.room);
         this.yourVideo = document.getElementById("yourVideo");
-        this.exchange = new Firebase(this.room, this.yourId);
-        this.exchange.addReadEvent(this.readMessage);
+        this.exchange = new Firebase(this.room, this.yourId, function(){
+            app.exchange.addReadEvent(app.readMessage);
+        });
         this.yourVideoElement = new Video(document.getElementById("yourVideoArea"), null);
         this.partnerListElement = new PartnerListElement(null);
         this.controls = new Controls(this);
