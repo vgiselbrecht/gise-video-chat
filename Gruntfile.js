@@ -7,7 +7,7 @@ module.exports = function(grunt) {
   grunt.initConfig({
     webpack: {
       myconfig: {
-        mode: 'production', 
+        mode: grunt.option('target') || 'development', 
         devtool: 'source-map',
         entry: "./src/assets/ts/app.ts",
         module: {
@@ -105,12 +105,7 @@ module.exports = function(grunt) {
         tasks: ['replace'] 
       }
     },
-    clean: {
-      dist: [
-        'src/assets/css/main.min.css',
-        'src/assets/js/app.min.js'
-      ]
-    }
+    clean: ['dist']
   });
 
   // Load tasks
@@ -128,12 +123,9 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('deploy', [
+    'clean',
     'webpack',
     'replace'
-  ]);
-
-  grunt.registerTask('dev', [
-    'watch'
   ]);
 
 };
