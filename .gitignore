@@ -3,3 +3,5 @@ node_modules
 nbproject
 .tscache
 public_html/proxy.php
+dist
+src/config.js

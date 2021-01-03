@@ -1,6 +1,6 @@
 
 import { IExchange } from "./IExchange";
-import {default as config} from "../config"
+import {default as config} from "../../../config"
 
 declare var firebase: any; 
 

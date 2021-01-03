@@ -1,7 +1,7 @@
 import "../sass/main.scss";
 import '../images/chat.png'; 
 
-import {default as config} from "./config"
+import {default as config} from "../../config"
 import { IExchange } from "./Exchange/IExchange";
 import { Firebase } from "./Exchange/Firebase";
 import { ICommunication } from "./Communication/ICommunication";
