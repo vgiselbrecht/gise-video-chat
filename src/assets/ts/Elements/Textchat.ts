@@ -209,7 +209,11 @@ export class Textchat{
 
     addMessageToChat(sender: string, message: any, datetime: Date = new Date(), self: boolean = false, type: string = this.textchatMessageTypeText){
         if(type === this.textchatMessageTypeText){
-            this.addTextToChat(sender, message, datetime, self);
+            if(this.checkMessageIsImage(message)){
+                this.addImageToChat(sender, {image: message.trim(), text: ""}, datetime, self); 
+            } else {
+                this.addTextToChat(sender, message, datetime, self);
+            }
         } else if(type === this.textchatMessageTypeImage){
             this.addImageToChat(sender, message, datetime, self);
         }
@@ -251,7 +255,7 @@ export class Textchat{
         $("#textchat .msger-chat").append(msgHTML);
         setTimeout(function(){
             cla.scrollToBottom();
-        }, 100);
+        }, 200);
         $("#textchat img").off();
         $("#textchat img").on("click", function(){
             cla.app.lightbox.addImage($(this).attr("src"));
@@ -268,9 +272,13 @@ export class Textchat{
     }
 
     formatMessage(message: any){
-        var urlRegex = /(https?:\/\/[^\s]+)/g;
+        var urlRegex = /(https?:\/\/)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
         message = message.replace(urlRegex, function(url) {
-          return '<a target="_blank" href="' + url + '">' + url + '</a>';
+            if(url.substr(0, 4) === "http"){
+                return '<a target="_blank" href="' + url + '">' + url + '</a>';
+            }else{
+                return '<a target="_blank" href="http://' + url + '">' + url + '</a>';
+            }
         })
         message = message.replaceAll("\n", "<br>");
         return message;
@@ -297,6 +305,11 @@ export class Textchat{
         var size = new Blob([dataJson]).size;
         console.log("File size: " + size + "kb");
         return size < 262000;
+    }
+
+    checkMessageIsImage(message: string){
+        var patter = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))/i;
+        return patter.test(message.trim());
     }
 
 }
