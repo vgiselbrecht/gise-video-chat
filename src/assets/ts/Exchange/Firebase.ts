@@ -16,7 +16,9 @@ export class Firebase implements IExchange{
         measurementId: "G-P11BZ3TF99"
     };
 
-    database: any;
+    roomDatabase: any;
+    ownDatabase: any;
+    partnerDatbases: {} = {};
     room: string;
     yourId: number;
     readCallback: (sender: number, dataroom: string, msg: any) => void;
@@ -26,37 +28,62 @@ export class Firebase implements IExchange{
         this.yourId = yourId;
         firebase.initializeApp(this.firebaseConfig);
         firebase.analytics();
-        this.database = firebase.database().ref();
+        this.roomDatabase = firebase.database().ref('rooms/' + this.room + "/partners/all");
+        this.ownDatabase = firebase.database().ref('rooms/' + this.room + "/partners/" + yourId);
     }
 
     
     sendMessage(data: any, receiver: number = 0): void{
         console.log("Exchange message to: " + (receiver !== 0 ? receiver : 'all'))
         console.log(data)
-        var msg = this.database.push({ room: this.room, sender: this.yourId, receiver: receiver, message: JSON.stringify(data) });
+        var ref = this.getDatabaseRef(receiver);
+        var msg = ref.push({ room: this.room, sender: this.yourId, receiver: receiver, message: JSON.stringify(data) });
         msg.remove();
     }
 
     readMessage(data, cla) {
-        var msg = JSON.parse(data.val().message);
-        var sender = data.val().sender;
-        var receiver = data.val().receiver;
-        var dataroom = data.val().room;
-        if (dataroom === cla.room && sender !== cla.yourId && (receiver == 0 || receiver == cla.yourId)) {
-            cla.readCallback(sender, dataroom, msg);
+        if(data.val().message){
+            var msg = JSON.parse(data.val().message);
+            var sender = data.val().sender;
+            var receiver = data.val().receiver;
+            var dataroom = data.val().room;
+            if (dataroom === cla.room && sender !== cla.yourId && (receiver == 0 || receiver == cla.yourId)) {
+                cla.readCallback(sender, dataroom, msg);
+            }
+        } else {
+            console.log("Wrong data from firebase!: ");
+            console.log(data.val());
         }
     }
  
     addReadEvent(callback: (sender: number, dataroom: string, msg: any) => void): void{
         this.readCallback = callback;
         let cla = this;
-        this.database.on('child_added', function(data: any) {
+        this.roomDatabase.on('child_added', function(data: any) {
+            cla.readMessage(data, cla)
+        });
+        this.ownDatabase.on('child_added', function(data: any) {
             cla.readMessage(data, cla)
         });
     }
 
     closeConnection(): void{
-        this.database.off();
+        this.roomDatabase.off();
+        this.ownDatabase.off();
+        for(var receiverid in this.partnerDatbases){
+            this.partnerDatbases[receiverid].off();
+        }
+    }
+
+    getDatabaseRef(receiver: number = 0){
+        if(receiver === 0){
+            return this.roomDatabase;
+        }
+        if(receiver in this.partnerDatbases){
+            return this.partnerDatbases[receiver];
+        }
+        this.partnerDatbases[receiver] = firebase.database().ref('rooms/' + this.room + "/partners/" + receiver);
+        return this.partnerDatbases[receiver];
     }
 
 }
