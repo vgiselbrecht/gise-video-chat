@@ -39,6 +39,7 @@ export class Textchat{
             if(cla.isChatVisible()){
                 if(cla.hasNewMessage){
                     cla.setHasNewMessage(false);
+                    cla.scrollToBottom();
                 }
             }
         }, 100);
