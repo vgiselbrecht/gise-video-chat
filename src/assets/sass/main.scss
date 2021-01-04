@@ -138,9 +138,21 @@ html,body{
         }
       }
       &.option{
+        position: relative;
         &.optionon{
           background: red;
           color: #fff;
+        }
+        &.newMessage::after{
+          width: 8px;
+          height: 8px;
+          border-radius: 4px;
+          background: orange; 
+          content: "";
+          display: block;
+          position: absolute;
+          top: 3px;
+          right: 3px;
         }
       }
       &.optionclose{

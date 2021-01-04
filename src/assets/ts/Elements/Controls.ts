@@ -27,7 +27,8 @@ export class Controls{
                 hangouted: false,
                 screenOn: false,
                 optionOn: false,
-                screenSharingNotAllowed: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+                screenSharingNotAllowed: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
+                hasNewMessage: false
             },
             methods: {
                 toogleMicrophone: function () {
@@ -138,4 +139,14 @@ export class Controls{
     hangOut(){
         this.app.hangOut();
     }
+
+    setNewMessage(hasNewMessage){
+        this.controlsVueObject.hasNewMessage = hasNewMessage; 
+        if(hasNewMessage){
+            $('#sidebar .tabs .tabs-header > [tab=chat] ').addClass('notification');
+        }else{
+            $('#sidebar .tabs .tabs-header > [tab=chat] ').removeClass('notification');
+        }
+    }
+
 }

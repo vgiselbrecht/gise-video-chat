@@ -31,7 +31,7 @@ export class Firebase implements IExchange{
             })
             .catch((error) => {
                 console.log(error);
-                alert("Autentifizierungsfehler bei Firebase!");
+                alert("Autentifizierungsfehler bei Firebase!\nDie Seite muss neu geladen werden!");
             });
     }
 

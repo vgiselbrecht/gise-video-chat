@@ -28,12 +28,20 @@ export class Textchat{
     database: IDatabase;
     databaseStructure: IDatabaseStructure;
 
+    hasNewMessage: boolean = false;
 
     constructor(app: App){
         this.app = app;
         this.initialElements();
         this.initialDatabase();
         var cla = this;
+        setInterval(function(){
+            if(cla.isChatVisible()){
+                if(cla.hasNewMessage){
+                    cla.setHasNewMessage(false);
+                }
+            }
+        }, 100);
     }
 
     initialElements(){ 
@@ -188,7 +196,9 @@ export class Textchat{
         } else if(message.image !== undefined){
             this.addMessage(partner.getName(), message.image, new Date(), false, this.textchatMessageTypeImage);
         }
+        this.gotNewMessage();
     }
+
 
     addMessage(sender: string, message: any, datetime: Date = new Date(), self: boolean = false, type: string = this.textchatMessageTypeText){
         this.addMessageToChat(sender, message, datetime, self, type);
@@ -310,6 +320,21 @@ export class Textchat{
     checkMessageIsImage(message: string){
         var patter = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))/i;
         return patter.test(message.trim());
+    }
+
+    gotNewMessage(){
+        if(!this.isChatVisible()){
+            this.setHasNewMessage(true);
+        }
+    }
+
+    isChatVisible(){
+        return $('#textchat').is(':visible');
+    }
+
+    setHasNewMessage(hasNewMessage: boolean){
+        this.hasNewMessage = hasNewMessage;
+        this.app.controls.setNewMessage(hasNewMessage);
     }
 
 }

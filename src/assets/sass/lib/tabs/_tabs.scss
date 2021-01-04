@@ -7,6 +7,7 @@
             border-bottom: 2px solid #aaa;
             font-weight: bold;
             color: $passive-color;
+            position: relative;
             cursor: pointer;
             &.active{
                 cursor: default;
@@ -16,6 +17,17 @@
             &:not(.active):hover{
                 color: $active-hover-color;
                 border-bottom: 2px solid $active-hover-color;
+            }
+            &.notification:after{
+                width: 8px;
+                height: 8px;
+                border-radius: 4px;
+                background: orange; 
+                content: "";
+                display: block;
+                position: absolute;
+                top: 10px;
+                right: 10px;
             }
          }
      }
