@@ -74,13 +74,16 @@ export class Partner implements IPartner{
     }
 
     getName(): string{
-        return this.name ?? "Gast" + this.id.toString();
+        if(!this.name || this.name === ""){
+            return "Gast" + this.id.toString();
+        }
+        return this.name;
     }
 
     setName(name: string){
         this.name = name;
-        this.videoGridElement.videoVueObject.name = name;
-        this.partnerListElement.partnerListElementVueObject.name = name;
+        this.videoGridElement.videoVueObject.name = this.getName();
+        this.partnerListElement.partnerListElementVueObject.name = this.getName();
     }
 
     setMuted(muted: boolean){

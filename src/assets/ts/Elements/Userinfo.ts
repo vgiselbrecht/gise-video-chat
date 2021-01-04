@@ -24,7 +24,7 @@ export class Userinfo{
         this.userinfoVueObject = new Vue({
             el: '#userinfo',
             data: {
-                name: Cookie.getCookie(cla.nameCookie) ?? null
+                name: Cookie.getCookie(cla.nameCookie) ?? ""
             },
             methods: {
                 changeUserinfo: function(){
