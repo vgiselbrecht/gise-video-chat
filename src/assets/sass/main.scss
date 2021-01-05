@@ -144,15 +144,15 @@ html,body{
           color: #fff;
         }
         &.newMessage::after{
-          width: 8px;
-          height: 8px;
-          border-radius: 4px;
-          background: orange; 
+          width: 12px;
+          height: 12px;
+          border-radius: 6px;
+          background: $notificationColor;
           content: "";
           display: block;
           position: absolute;
-          top: 3px;
-          right: 3px;
+          top: -3px;
+          right: -3px;
         }
       }
       &.optionclose{
