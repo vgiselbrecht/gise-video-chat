@@ -1,5 +1,7 @@
 # Video Chat based on WebRTC and Firebase
 
+![Video Chat Demo](https://www.gise.at/images/VideoChat.PNG)
+
 ## Installation
 
 Load code and dependencies
