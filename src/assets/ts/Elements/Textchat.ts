@@ -222,6 +222,8 @@ export class Textchat{
         if(type === this.textchatMessageTypeText){
             if(this.checkMessageIsImage(message)){
                 this.addImageToChat(sender, {image: message.trim(), text: ""}, datetime, self); 
+            } else if(this.checkMessageIsVideo(message)) {
+                this.addVideoToChat(sender, {video: message.trim(), text: ""}, datetime, self);
             } else {
                 this.addTextToChat(sender, message, datetime, self);
             }
@@ -273,9 +275,34 @@ export class Textchat{
         });
     }
 
+    addVideoToChat(sender: string, message: any, datetime: Date = new Date(), self: boolean = false){
+        var cla = this;
+        var side = self ? "right" : "left";
+        const msgHTML = `
+            <div class="msg ${side}-msg">
+            <div class="msg-bubble">
+                <div class="msg-info">
+                    <div class="msg-info-name">${sender}</div>
+                    <div class="msg-info-time">${this.formatDate(datetime)}</div>
+                </div>
+                <div class="msg-image"><video src="${message.video}"/></div>
+                <div class="msg-text">${this.formatMessage(message.text)}</div>
+            </div>
+            </div>
+        `;
+        $("#textchat .msger-chat").append(msgHTML); 
+        setTimeout(function(){
+            cla.scrollToBottom();
+        }, 200);
+        $("#textchat video").off();
+        $("#textchat video").on("click", function(){
+            cla.app.lightbox.addVideo($(this).attr("src"));
+        });
+    }
+
     setImageToExtra(image: string){
         this.textchatVueObject.extrainfo = '<img src="'+image+'"/>';
-        this.textchatVueObject.extrainfoVisible = true;
+        this.textchatVueObject.extrainfoVisible = true; 
     }
 
     scrollToBottom(){
@@ -319,7 +346,12 @@ export class Textchat{
     }
 
     checkMessageIsImage(message: string){
-        var patter = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))/i;
+        var patter = /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))$/i;
+        return patter.test(message.trim());
+    }
+
+    checkMessageIsVideo(message: string){
+        var patter = /^(https?:\/\/.*\.(?:mp4|webm|m4v|ogv|ogg))$/i;
         return patter.test(message.trim());
     }
 

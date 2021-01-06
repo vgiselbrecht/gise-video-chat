@@ -23,10 +23,17 @@
             color: $active-hover-color; 
         }
     }
-    img{
+    img, video{
         max-width: 100%;
         max-height: 100%;
         padding: 40px;
         box-sizing: border-box;
+        display: none;
+        &.active{
+            display: inline;
+        }
+        &:focus{
+            outline: none;
+        }
     }
 }
