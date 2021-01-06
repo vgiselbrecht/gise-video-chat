@@ -222,7 +222,9 @@ export class App{
             return s.track && track && s.track.kind == track.kind;
         });
         if(sender){
-            sender.replaceTrack(track);
+            if(partner.connected){
+                sender.replaceTrack(track);
+            }
         } else {
             partner.connection.addTrack(track, stream);
         }
