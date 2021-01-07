@@ -19,6 +19,7 @@ import { PartnerListElement } from "./Elements/PartnerListElement";
 import { Userinfo } from "./Elements/Userinfo";
 import { Lightbox } from "./Elements/Lightbox";
 import { JQueryUtils } from "./Utils/JQuery";
+import { Alert } from "./Elements/Alert";
 
 export class App{
 
@@ -116,7 +117,7 @@ export class App{
                 }
             })
             .catch(function(err) {
-                alert("Es kann leider nicht auf die Kamera zugegriffen werden! \nSie sind daher nur als Zuhörer dabei!");
+                new Alert("Es kann leider nicht auf die Kamera zugegriffen werden! <br>Sie sind daher nur als Zuhörer dabei!");
                 app.setAsListener(true);
                 if(!app.called){
                     app.callOther(); 

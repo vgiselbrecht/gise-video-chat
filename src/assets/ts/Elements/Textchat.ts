@@ -7,6 +7,7 @@ import { IDatabaseObjectElement } from "../Database/IDatabase";
 import { IDatabaseObjectElementList } from "../Database/IDatabase";
 import { IDatabaseQuery } from "../Database/IDatabase";
 import { IndexedDB } from "../Database/IndexedDB";
+import { Alert } from "./Alert";
 
 declare var Vue: any;
 
@@ -70,7 +71,7 @@ export class Textchat{
                             cla.app.sendMessageToAllPartners(data); 
                             cla.addMessage("Du", message.image, new Date(), true, cla.textchatMessageTypeImage);
                         } else {
-                            alert("Datei ist zu groß für den Versand, die Datei darf nur 256kb groß sein!");
+                            new Alert("Die Datei ist zu groß für den Versand, die Datei darf nur 256kb groß sein!");
                             return;
                         }
                     } else if(this.message){

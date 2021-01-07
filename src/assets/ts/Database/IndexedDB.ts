@@ -1,3 +1,4 @@
+import { Alert } from "../Elements/Alert";
 import { IDatabase } from "./IDatabase";
 import { IDatabaseStructure } from "./IDatabase";
 import { IDatabaseObject } from "./IDatabase";
@@ -12,7 +13,7 @@ export class IndexedDB implements IDatabase{
 
     constructor(){
         if (!window.indexedDB) {
-            window.alert("Your browser doesn't support a stable version of IndexedDB.")
+            new Alert("In Ihrem Browser kann der Chat leider nicht gespeichert werden!");
         }
     }
 
