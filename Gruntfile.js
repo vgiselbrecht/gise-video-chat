@@ -111,7 +111,6 @@ module.exports = function(grunt) {
   // Load tasks
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks("grunt-ts");
   grunt.loadNpmTasks('grunt-webpack');
   grunt.loadNpmTasks('grunt-replace');
 
