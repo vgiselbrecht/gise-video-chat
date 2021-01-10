@@ -1,0 +1,40 @@
+#invite{
+    > * {
+        padding: 0; 
+        margin-left: 3px;
+    }
+    .invite-header{
+        padding: 10px 0px;
+        font-weight: bold;
+        margin-bottom: 5px;
+        font-size: 18px;
+    }
+    .invite-content{
+        border: 1px solid #555;
+        border-radius: 2px;
+        font-size: 18px;
+        input, button{
+            padding: 6px;
+            font-size: 18px;
+            border: 0;
+            background: transparent;
+            &:focus{
+                outline: none;
+            }
+        }
+        input{
+            width: calc(100% - 45px);
+        }
+        button{
+            font-size: 18px;
+            color: #000;
+            cursor: pointer;
+            &.fa-copy{
+                color: #555;
+                &:hover{
+                    color: #000;
+                }
+            }
+        }
+    }
+}

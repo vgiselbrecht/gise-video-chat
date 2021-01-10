@@ -18,6 +18,7 @@ import { Video } from "./Elements/Video";
 import { PartnerListElement } from "./Elements/PartnerListElement";
 import { Userinfo } from "./Elements/Userinfo";
 import { Lightbox } from "./Elements/Lightbox";
+import { Invite } from "./Elements/Invite";
 import { JQueryUtils } from "./Utils/JQuery";
 import { Alert } from "./Elements/Alert";
 
@@ -40,6 +41,7 @@ export class App{
     userinfo: Userinfo;
     videogrid: Videogrid;
     lightbox: Lightbox;
+    invite: Invite;
     closed: boolean = false;
     called: boolean = false;
     yourVideoElement: Video;
@@ -60,6 +62,7 @@ export class App{
         this.textchat = new Textchat(this);
         this.userinfo = new Userinfo(this);
         this.lightbox = new Lightbox(this);
+        this.invite = new Invite(this);
         this.videogrid = new Videogrid();
         this.videogrid.init();
         $(window).on("beforeunload", function() { 

@@ -66,6 +66,12 @@
                                 </div>
                             </div>
                             <div id="tab-partner">
+                                <div id="invite" class="row">
+                                    <div class="col-xs-12 invite-header">Lade andere über den Link ein:</div>
+                                    <div class="col-xs-12 invite-content">
+                                        <input v-model="link" readonly type="text" id="invite-link"><button v-bind:class="{'fa-copy': !copied, 'fa-check': copied}" v-on:click="copy" class="fas"></button>
+                                    </div>
+                                </div>
                                 <div id="partnerlist">
                                     <ul>
                                         

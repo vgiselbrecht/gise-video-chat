@@ -11,7 +11,6 @@
         "esModuleInterop": true
     },
     "filesGlob": [
-        "public_html/assets/ts/**/*.ts",
         "node_modules/@types/**/*.d.ts"
     ]
 }
