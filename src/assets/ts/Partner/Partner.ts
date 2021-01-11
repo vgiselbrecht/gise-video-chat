@@ -113,7 +113,7 @@ export class Partner implements IPartner{
     createOffer(doLoop: boolean = false): void {
         if(!this.offerLoop){
             this.createOfferInner();
-            var loop = 12;
+            var loop = 6;
             var cla = this;
             if(doLoop){
                 this.offerLoop = setInterval(function(){
@@ -130,7 +130,7 @@ export class Partner implements IPartner{
                         clearInterval(cla.offerLoop);
                         cla.offerLoop = null;
                     }
-                }, 10000);
+                }, 20000);
             }
         }
     }
@@ -176,6 +176,7 @@ export class Partner implements IPartner{
     };
 
     onConnected(partner: IPartner){
+        console.log("Connection to: " + partner.id);
         partner.connected = true;
         if(this.doReload){
             this.reloadConnection();
