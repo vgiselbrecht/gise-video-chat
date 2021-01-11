@@ -1,10 +1,11 @@
 
 import { ICommunication } from "./ICommunication";
 import { IPartner } from "../Partner/IPartner";
+import {default as config} from "../../../config"
 
 export class WebRTC implements ICommunication{
     
-    servers = {'iceServers': [{'urls': 'stun:stun.services.mozilla.com'}, {'urls': 'stun:stun.l.google.com:19302'}]};
+    servers = {'iceServers': config.communication.webrtc.iceServers}; 
     partner: IPartner;
     onicecandidateEvent: (candidate: any, partner: IPartner) => void;
     onaddtrackEvent: (stream: any, partner: IPartner) => void;
