@@ -247,6 +247,8 @@ export class App{
         $(".maincontainer").toggleClass("opensidebar"); 
         this.textchat.scrollToBottom();
         this.videogrid.recalculateLayout();
+        //fix bug when calculation was wrong in the first calculation
+        this.videogrid.recalculateLayout();
     }
 
     setAsListener(listener: boolean){
