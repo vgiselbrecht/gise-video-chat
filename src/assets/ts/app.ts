@@ -83,12 +83,15 @@ export class App{
     }
 
     setRoom(): void{
+        var cla = this;
         if (!location.hash) {
             location.hash = Math.floor(Math.random() * 0xFFFFFF).toString(16);
         }
         this.room = location.hash.substring(1);
         window.onhashchange = function() {
-            location.reload();
+            if(cla.room !== location.hash.substring(1)){
+                location.reload();
+            }
         }
     }
 
