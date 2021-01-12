@@ -2,9 +2,21 @@
 
 ![Video Chat Demo](https://www.gise.at/images/VideoChat.PNG)
 
-## Installation
+## Demo
 
-Load code and dependencies
+[chat.gise.at](https://chat.gise.at)
+
+The characters after the hashtag define the room, if no hashtag is selected, a room is created dynamically.
+
+For example, all visitors with a link to [chat.gise.at/#roulette-chat](https://chat.gise.at#roulette-chat) enter into a room and can communicate with each other there.
+
+## Own installation
+
+This video chat is made to install it on an own Webserver.
+The Webserver need no server-side programming language, only a free firebase project is required.
+
+### Configuration
+Load code and dependencies:
 ```
 git clone https://github.com/vgiselbrecht/chat.git chat
 cd chat
@@ -38,6 +50,7 @@ export default {
     }
 }
 ```
+Additional STUN / TURN Server can also be added in communication/webrtc/iceServers.
 
 ### Deploy Video Chat for development
 ```
