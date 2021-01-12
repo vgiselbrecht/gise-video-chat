@@ -8,7 +8,9 @@
         "module": "es2015",
         "outDir": "src/assets/js",
         "allowSyntheticDefaultImports": true,
-        "esModuleInterop": true
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
+        "moduleResolution": "node"
     },
     "filesGlob": [
         "node_modules/@types/**/*.d.ts"

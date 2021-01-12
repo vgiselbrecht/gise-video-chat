@@ -25,26 +25,29 @@ npm install
 
 For signaling you need a free [Firebase Project](https://console.firebase.google.com/u/0/) with anonymous authentication and realtime database.
 
-Copy the firebase configuration to the src/config.js files, based on src/config.tmp.js.
-```javascript
-export default {
-    exchangeServices: { 
-        firebase: {
-            apiKey: "",
-            authDomain: "",
-            databaseURL: "",
-            projectId: "",
-            storageBucket: "",
-            messagingSenderId: "",
-            appId: "",
-            measurementId: ""
+Copy the firebase configuration to the src/config.json files, based on src/config.tmp.json.
+```json
+{
+    "meta": {
+        "title": "Video Chat"
+    },
+    "exchangeServices": { 
+        "firebase": {
+            "apiKey": "",
+            "authDomain": "",
+            "databaseURL": "",
+            "projectId": "",
+            "storageBucket": "",
+            "messagingSenderId": "",
+            "appId": "",
+            "measurementId": ""
         }
     },
-    communication: {
-        webrtc: {
-            iceServers: [
-                {'urls': 'stun:stun.services.mozilla.com'}, 
-                {'urls': 'stun:stun.l.google.com:19302'}
+    "communication": {
+        "webrtc": {
+            "iceServers": [
+                {"urls": "stun:stun.services.mozilla.com"}, 
+                {"urls": "stun:stun.l.google.com:19302"}
             ]
         }
     }

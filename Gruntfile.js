@@ -4,6 +4,8 @@ const path = require('path');
 
 module.exports = function(grunt) {
 
+  var chatConfig = grunt.file.readJSON("./src/config.json");
+
   grunt.initConfig({
     webpack: {
       myconfig: {
@@ -74,6 +76,10 @@ module.exports = function(grunt) {
             {
               match: 'version',
               replacement: new Date().getTime()
+            },
+            {
+              match: 'title',
+              replacement: chatConfig.meta.title
             }
           ]
         },

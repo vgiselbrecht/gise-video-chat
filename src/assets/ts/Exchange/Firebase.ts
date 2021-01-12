@@ -1,6 +1,6 @@
 
 import { IExchange } from "./IExchange";
-import {default as config} from "../../../config"
+import config from "../../../config.json"
 import { Alert } from "../Elements/Alert";
 import { Translator } from "../Utils/Translator";
 

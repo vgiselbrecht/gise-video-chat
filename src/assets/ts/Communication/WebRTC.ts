@@ -1,7 +1,7 @@
 
 import { ICommunication } from "./ICommunication";
 import { IPartner } from "../Partner/IPartner";
-import {default as config} from "../../../config"
+import config from "../../../config.json"
 
 export class WebRTC implements ICommunication{
     

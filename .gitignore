@@ -4,4 +4,4 @@ nbproject
 .tscache
 public_html/proxy.php
 dist
-src/config.js
+src/config.json
