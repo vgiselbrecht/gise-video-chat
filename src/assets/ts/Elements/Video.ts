@@ -1,4 +1,5 @@
 import { IPartner } from "../Partner/IPartner";
+import { Translator } from "../Utils/Translator";
 
 declare var Vue: any;
 
@@ -35,7 +36,7 @@ export class Video{
         this.videoVueObject = new Vue({
             el: $(this.element).find(".video-info-wrap").get(0),
             data: {
-                name: cla.partner ? cla.partner.getName() : "Du",
+                name: cla.partner ? cla.partner.getName() : Translator.get("You"),
                 expanded: false,
                 muted: false,
                 cameraOff: false,

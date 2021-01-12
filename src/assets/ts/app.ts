@@ -21,6 +21,7 @@ import { Lightbox } from "./Elements/Lightbox";
 import { Invite } from "./Elements/Invite";
 import { JQueryUtils } from "./Utils/JQuery";
 import { Alert } from "./Elements/Alert";
+import { Translator } from "./Utils/Translator";
 
 export class App{
 
@@ -120,7 +121,7 @@ export class App{
                 }
             })
             .catch(function(err) {
-                new Alert("Es kann leider nicht auf die Kamera zugegriffen werden! <br>Sie sind daher nur als Zuhörer dabei!");
+                new Alert(Translator.get("mediaaccesserrormessage"));
                 app.setAsListener(true);
                 if(!app.called){
                     app.callOther(); 
@@ -268,6 +269,7 @@ export class App{
 
 var app = null;
 $(function() {
+    Translator.setTranslationsInHTML();
     app = new App();
     app.run();
 });

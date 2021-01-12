@@ -1,5 +1,6 @@
 import { App } from "../app";
 import { Cookie } from "../Utils/Cookie";
+import { Translator } from "../Utils/Translator";
 
 declare var Vue: any;
 
@@ -24,7 +25,8 @@ export class Userinfo{
         this.userinfoVueObject = new Vue({
             el: '#userinfo',
             data: {
-                name: Cookie.getCookie(cla.nameCookie) ?? ""
+                name: Cookie.getCookie(cla.nameCookie) ?? "",
+                namelabel: Translator.get("name")
             },
             methods: {
                 changeUserinfo: function(){

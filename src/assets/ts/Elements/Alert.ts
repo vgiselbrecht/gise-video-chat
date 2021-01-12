@@ -1,3 +1,5 @@
+import { Translator } from "../Utils/Translator";
+
 export class Alert{
 
     id: number;
@@ -14,7 +16,7 @@ export class Alert{
                 <div class="alert-inner">
                     <div class="message">${message}</div>
                     <div class="button-area">
-                        <button>Ok</button>
+                        <button>${Translator.get("ok")}</button>
                     </div>
                 </div>
             </div>

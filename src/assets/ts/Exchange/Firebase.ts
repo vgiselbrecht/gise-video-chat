@@ -2,6 +2,7 @@
 import { IExchange } from "./IExchange";
 import {default as config} from "../../../config"
 import { Alert } from "../Elements/Alert";
+import { Translator } from "../Utils/Translator";
 
 declare var firebase: any; 
 
@@ -32,7 +33,7 @@ export class Firebase implements IExchange{
             })
             .catch((error) => {
                 console.log(error);
-                new Alert("Autentifizierungsfehler bei Firebase!<br>Die Seite muss neu geladen werden!");
+                new Alert(Translator.get("firebaseautherror"));
             });
     }
 

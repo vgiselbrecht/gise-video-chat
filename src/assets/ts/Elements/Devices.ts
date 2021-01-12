@@ -1,5 +1,6 @@
 import { App } from "../app";
 import { Cookie } from "../Utils/Cookie";
+import { Translator } from "../Utils/Translator";
 
 declare var Vue: any;
 
@@ -27,13 +28,13 @@ export class Devices{
           const deviceInfo = deviceInfos[i];
           var value = deviceInfo.deviceId;
           if (deviceInfo.kind === 'audioinput') {
-            var text = deviceInfo.label || `microphone`;
+            var text = deviceInfo.label || Translator.get("microphone");
             this.audioDevices[value] = text;
           } else if (deviceInfo.kind === 'audiooutput') {
-            var text = deviceInfo.label || `speaker`;
+            var text = deviceInfo.label || Translator.get("speaker");
             this.soundDevices[value] = text;
           } else if (deviceInfo.kind === 'videoinput') {
-            var text = deviceInfo.label || `camera`;
+            var text = deviceInfo.label || Translator.get("video");
             this.videoDevices[value] = text;
           } else {
             console.log('Some other kind of source/device: ', deviceInfo);
@@ -56,7 +57,10 @@ export class Devices{
                     sound: null,
                     soundoptions: {},
                     // @ts-ignore
-                    soundAllowed: typeof cla.app.yourVideo.sinkId !== 'undefined' 
+                    soundAllowed: typeof cla.app.yourVideo.sinkId !== 'undefined',
+                    microphonelabel: Translator.get("microphone"),
+                    videolabel: Translator.get("video"),
+                    speakerlabel: Translator.get("speaker"),
                 },
                 methods: {
                     onChange() {

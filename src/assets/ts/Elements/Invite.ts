@@ -1,4 +1,5 @@
 import { App } from "../app";
+import { Translator } from "../Utils/Translator";
 
 declare var Vue: any;
 
@@ -18,7 +19,8 @@ export class Invite{
             el: '#invite',
             data: {
                 link: location,
-                copied: false
+                copied: false,
+                inviteotherwithlink: Translator.get("inviteotherwithlink")
             },
             methods: {
                 copy: function(){

@@ -39,9 +39,9 @@
                 </div><div id="sidebar">
                     <div class="tabs">
                         <div class="tabs-header row">
-                            <div tab="chat" class="col-xs-3">Chat</div>
-                            <div tab="partner" class="col-xs-4">Teilnehmer</div>
-                            <div tab="settings" class="col-xs-5">Einstellungen</div>
+                            <div tab="chat" class="col-xs-3" data-lang="chat">Chat</div>
+                            <div tab="partner" class="col-xs-4" data-lang="participant">Participant</div>
+                            <div tab="settings" class="col-xs-5" data-lang="settings">Settings</div>
                         </div>
                         <div class="tabs-content">
                             <div id="tab-chat">
@@ -54,7 +54,7 @@
                                             <span class="close fas fa-times" v-on:click="closeExtra"></span>
                                         </div>
                                         <form class="msger-inputarea" v-on:submit.prevent="sendMessage">
-                                            <textarea v-model="message" type="text" class="msger-input" placeholder="Deine Nachricht..."
+                                            <textarea v-model="message" type="text" class="msger-input" :placeholder="[[yourmessage]]"
                                             @keydown.enter.exact.prevent
                                             @keyup.enter.exact="sendMessage"></textarea>
                                             <label class="msger-imgupload fas fa-file-image">
@@ -67,7 +67,7 @@
                             </div>
                             <div id="tab-partner">
                                 <div id="invite" class="row">
-                                    <div class="col-xs-12 invite-header">Lade andere über den Link ein:</div>
+                                    <div class="col-xs-12 invite-header">{{inviteotherwithlink}}:</div>
                                     <div class="col-xs-12 invite-content">
                                         <input v-model="link" readonly type="text" id="invite-link"><button v-bind:class="{'fa-copy': !copied, 'fa-check': copied}" v-on:click="copy" class="fas"></button>
                                     </div>
@@ -81,13 +81,13 @@
                             <div id="tab-settings">
                                 <div id="userinfo">
                                     <div class="row">
-                                        <label class="col-xs-6" >Name:</label>
+                                        <label class="col-xs-6" >{{namelabel}}:</label>
                                         <input class="col-xs-6" v-model="name" @blur="changeUserinfo" placeholder="Ihr Name">
                                     </div>
                                 </div>
                                 <div id="devices">
                                     <div class="row">
-                                        <label class="col-xs-6" >Mikrofon:</label>
+                                        <label class="col-xs-6" >{{microphonelabel}}:</label>
                                         <select class="col-xs-6" v-model="audio" @change="onChange()">
                                             <option v-for="(option, index) in audiooptions" :key="index" v-bind:value="index">
                                             {{ option }}
@@ -95,7 +95,7 @@
                                         </select>
                                     </div>
                                     <div class="row">
-                                        <label class="col-xs-6" >Video:</label>
+                                        <label class="col-xs-6" >{{videolabel}}:</label>
                                         <select class="col-xs-6" v-model="video" @change="onChange()">
                                             <option v-for="(option, index) in videooptions" :key="index" v-bind:value="index">
                                             {{ option }}
@@ -103,7 +103,7 @@
                                         </select>
                                     </div>
                                     <div class="row sound" v-bind:class="{'allowed': soundAllowed}" >
-                                        <label class="col-xs-6" >Lautsprecher:</label>
+                                        <label class="col-xs-6" >{{speakerlabel}}:</label>
                                         <select class="col-xs-6" v-model="sound" @change="onChange()">
                                             <option v-for="(option, index) in soundoptions" :key="index" v-bind:value="index">
                                             {{ option }}

@@ -8,6 +8,7 @@ import { IDatabaseObjectElementList } from "../Database/IDatabase";
 import { IDatabaseQuery } from "../Database/IDatabase";
 import { IndexedDB } from "../Database/IndexedDB";
 import { Alert } from "./Alert";
+import { Translator } from "../Utils/Translator";
 
 declare var Vue: any;
 
@@ -55,7 +56,8 @@ export class Textchat{
                 result: "",
                 extrainfo: "",
                 extrainfoVisible: false,
-                image: null
+                image: null,
+                yourmessage: Translator.get("yourmessage")
             },
             methods: {
                 sendMessage: function(){
@@ -69,14 +71,14 @@ export class Textchat{
                         var data = {type: cla.textchatMessageType, message: message};
                         if(cla.checkSize(data)){
                             cla.app.sendMessageToAllPartners(data); 
-                            cla.addMessage("Du", message.image, new Date(), true, cla.textchatMessageTypeImage);
+                            cla.addMessage(Translator.get("You"), message.image, new Date(), true, cla.textchatMessageTypeImage);
                         } else {
-                            new Alert("Die Datei ist zu groß für den Versand, die Datei darf nur 256kb groß sein!");
+                            new Alert(Translator.get("chatfilesizetogreat"));
                             return;
                         }
                     } else if(this.message){
                         cla.app.sendMessageToAllPartners({type: cla.textchatMessageType, message: {text: this.message}}); 
-                        cla.addMessage("Du", this.message, new Date(), true);
+                        cla.addMessage(Translator.get("You"), this.message, new Date(), true);
                     }
                     this.image = null;
                     this.extrainfoVisible = false;

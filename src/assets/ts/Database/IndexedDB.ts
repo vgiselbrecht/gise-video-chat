@@ -1,4 +1,5 @@
 import { Alert } from "../Elements/Alert";
+import { Translator } from "../Utils/Translator";
 import { IDatabase } from "./IDatabase";
 import { IDatabaseStructure } from "./IDatabase";
 import { IDatabaseObject } from "./IDatabase";
@@ -13,7 +14,7 @@ export class IndexedDB implements IDatabase{
 
     constructor(){
         if (!window.indexedDB) {
-            new Alert("In Ihrem Browser kann der Chat leider nicht gespeichert werden!");
+            new Alert(Translator.get("errortosavechat"));
         }
     }
 

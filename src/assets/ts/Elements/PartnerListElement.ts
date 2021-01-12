@@ -1,6 +1,7 @@
 import { App } from "../app";
 import { IPartner } from "../Partner/IPartner";
 import { IPartners } from "../Partner/IPartners";
+import { Translator } from "../Utils/Translator";
 
 declare var Vue: any;
 
@@ -33,7 +34,7 @@ export class PartnerListElement{
         this.partnerListElementVueObject = new Vue({
             el: "#partnerlistelement-" + (cla.partner ? cla.partner.id : 0),
             data: {
-                name: cla.partner ? cla.partner.getName() : "Du",
+                name: cla.partner ? cla.partner.getName() : Translator.get("You"),
                 muted: false,
                 connected: true,
                 cameraOff: false,
