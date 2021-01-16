@@ -131,6 +131,7 @@
                 </div>
                 <div id="clickbackground"></div>
             </div>
+        </div>
         <div id="lightbox" v-on:dblclick="closeLightbox" v-bind:class="{'open': !closed}">
             <img id="lightboxImageElement"  :src="src" v-bind:class="{'active': mode == 'image'}">
             <video id="lightboxVideoElement" controls autoplay :src="src" v-bind:class="{'active': mode == 'video'}"></video>
