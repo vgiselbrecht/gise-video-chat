@@ -13,5 +13,7 @@ export default{
    "chat": "Chat",
    "participant": "Teilnehmer",
    "settings": "Einstellungen",
-   "ok": "Ok"
+   "ok": "Ok",
+   "buildownvideochat": "Baue deinen eigenen Video Chat",
+   "reportabug": "Melde einen Fehler"
 }

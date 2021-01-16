@@ -215,7 +215,7 @@ html,body{
     }
   }
   #devices{
-    //border-bottom: 2px solid #ccc;
+    border-bottom: 1px solid $active-color;
     margin-bottom: 20px;
     label{
       font-weight: bold;
@@ -236,6 +236,23 @@ html,body{
       display: none;
       &.allowed{
         display: flex;
+      }
+    }
+  }
+  #linkarea{
+    > .row{
+      > a{
+        display: block;
+        padding: 5px 2px;
+        color: #000;
+        text-decoration: none;
+        font-size: 18px;
+        &:hover{
+          color: $active-color;
+        }
+        span.fas{
+
+        }
       }
     }
   }
