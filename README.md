@@ -1,14 +1,23 @@
-# Video Chat based on WebRTC and Firebase
+# Free group video chat based on WebRTC and Firebase
 
 ![Video Chat Demo](https://www.gise.at/images/VideoChat.PNG)
 
+## Features
+
+* Group video chat with no limits
+* Only peer-to-perr connections
+* Firebase is only used for signaling
+* Screen sharing
+* Textchat with images
+* Change of video and microphone source
+
 ## Demo
 
-[chat.gise.at](https://chat.gise.at)
+Live Demo: [https://chat.gise.at](https://chat.gise.at)
 
 The characters after the hashtag define the room, if no hashtag is selected, a room is created dynamically.
 
-For example, all visitors with a link to [chat.gise.at/#roulette-chat](https://chat.gise.at#roulette-chat) enter into a room and can communicate with each other there.
+For example, all visitors with a link to [https://chat.gise.at/#roulette-chat](https://chat.gise.at#roulette-chat) enter into a room and can communicate with each other there.
 
 ## Own installation
 
@@ -21,11 +30,12 @@ Load code and dependencies:
 git clone https://github.com/vgiselbrecht/chat.git chat
 cd chat
 npm install
+cp src/config.tmp.json src/config.json
 ```
 
 For signaling you need a free [Firebase Project](https://console.firebase.google.com/u/0/) with anonymous authentication and realtime database.
 
-Copy the firebase configuration to the src/config.json files, based on src/config.tmp.json.
+Copy the firebase configuration to the src/config.json file in exchangeServices/firebase.
 ```json
 {
     "meta": {
