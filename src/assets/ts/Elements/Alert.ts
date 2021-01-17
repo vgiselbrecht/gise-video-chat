@@ -16,7 +16,7 @@ export class Alert{
                 <div class="alert-inner">
                     <div class="message">${message}</div>
                     <div class="button-area">
-                        <button>${Translator.get("ok")}</button>
+                        <button class="button">${Translator.get("ok")}</button>
                     </div>
                 </div>
             </div>

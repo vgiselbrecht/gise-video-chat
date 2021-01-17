@@ -18,6 +18,7 @@ import { PartnerListElement } from "./Elements/PartnerListElement";
 import { Userinfo } from "./Elements/Userinfo";
 import { Lightbox } from "./Elements/Lightbox";
 import { Invite } from "./Elements/Invite";
+import { CreateRoom } from "./Elements/CreateRoom";
 import { JQueryUtils } from "./Utils/JQuery";
 import { Alert } from "./Elements/Alert";
 import { Translator } from "./Utils/Translator";
@@ -41,6 +42,7 @@ export class App{
     userinfo: Userinfo;
     videogrid: Videogrid;
     lightbox: Lightbox;
+    createRoom: CreateRoom;
     invite: Invite;
     closed: boolean = false;
     called: boolean = false;
@@ -48,12 +50,7 @@ export class App{
     partnerListElement: PartnerListElement;
 
     constructor(){
-        this.setRoom();
-        console.log("Id: " + this.yourId + " Room: " + this.room);
         this.yourVideo = document.getElementById("yourVideo");
-        this.exchange = new Firebase(this.room, this.yourId, function(){
-            app.exchange.addReadEvent(app.readMessage);
-        });
         this.yourVideoElement = new Video(document.getElementById("yourVideoArea"), null);
         this.partnerListElement = new PartnerListElement(null);
         this.controls = new Controls(this);
@@ -63,36 +60,35 @@ export class App{
         this.userinfo = new Userinfo(this);
         this.lightbox = new Lightbox(this);
         this.invite = new Invite(this);
+        this.createRoom = new CreateRoom(this);
         this.videogrid = new Videogrid();
         this.videogrid.init();
-        $(window).on("beforeunload", function() { 
-            app.hangOut();
-        });
     }
 
     run(){ 
+        if (location.hash) {
+            this.room = location.hash.substring(1);
+            this.openConnection();
+        } else{
+            this.createRoom.showCreateRoom();
+        }
+    }
+
+    openConnection(){
+        console.log("Id: " + this.yourId + " Room: " + this.room);
+        this.exchange = new Firebase(this.room, this.yourId, function(){
+            app.exchange.addReadEvent(app.readMessage);
+        });
+        navigator.mediaDevices.enumerateDevices().then(function(deviceInfos){
+            app.devices.gotDevices(deviceInfos);
+        });
+
         setTimeout(function(){
             if(!app.called){
                 app.callOther(); 
             }
         }, 1000);
-        
-        navigator.mediaDevices.enumerateDevices().then(function(deviceInfos){
-            app.devices.gotDevices(deviceInfos);
-        });
-    }
-
-    setRoom(): void{
-        var cla = this;
-        if (!location.hash) {
-            location.hash = Math.floor(Math.random() * 0xFFFFFF).toString(16);
-        }
-        this.room = location.hash.substring(1);
-        window.onhashchange = function() {
-            if(cla.room !== location.hash.substring(1)){
-                location.reload();
-            }
-        }
+        this.jsEvents();
     }
 
     initialCamera(first: boolean = false) {
@@ -268,6 +264,17 @@ export class App{
                 this.partners[id].closeConnection();
             }
         }
+    }
+
+    jsEvents(){
+        window.onhashchange = function() {
+            if(app.room !== location.hash.substring(1)){
+                location.reload();
+            }
+        }
+        $(window).on("beforeunload", function() { 
+            app.hangOut();
+        });
     }
 }
 

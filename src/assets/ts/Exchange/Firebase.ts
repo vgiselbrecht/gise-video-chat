@@ -42,7 +42,7 @@ export class Firebase implements IExchange{
         var cla = this;
         if(cla.isAuthenticated){
             cla.sendMessageInner(data, receiver);
-        } else{
+        } else {
             var authIntervall = setInterval(function(){
                 if(cla.isAuthenticated){
                     cla.sendMessageInner(data, receiver);

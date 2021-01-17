@@ -41,4 +41,8 @@ export class Invite{
             }
         });
     }
+
+    resetLink(){
+        this.inviteVueObject.link = location.href;
+    }
 }

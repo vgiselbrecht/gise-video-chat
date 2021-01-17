@@ -37,6 +37,7 @@ export class WebRTC implements ICommunication{
             return cla.onaddtrackEvent(event.streams[0], cla.partner);
         };
         pc.oniceconnectionstatechange = function() {
+            console.log("ICE status: " + pc.iceConnectionState);
             if(pc.iceConnectionState == 'disconnected') {
                 cla.connectionLosedEvent(cla.partner);
             } else if (pc.iceConnectionState == 'connected'){

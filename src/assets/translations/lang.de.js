@@ -15,5 +15,8 @@ export default{
    "settings": "Einstellungen",
    "ok": "Ok",
    "buildownvideochat": "Baue deinen eigenen Video Chat",
-   "reportabug": "Melde einen Fehler"
+   "reportabug": "Melde einen Fehler",
+   "createaroom": "Erstelle einen Raum",
+   "create": "Erstellen",
+   "roomname": "Raum-Name"
 }
