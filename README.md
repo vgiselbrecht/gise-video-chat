@@ -5,11 +5,13 @@
 ## Features
 
 * Group video chat with no limits
-* Only peer-to-perr connections
+* Browser based
+* Only peer-to-peer connections
 * Firebase is only used for signaling
 * Screen sharing
-* Textchat with images
+* Text-Chat with images
 * Change of video and microphone source
+* Multilingual (English and German)
 
 ## Demo
 
