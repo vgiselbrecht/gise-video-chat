@@ -28,6 +28,14 @@ Therefore simply forward the current URL to invite others.
 This video chat is made to install it on an own Webserver.
 The Webserver need no server-side programming language, only a free firebase project is required.
 
+### Prerequisites
+* Local development environment
+    * Git
+    * Node.js
+    * npm
+* Server
+    * nginx or apache
+
 ### Configuration
 Load code and dependencies:
 ```
