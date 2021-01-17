@@ -5,24 +5,36 @@
 ## Features
 
 * Group video chat with no limits
-* Only peer-to-perr connections
+* Browser based
+* Only peer-to-peer connections
 * Firebase is only used for signaling
 * Screen sharing
-* Textchat with images
+* Text-Chat with images
 * Change of video and microphone source
+* Multilingual (English and German)
 
 ## Demo
 
 Live Demo: [https://chat.gise.at](https://chat.gise.at)
 
-The characters after the hashtag define the room, if no hashtag is selected, a room is created dynamically.
+The characters after the hashtag define the room, if no hashtag is selected, the create room dialog is displayed.
 
 For example, all visitors with a link to [https://chat.gise.at/#roulette-chat](https://chat.gise.at#roulette-chat) enter into a room and can communicate with each other there.
+
+Therefore simply forward the current URL to invite others.
 
 ## Own installation
 
 This video chat is made to install it on an own Webserver.
 The Webserver need no server-side programming language, only a free firebase project is required.
+
+### Prerequisites
+* Local development environment
+    * Git
+    * Node.js
+    * npm
+* Server
+    * nginx or apache
 
 ### Configuration
 Load code and dependencies:
