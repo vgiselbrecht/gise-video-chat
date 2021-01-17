@@ -7,7 +7,7 @@
     "type": "git",
     "url": "https://github.com/vgiselbrecht/chat.git"
   },
-  "license": "UNLICENSED",
+  "license": "Apache 2.0",
   "devDependencies": {
     "@types/jquery": "^3.5.5",
     "@types/webrtc": "0.0.26",
