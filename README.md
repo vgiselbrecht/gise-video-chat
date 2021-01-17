@@ -15,9 +15,11 @@
 
 Live Demo: [https://chat.gise.at](https://chat.gise.at)
 
-The characters after the hashtag define the room, if no hashtag is selected, a room is created dynamically.
+The characters after the hashtag define the room, if no hashtag is selected, the create room dialog is displayed.
 
 For example, all visitors with a link to [https://chat.gise.at/#roulette-chat](https://chat.gise.at#roulette-chat) enter into a room and can communicate with each other there.
+
+Therefore simply forward the current URL to invite others.
 
 ## Own installation
 
