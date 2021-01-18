@@ -6,7 +6,7 @@ export class Videogrid{
         const aspectRatio = 4 / 3;
         const screenWidth = gallery.offsetWidth;
         const screenHeight = gallery.offsetHeight;
-        const videoCount = $(gallery).find(".video-item:not(.unconnected)").length;
+        const videoCount = $(gallery).find(".video-item:not(.hide)").length;
 
         // or use this nice lib: https://github.com/fzembow/rect-scaler
         function calculateLayout(

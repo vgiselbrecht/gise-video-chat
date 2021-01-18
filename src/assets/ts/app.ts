@@ -130,7 +130,7 @@ export class App{
 
     callOther(){
         this.called = true;
-        this.exchange.sendMessage({'call': this.yourId});
+        this.exchange.sendMessage({'call': 'init'});
     }
 
     readMessage(sender: number, dataroom: string, msg) {
@@ -142,14 +142,16 @@ export class App{
                 app.addPartner(sender);
             }
             if((sender in app.partners) && app.partners[sender]){
-                var partnerConnection = app.partners[sender].connection;
+                var partner = app.partners[sender];
+                var partnerConnection = partner.connection;
+                partner.lastPing = new Date();
                 if (msg.call !== undefined)
                 {
-                    app.partners[sender].createOffer(true);
+                    partner.createOffer(true);
                 }
                 else if (msg.closing !== undefined)
                 {
-                    app.partners[sender].closeConnection();
+                    partner.closeConnection();
                     delete app.partners[sender];
                 }
                 else if (msg.ice !== undefined)
