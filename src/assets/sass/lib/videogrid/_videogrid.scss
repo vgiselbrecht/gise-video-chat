@@ -63,6 +63,36 @@
                     height: auto;
                     cursor: pointer;
                 }
+                .connect{
+                    display: none;
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    width: 70px;
+                    height: 60px;
+                    margin-left: -35px;
+                    margin-top: -30px;
+                    color: #fff;
+                    text-align: center;
+                    text-shadow: 0px 0px 5px black;
+                    *{
+                        width: auto;
+                        height: auto;
+                    }
+                    .fas{
+                        font-size: 30px;
+                        animation:spin 4s linear infinite;
+                    }
+                    .text{
+                        font-size: 16px;
+                        line-height: 40px;
+                    }
+                }
+            }
+        }
+        &.unconnected{
+            .video-wrap .video-info-wrap .connect{
+                display: block;
             }
         }
         * {
@@ -73,6 +103,3 @@
     }
 
   }
-  
-  
-  

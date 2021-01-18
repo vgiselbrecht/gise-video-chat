@@ -18,5 +18,6 @@ export default{
    "reportabug": "Melde einen Fehler",
    "createaroom": "Erstelle einen Raum",
    "create": "Erstellen",
-   "roomname": "Raum-Name"
+   "roomname": "Raum-Name",
+   "connect": "Verbinde..."
 }

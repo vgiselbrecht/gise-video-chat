@@ -27,6 +27,10 @@ export class Video{
                 <span v-bind:class="{'on': !screenSharing}" class="screen fas fa-desktop"></span>
                 </div>
                 <div v-on:click="expand" v-bind:class="{'fa-compress-arrows-alt': expanded, 'fa-expand-arrows-alt': !expanded}" class="expand fas"></div>
+                <div class="connect">
+                    <span class="fas fa-sync"></span>
+                    <span class="text">${Translator.get("connect")}</span>
+                </div>
             </div>
         `);
     }

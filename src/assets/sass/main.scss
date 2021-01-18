@@ -276,3 +276,10 @@ button.button{
       outline: none;
   }
 }
+
+
+@keyframes spin { 
+  100% { 
+      transform:rotate(360deg); 
+    }
+} 
