@@ -241,6 +241,9 @@ html,body{
     }
   }
   #linkarea{
+    border-bottom: 1px solid $active-color;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
     > .row{
       > a{
         display: block;
@@ -256,6 +259,10 @@ html,body{
         }
       }
     }
+  }
+  #systeminfo{
+    padding: 0px 3px;
+    font-size: 14px;
   }
 }
 

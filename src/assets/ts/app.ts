@@ -19,6 +19,7 @@ import { Userinfo } from "./Elements/Userinfo";
 import { Lightbox } from "./Elements/Lightbox";
 import { Invite } from "./Elements/Invite";
 import { CreateRoom } from "./Elements/CreateRoom";
+import { SystemInfo } from "./Elements/SystemInfo";
 import { JQueryUtils } from "./Utils/JQuery";
 import { Alert } from "./Elements/Alert";
 import { Translator } from "./Utils/Translator";
@@ -43,6 +44,7 @@ export class App{
     videogrid: Videogrid;
     lightbox: Lightbox;
     createRoom: CreateRoom;
+    systemInfo: SystemInfo;
     invite: Invite;
     closed: boolean = false;
     called: boolean = false;
@@ -61,6 +63,7 @@ export class App{
         this.lightbox = new Lightbox(this);
         this.invite = new Invite(this);
         this.createRoom = new CreateRoom(this);
+        this.systemInfo = new SystemInfo(this);
         this.videogrid = new Videogrid();
         this.videogrid.init();
     }
