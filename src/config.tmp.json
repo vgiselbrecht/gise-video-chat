@@ -2,6 +2,9 @@
     "meta": {
         "title": "Video Chat"
     },
+    "privacy": {
+        "firebaseAnalytics": 0
+    },
     "exchangeServices": { 
         "firebase": {
             "apiKey": "",
