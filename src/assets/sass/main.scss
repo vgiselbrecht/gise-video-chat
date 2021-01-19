@@ -244,7 +244,7 @@ html,body{
     > .row{
       > a{
         display: block;
-        padding: 5px 2px;
+        padding: 5px 3px;
         color: #000;
         text-decoration: none;
         font-size: 18px;
@@ -264,13 +264,13 @@ button.button{
   border: 0;
   padding: 5px 20px;
   color: #fff;
-  border-radius: 5px;
+  border-radius: 2px;
   box-shadow: 0 0 2px 1px #555;
   transition: box-shadow 0.3s ease-in-out;
   font-size: 16px;
   cursor: pointer;
   &:hover{
-      box-shadow: 0 0 6px 1px #555;
+      box-shadow: 0 0 5px 1px #555;
   }
   &:focus{
       outline: none;

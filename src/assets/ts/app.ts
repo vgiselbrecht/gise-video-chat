@@ -72,6 +72,8 @@ export class App{
         } else{
             this.createRoom.showCreateRoom();
         }
+        $("#main").show();
+        this.videogrid.recalculateLayout();
     }
 
     openConnection(){
