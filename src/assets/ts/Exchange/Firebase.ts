@@ -23,7 +23,9 @@ export class Firebase implements IExchange{
         this.room = room;
         this.yourId = yourId;
         firebase.initializeApp(this.firebaseConfig);
-        firebase.analytics();
+        if(config.privacy.firebaseAnalytics == 1){
+            firebase.analytics();
+        }
         firebase.auth().signInAnonymously()
             .then(() => {
                 cla.roomDatabase = firebase.database().ref('rooms/' + room + "/partners/all");

@@ -53,6 +53,9 @@ Copy the firebase configuration to the src/config.json file in exchangeServices/
     "meta": {
         "title": "Video Chat"
     },
+    "privacy": {
+        "firebaseAnalytics": 0
+    },
     "exchangeServices": { 
         "firebase": {
             "apiKey": "",

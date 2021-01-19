@@ -14,6 +14,8 @@ export interface ICommunication{
 
     addConnectionEvent(callback: (partner: IPartner) => void): void;
 
+    addCheckingEvent(callback: (partner: IPartner) => void): void;
+
     addOnMessageEvent(callback: (message: any, partner: IPartner) => void): void;
 
 }

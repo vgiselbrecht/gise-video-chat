@@ -19,7 +19,10 @@ export interface IPartner{
     devices: Devices;
     textchat: Textchat;
     connected: boolean;
-    offerLoop: any;
+    checking: boolean;
+    lastPing: Date;
+    lastConnectionLost: Date;
+    calls: number;
     videogrid: Videogrid;
     videoGridElement: Video;
     partnerListElement: PartnerListElement;
@@ -41,4 +44,5 @@ export interface IPartner{
     reloadConnection(): void; 
     setSinkId(sinkId: any): void;
     sendMessage(message: any): void;
+    callPartner(): void
 }

@@ -18,5 +18,6 @@ export default{
     "reportabug": "Report a bug",
     "createaroom": "Create a room",
     "create": "Create",
-    "roomname": "Room name"
+    "roomname": "Room name",
+    "connect": "Connect..."
  }

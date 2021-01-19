@@ -26,7 +26,7 @@ export class Partner implements IPartner{
     exchange: IExchange
     videogrid: Videogrid
     connected: boolean = false;
-    offerLoop: any;
+    checking: boolean = false;
     messages: Array<any> = Array<any>();
     onConnectedEvent: (partner: IPartner) => void;
     onConnectionClosedEvent: (partner: IPartner) => void;
@@ -40,6 +40,11 @@ export class Partner implements IPartner{
     partnerListElement: PartnerListElement;
     stream: any;
 
+    lastPing: Date = new Date();
+    millisecondsBeforeHide: number = 10000;
+    lastConnectionLost: Date = new Date();
+    calls: number = 0;
+    maxCalls: number = 30;
     constructor(
         id: number, 
         exchange: IExchange, 
@@ -58,9 +63,8 @@ export class Partner implements IPartner{
             this.onConnectionClosedEvent = onConnectionClosedEvent;
             this.onConnectionLosedEvent = onConnectionLosedEvent;
 
-            var cla = this;
-            cla.addVideoElement();
-            cla.videogrid.recalculateLayout();
+            this.addVideoElement();
+            this.videogrid.recalculateLayout();
 
             var communication = new WebRTC(this);
             communication.addOnaddtrackEvent(this.onAddTrack);
@@ -68,9 +72,11 @@ export class Partner implements IPartner{
             communication.addConnectionLosedEvent(this.onConnectionLosed);
             communication.addConnectionEvent(this.onConnected);
             communication.addOnMessageEvent(this.onMessage);
+            communication.addCheckingEvent(this.checkingConnection);
             this.connection = communication.getPeerConnection();
             this.dataChannel = communication.getDataChannel(this.connection);
             this.setSendMessageInterval();
+            this.checkConnection();
     }
 
     getName(): string{
@@ -110,32 +116,41 @@ export class Partner implements IPartner{
         this.partnerListElement.partnerListElementVueObject.listener = listener;
     }
 
-    createOffer(doLoop: boolean = false): void {
-        if(!this.offerLoop){
-            this.createOfferInner();
-            var loop = 6;
-            var cla = this;
-            if(doLoop){
-                this.offerLoop = setInterval(function(){
-                    if(!cla.connected){
-                        if(loop == 0){
-                            clearInterval(cla.offerLoop);
-                            cla.offerLoop = null;
-                            cla.closeConnection();
-                        }else{
-                            cla.createOfferInner();
-                            loop--;
-                        }
-                    }else{
-                        clearInterval(cla.offerLoop);
-                        cla.offerLoop = null;
+    checkConnection(){
+        var cla = this;
+        setInterval(function(){
+            if(!cla.connected && !cla.closed && !cla.checking){
+                if(cla.lastPing.getTime() <= new Date().getTime() - 2000){
+                    cla.callPartner();
+                }
+                if(cla.lastPing.getTime() <= new Date().getTime() - cla.millisecondsBeforeHide
+                && cla.lastConnectionLost.getTime() <= new Date().getTime() - cla.millisecondsBeforeHide)
+                {
+                    if(!$('#video-item-'+ cla.id).hasClass("hide")){
+                        console.log("Hide partner video: " + cla.id);
+                        $('#video-item-'+ cla.id).addClass("hide");
+                        cla.videogrid.recalculateLayout();
                     }
-                }, 20000);
+                } else{
+                    if($('#video-item-'+ cla.id).hasClass("hide")){
+                        $('#video-item-'+ cla.id).removeClass("hide");
+                        cla.videogrid.recalculateLayout();
+                    }
+                }
             }
+        }, 2000);
+    }
+
+    callPartner(){
+        if(this.calls !== this.maxCalls){
+            this.exchange.sendMessage({'call': 'recall'}, this.id);
+            this.calls++;
+        } else{
+            this.closeConnection();
         }
     }
 
-    createOfferInner(): void{
+    createOffer(doLoop: boolean = false): void {
         if((!this.connected && !this.closed) || this.doReload){
             console.log("Create Offer to: " + this.id);
             let cla = this;
@@ -175,21 +190,23 @@ export class Partner implements IPartner{
         partner.gotTracks = true;
     };
 
+    checkingConnection(partner: IPartner){
+        partner.checking = true;
+        $('#video-item-'+partner.id).removeClass("hide");
+    }
+
     onConnected(partner: IPartner){
         console.log("Connection to: " + partner.id);
         partner.connected = true;
+        partner.checking = false;
+        partner.calls = 0;
         if(this.doReload){
             this.reloadConnection();
-        }
-        if(partner.offerLoop){
-            clearInterval(partner.offerLoop);
-            partner.offerLoop = null;
         }
 
         $('#video-item-'+partner.id).removeClass("unconnected");
         partner.onConnectedEvent(partner);
         partner.partnerListElement.partnerListElementVueObject.connected = true;
-        partner.videogrid.recalculateLayout();
 
         setTimeout(function(){
             if(!partner.gotTracks && !partner.listener){
@@ -214,11 +231,12 @@ export class Partner implements IPartner{
     onConnectionLosed(partner: IPartner){
         console.log("Connection losed to: " + partner.id);
         partner.connected = false;
-        partner.createOffer(true); 
+        partner.checking = false;
+        partner.lastConnectionLost = new Date();
+        //partner.callPartner();
         $('#video-item-'+partner.id).addClass("unconnected");
         partner.onConnectionLosedEvent(partner);
         partner.partnerListElement.partnerListElementVueObject.connected = false;
-        partner.videogrid.recalculateLayout();
     }
 
     reloadConnection(){
@@ -284,7 +302,7 @@ export class Partner implements IPartner{
     addVideoElement(){
         var cla = this;
         if(this.videoElement == undefined){
-            $("#video-area").append('<div class="video-item video-item-partner" id="video-item-'+this.id+'"><div class="video-wrap"><div class="video-inner-wrap"><video id="video-'+this.id+'" autoplay playsinline></video></div></div></div>');
+            $("#video-area").append('<div class="video-item video-item-partner unconnected" id="video-item-'+this.id+'"><div class="video-wrap"><div class="video-inner-wrap"><video id="video-'+this.id+'" autoplay playsinline></video></div></div></div>');
             this.videoElement = document.getElementById('video-'+this.id);
             this.videoGridElement = new Video(document.getElementById('video-item-'+this.id), this);
             this.partnerListElement = new PartnerListElement(this);

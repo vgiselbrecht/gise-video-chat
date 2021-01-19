@@ -19,6 +19,7 @@ import { Userinfo } from "./Elements/Userinfo";
 import { Lightbox } from "./Elements/Lightbox";
 import { Invite } from "./Elements/Invite";
 import { CreateRoom } from "./Elements/CreateRoom";
+import { SystemInfo } from "./Elements/SystemInfo";
 import { JQueryUtils } from "./Utils/JQuery";
 import { Alert } from "./Elements/Alert";
 import { Translator } from "./Utils/Translator";
@@ -43,6 +44,7 @@ export class App{
     videogrid: Videogrid;
     lightbox: Lightbox;
     createRoom: CreateRoom;
+    systemInfo: SystemInfo;
     invite: Invite;
     closed: boolean = false;
     called: boolean = false;
@@ -61,6 +63,7 @@ export class App{
         this.lightbox = new Lightbox(this);
         this.invite = new Invite(this);
         this.createRoom = new CreateRoom(this);
+        this.systemInfo = new SystemInfo(this);
         this.videogrid = new Videogrid();
         this.videogrid.init();
     }
@@ -72,6 +75,8 @@ export class App{
         } else{
             this.createRoom.showCreateRoom();
         }
+        $("#main").show();
+        this.videogrid.recalculateLayout();
     }
 
     openConnection(){
@@ -130,7 +135,7 @@ export class App{
 
     callOther(){
         this.called = true;
-        this.exchange.sendMessage({'call': this.yourId});
+        this.exchange.sendMessage({'call': 'init'});
     }
 
     readMessage(sender: number, dataroom: string, msg) {
@@ -142,14 +147,16 @@ export class App{
                 app.addPartner(sender);
             }
             if((sender in app.partners) && app.partners[sender]){
-                var partnerConnection = app.partners[sender].connection;
+                var partner = app.partners[sender];
+                var partnerConnection = partner.connection;
+                partner.lastPing = new Date();
                 if (msg.call !== undefined)
                 {
-                    app.partners[sender].createOffer(true);
+                    partner.createOffer(true);
                 }
                 else if (msg.closing !== undefined)
                 {
-                    app.partners[sender].closeConnection();
+                    partner.closeConnection();
                     delete app.partners[sender];
                 }
                 else if (msg.ice !== undefined)

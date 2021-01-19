@@ -11,6 +11,7 @@ export class WebRTC implements ICommunication{
     onaddtrackEvent: (stream: any, partner: IPartner) => void;
     connectionLosedEvent: (partner: IPartner) => void;
     connectionEvent: (partner: IPartner) => void;
+    checkingEvent: (partner: IPartner) => void;
     onMessageEvent: (message: any, partner: IPartner) => void;
 
     constructor(partner: IPartner){
@@ -42,6 +43,8 @@ export class WebRTC implements ICommunication{
                 cla.connectionLosedEvent(cla.partner);
             } else if (pc.iceConnectionState == 'connected'){
                 cla.connectionEvent(cla.partner);
+            } else if (pc.iceConnectionState == 'checking'){
+                cla.checkingEvent(cla.partner);
             }
         }
     }
@@ -81,6 +84,10 @@ export class WebRTC implements ICommunication{
 
     addConnectionEvent(callback: (partner: IPartner) => void): void{
         this.connectionEvent = callback;
+    }
+
+    addCheckingEvent(callback: (partner: IPartner) => void): void{
+        this.checkingEvent = callback;
     }
 
     addOnMessageEvent(callback: (message: any, partner: IPartner) => void): void{
