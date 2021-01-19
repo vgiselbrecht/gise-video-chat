@@ -35,7 +35,6 @@ export class Textchat{
     constructor(app: App){
         this.app = app;
         this.initialElements();
-        this.initialDatabase();
         var cla = this;
         setInterval(function(){
             if(cla.isChatVisible()){

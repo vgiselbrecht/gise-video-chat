@@ -84,6 +84,9 @@ export class App{
         this.exchange = new Firebase(this.room, this.yourId, function(){
             app.exchange.addReadEvent(app.readMessage);
         });
+
+        this.textchat.initialDatabase();
+        
         navigator.mediaDevices.enumerateDevices().then(function(deviceInfos){
             app.devices.gotDevices(deviceInfos);
         });
