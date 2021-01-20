@@ -96,4 +96,5 @@ Copy content from dist directory to your webserver.
 ```
 grunt watch
 ```
-To see changes after saving a file.
+Change the compiled code in dist directory after saving a project file.
+Ideally the dist directory is the document root of a local Webserver like nginx or apache.
