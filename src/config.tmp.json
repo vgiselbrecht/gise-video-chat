@@ -3,7 +3,9 @@
         "title": "Video Chat"
     },
     "privacy": {
-        "firebaseAnalytics": 0
+        "firebaseAnalytics": 0,
+        "imprint": "",
+        "gdpr": ""
     },
     "exchangeServices": { 
         "firebase": {

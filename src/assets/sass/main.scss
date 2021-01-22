@@ -263,7 +263,21 @@ html,body{
   #systeminfo{
     padding: 0px 3px;
     font-size: 14px;
+    .row{
+      padding: 2px 0px;
+    }
+    a{
+      text-decoration: none;
+      color:  $active-color;
+      &:hover{
+        color:  $active-hover-color;
+      }
+    }
   }
+}
+
+#tab-settings{
+  overflow-y: auto;
 }
 
 button.button{

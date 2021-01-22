@@ -19,5 +19,7 @@ export default{
     "createaroom": "Create a room",
     "create": "Create",
     "roomname": "Room name",
-    "connect": "Connect..."
+    "connect": "Connect...",
+    "imprint": "Imprint",
+    "privacy": "Privacy"
  }
