@@ -101,7 +101,9 @@ module.exports = function(grunt) {
       ts: {
          files: [
           'src/assets/ts/**/*.ts',
-          'src/assets/translations/*.js'
+          'src/assets/translations/*.js',
+          'src/config.json',
+          'package.json'
         ],
         tasks: ['webpack'] 
       },

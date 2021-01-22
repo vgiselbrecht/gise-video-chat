@@ -12,6 +12,7 @@
 * Text-Chat with images
 * Change of video and microphone source
 * Multilingual (English and German)
+* Mobile friendly
 
 ## Demo
 
@@ -37,7 +38,7 @@ The Webserver need no server-side programming language, only a free firebase pro
     * nginx or apache
 
 ### Configuration
-Load code and dependencies:
+Load code and dependencies in your local development environment:
 ```
 git clone https://github.com/vgiselbrecht/chat.git chat
 cd chat
@@ -54,7 +55,9 @@ Copy the firebase configuration to the src/config.json file in exchangeServices/
         "title": "Video Chat"
     },
     "privacy": {
-        "firebaseAnalytics": 0
+        "firebaseAnalytics": 0,
+        "imprint": "",
+        "gdpr": ""
     },
     "exchangeServices": { 
         "firebase": {
@@ -78,15 +81,17 @@ Copy the firebase configuration to the src/config.json file in exchangeServices/
     }
 }
 ```
-Additional STUN / TURN Server can also be added in communication/webrtc/iceServers.
+Additional STUN / TURN Server can also be added in communication/webrtc/iceServers. To use this video chat behind some Firewalls and NATs, you need a TURN server. 
 
-### Deploy Video Chat for development
+[List of free STUN and TURN Server](https://gist.github.com/sagivo/3a4b2f2c7ac6e1b5267c2f1f59ac6c6b)
+
+### Deploy video chat for development
 ```
 grunt deploy
 ```
 Add content from dist directory to the document root of your local webserver.
 
-### Deploy Video Chat for production
+### Deploy video chat for production
 ```
 grunt deploy --target=production
 ```

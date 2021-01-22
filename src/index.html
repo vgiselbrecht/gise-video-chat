@@ -126,8 +126,14 @@
                                     </div>
                                 </div>
                                 <div id="systeminfo">
-                                    <div class="row">
+                                    <div class="row version">
                                         Version:  {{version}}
+                                    </div>
+                                    <div class="row imprint" v-show="imprint">
+                                        <a v-bind:href="imprint" target="_blank" data-lang="imprint">Imprint</a>
+                                    </div>
+                                    <div class="row gdpr" v-show="gdpr">
+                                        <a v-bind:href="gdpr" target="_blank" data-lang="privacy">Privacy</a>
                                     </div>
                                 </div>
                             </div>

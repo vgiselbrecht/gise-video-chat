@@ -3,6 +3,7 @@ import { IExchange } from "./IExchange";
 import config from "../../../config.json"
 import { Alert } from "../Elements/Alert";
 import { Translator } from "../Utils/Translator";
+import { Settings } from "../Utils/Settings";
 
 declare var firebase: any; 
 
@@ -23,7 +24,7 @@ export class Firebase implements IExchange{
         this.room = room;
         this.yourId = yourId;
         firebase.initializeApp(this.firebaseConfig);
-        if(config.privacy.firebaseAnalytics == 1){
+        if(Settings.getValueOrDefault(config, "privacy.firebaseAnalytics") == 1){
             firebase.analytics();
         }
         firebase.auth().signInAnonymously()
