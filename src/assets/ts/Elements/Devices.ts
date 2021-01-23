@@ -24,6 +24,7 @@ export class Devices{
     }
 
     gotDevices(deviceInfos: any) {
+        var haveCamera = false;
         for (let i = 0; i !== deviceInfos.length; ++i) {
           const deviceInfo = deviceInfos[i];
           var value = deviceInfo.deviceId;
@@ -36,9 +37,13 @@ export class Devices{
           } else if (deviceInfo.kind === 'videoinput') {
             var text = deviceInfo.label || Translator.get("video");
             this.videoDevices[value] = text;
+            haveCamera = true;
           } else {
             console.log('Some other kind of source/device: ', deviceInfo);
           }
+        }
+        if(!haveCamera){
+            this.app.microphoneOnly = true;
         }
         this.setDeviceElements();
         this.app.initialCamera(true);
