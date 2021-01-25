@@ -88,9 +88,7 @@ export class App{
 
         this.textchat.initialDatabase();
         
-        navigator.mediaDevices.enumerateDevices().then(function(deviceInfos){
-            app.devices.gotDevices(deviceInfos);
-        });
+        app.devices.gotDevices(true);
 
         setTimeout(function(){
             if(!app.called){

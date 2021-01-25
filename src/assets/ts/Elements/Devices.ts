@@ -21,32 +21,43 @@ export class Devices{
     constructor(app: App){
         this.app = app;
         this.setDeviceElements();
+        var cla = this;
+        navigator.mediaDevices.ondevicechange = function(event) {
+            cla.gotDevices();
+        }
     }
 
-    gotDevices(deviceInfos: any) {
-        var haveCamera = false;
-        for (let i = 0; i !== deviceInfos.length; ++i) {
-          const deviceInfo = deviceInfos[i];
-          var value = deviceInfo.deviceId;
-          if (deviceInfo.kind === 'audioinput') {
-            var text = deviceInfo.label || Translator.get("microphone");
-            this.audioDevices[value] = text;
-          } else if (deviceInfo.kind === 'audiooutput') {
-            var text = deviceInfo.label || Translator.get("speaker");
-            this.soundDevices[value] = text;
-          } else if (deviceInfo.kind === 'videoinput') {
-            var text = deviceInfo.label || Translator.get("video");
-            this.videoDevices[value] = text;
-            haveCamera = true;
-          } else {
-            console.log('Some other kind of source/device: ', deviceInfo);
-          }
-        }
-        if(!haveCamera){
-            this.app.microphoneOnly = true;
-        }
-        this.setDeviceElements();
-        this.app.initialCamera(true);
+    gotDevices(init: boolean = false) {
+        var cla = this;
+        navigator.mediaDevices.enumerateDevices().then(function(deviceInfos){
+            var haveCamera = false;
+            cla.audioDevices = {};
+            cla.videoDevices = {};
+            cla.soundDevices = {};
+            for (let i = 0; i !== deviceInfos.length; ++i) {
+                const deviceInfo = deviceInfos[i];
+                var value = deviceInfo.deviceId;
+                if (deviceInfo.kind === 'audioinput') {
+                    var text = deviceInfo.label || Translator.get("microphone");
+                    cla.audioDevices[value] = text;
+                } else if (deviceInfo.kind === 'audiooutput') {
+                    var text = deviceInfo.label || Translator.get("speaker");
+                    cla.soundDevices[value] = text;
+                } else if (deviceInfo.kind === 'videoinput') {
+                    var text = deviceInfo.label || Translator.get("video");
+                    cla.videoDevices[value] = text;
+                    haveCamera = true;
+                } else {
+                    console.log('Some other kind of source/device: ', deviceInfo);
+                }
+            }
+            if(!haveCamera){
+                cla.app.microphoneOnly = true;
+            }
+            cla.setDeviceElements();
+            cla.app.initialCamera(init);
+            cla.attachSinkId();
+        });
     }
 
     setDeviceElements(){
