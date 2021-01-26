@@ -98,7 +98,7 @@ export class App{
         this.jsEvents();
     }
 
-    initialCamera(first: boolean = false) {
+    initialCamera(first: boolean = false, reconnectionNeeded: boolean = false) {
         const constraints = {
             audio: {deviceId: this.devices.devicesVueObject.audio ? {exact: this.devices.devicesVueObject.audio} : undefined}
         };
@@ -125,6 +125,9 @@ export class App{
                     }else{
                         app.reloadConnections();  
                     }
+                }
+                if(reconnectionNeeded){
+                    app.reloadConnections();
                 }
             })
             .catch(function(err) {
