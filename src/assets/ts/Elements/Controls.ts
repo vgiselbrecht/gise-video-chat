@@ -1,5 +1,7 @@
 import { App } from "../app";
 import { Cookie } from "../Utils/Cookie";
+import { Translator } from "../Utils/Translator";
+import { Alert } from "./Alert";
 
 declare var Vue: any;
 
@@ -32,16 +34,24 @@ export class Controls{
             },
             methods: {
                 toogleMicrophone: function () {
+                    if(cla.app.localStream !== undefined){
                     this.microphoneOn = !this.microphoneOn;
                     Cookie.setCookie(cla.microphoneCookie, this.microphoneOn);
                     cla.toogleStreamMicrophone(false);
                     cla.app.sendMessageToAllPartners(cla.app.userinfo.getUserInfo());
+                    } else {
+                        new Alert(Translator.get("cannotstartmicrophone"));
+                    }
                 },
                 toogleCamera: function () {
-                    this.cameraOn = !this.cameraOn;
-                    Cookie.setCookie(cla.cameraCookie, this.cameraOn);
-                    cla.toogleStreamCamera();
-                    cla.app.sendMessageToAllPartners(cla.app.userinfo.getUserInfo());
+                    if(!cla.app.microphoneOnly && cla.app.localStream !== undefined){
+                        this.cameraOn = !this.cameraOn;
+                        Cookie.setCookie(cla.cameraCookie, this.cameraOn);
+                        cla.toogleStreamCamera();
+                        cla.app.sendMessageToAllPartners(cla.app.userinfo.getUserInfo());
+                    } else {
+                        new Alert(Translator.get("cannotstartcamera"));
+                    }
                 },hangOut: function () {
                     if(!this.hangouted){
                         cla.hangOut();
@@ -93,7 +103,9 @@ export class Controls{
 
     toogleStreamMicrophone(changeCamera: boolean = true)
     {
-        if(this.app.localStream !== undefined){
+        if(this.app.localStream == undefined){
+            this.controlsVueObject.microphoneOn = false;  
+        }else {
             this.app.localStream.getAudioTracks()[0].enabled = this.controlsVueObject.microphoneOn;
             if(changeCamera && this.controlsVueObject.microphoneOn){
                 this.app.initialCamera();  
@@ -104,7 +116,9 @@ export class Controls{
 
     toogleStreamCamera(changeCamera: boolean = true)
     {
-        if(this.app.localStream !== undefined){
+        if(this.app.microphoneOnly || this.app.localStream == undefined){
+            this.controlsVueObject.cameraOn = false;  
+        } else {
             this.app.localStream.getVideoTracks()[0].enabled = this.controlsVueObject.cameraOn;
             if(changeCamera && this.controlsVueObject.cameraOn){
                 this.app.initialCamera();

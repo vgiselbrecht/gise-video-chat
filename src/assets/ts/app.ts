@@ -33,6 +33,7 @@ export class App{
     communication: ICommunication;
     yourVideo: HTMLElement;
     listener: boolean = false;
+    microphoneOnly: boolean = false;
     localStream: any;
     localScreenStream: any;
     partners: IPartners = {};
@@ -87,9 +88,7 @@ export class App{
 
         this.textchat.initialDatabase();
         
-        navigator.mediaDevices.enumerateDevices().then(function(deviceInfos){
-            app.devices.gotDevices(deviceInfos);
-        });
+        app.devices.gotDevices(true);
 
         setTimeout(function(){
             if(!app.called){
@@ -99,11 +98,13 @@ export class App{
         this.jsEvents();
     }
 
-    initialCamera(first: boolean = false) {
+    initialCamera(first: boolean = false, reconnectionNeeded: boolean = false) {
         const constraints = {
-            audio: {deviceId: this.devices.devicesVueObject.audio ? {exact: this.devices.devicesVueObject.audio} : undefined},
-            video: {deviceId: this.devices.devicesVueObject.video ? {exact: this.devices.devicesVueObject.video} : undefined}
+            audio: {deviceId: this.devices.devicesVueObject.audio ? {exact: this.devices.devicesVueObject.audio} : undefined}
         };
+        if(!this.microphoneOnly){
+            constraints['video'] = {deviceId: this.devices.devicesVueObject.video ? {exact: this.devices.devicesVueObject.video} : undefined}
+        }
         if(this.localStream){
             this.localStream.getTracks().forEach(track => track.stop());
         }
@@ -125,14 +126,23 @@ export class App{
                         app.reloadConnections();  
                     }
                 }
+                if(reconnectionNeeded){
+                    app.reloadConnections();
+                }
             })
             .catch(function(err) {
-                new Alert(Translator.get("mediaaccesserrormessage"));
-                app.setAsListener(true);
-                if(!app.called){
-                    app.callOther(); 
+                if(!app.microphoneOnly){
+                    app.microphoneOnly = true;
+                    app.initialCamera(first);
+                } else {
+                    new Alert(Translator.get("mediaaccesserrormessage"));
+                    app.setAsListener(true);
+                    app.controls.initialiseStream();
+                    if(!app.called){
+                        app.callOther(); 
+                    }
+                    console.log(err);
                 }
-                console.log(err);
             });
     }
 
@@ -217,15 +227,18 @@ export class App{
 
     setStreamToPartner(partner: IPartner, initial: boolean = false){
         if(app.localStream){
-            var videoTrack = !app.screen.onScreenMode() ? app.localStream.getVideoTracks()[0] : app.localScreenStream.getVideoTracks()[0];
+            if(!app.microphoneOnly){
+                var videoTrack = !app.screen.onScreenMode() ? app.localStream.getVideoTracks()[0] : app.localScreenStream.getVideoTracks()[0];
+                app.setTrackToPartner(partner, app.localStream, videoTrack);
+            }else if(app.screen.onScreenMode()){
+                var videoTrack = app.localScreenStream.getVideoTracks()[0];
+                app.setTrackToPartner(partner, app.localStream, videoTrack);
+            }
             var audioTrack = app.localStream.getAudioTracks()[0];
-            app.setTrackToPartner(partner, app.localStream, videoTrack);
             app.setTrackToPartner(partner, app.localStream, audioTrack);
         } else if(app.localScreenStream){
             var videoTrack = app.localScreenStream.getVideoTracks()[0];
-            //var audioTrack = app.localScreenStream.getAudioTracks()[0];
             app.setTrackToPartner(partner, app.localScreenStream, videoTrack);
-            //app.setTrackToPartner(partner, app.localScreenStream, audioTrack);
         }
         partner.sendMessage(app.userinfo.getUserInfo());
     }
