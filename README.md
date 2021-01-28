@@ -52,7 +52,10 @@ Copy the firebase configuration to the src/config.json file in exchangeServices/
 ```json
 {
     "meta": {
-        "title": "Video Chat"
+        "title": "Video Chat",
+        "description": "Free group video chat based on WebRTC and Firebase.",
+        "keywords": "chat, webrtc, group-chat, video-call, video-conferencing, video-chat",
+        "image": ""
     },
     "privacy": {
         "firebaseAnalytics": 0,
