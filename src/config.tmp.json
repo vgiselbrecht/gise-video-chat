@@ -1,7 +1,7 @@
 {
     "meta": {
         "title": "Video Chat",
-        "description": "Vide chat based on WebRTC and Firebase.",
+        "description": "Open-Source video chat based on WebRTC and Firebase.",
         "keywords": "chat, video-call, video-chat, webrtc, firebase",
         "image": ""
     },
