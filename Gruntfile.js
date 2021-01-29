@@ -79,7 +79,20 @@ module.exports = function(grunt) {
             },
             {
               match: 'title',
-              replacement: chatConfig.meta.title
+              replacement: chatConfig.meta.title ?? ""
+            },
+            {
+              match: 'description',
+              replacement: chatConfig.meta.description ?? ""
+            },
+            {
+              match: 'keywords',
+              replacement: chatConfig.meta.keywords ?? ""
+            }
+            ,
+            {
+              match: 'image',
+              replacement: chatConfig.meta.image ?? ""
             }
           ]
         },
@@ -109,7 +122,8 @@ module.exports = function(grunt) {
       },
       html: {
         files: [
-          'src/index.html'
+          'src/index.html',
+          'src/config.json'
         ],
         tasks: ['replace'] 
       }

@@ -1,13 +1,15 @@
-# Free group video chat based on WebRTC and Firebase
+# Open-Source video chat based on WebRTC and Firebase
 
 ![Video Chat Demo](https://www.gise.at/images/VideoChat.PNG)
 
 ## Features
 
-* Group video chat with no limits
+* Open-Source
+* For small groups
 * Browser based
 * Only peer-to-peer connections
 * Firebase is only used for signaling
+* No media server
 * Screen sharing
 * Text-Chat with images
 * Change of video and microphone source
@@ -52,7 +54,10 @@ Copy the firebase configuration to the src/config.json file in exchangeServices/
 ```json
 {
     "meta": {
-        "title": "Video Chat"
+        "title": "Video Chat",
+        "description": "Open-Source video chat based on WebRTC and Firebase.",
+        "keywords": "chat, webrtc, video-call, video-chat",
+        "image": ""
     },
     "privacy": {
         "firebaseAnalytics": 0,
@@ -103,3 +108,11 @@ grunt watch
 ```
 Change the compiled code in dist directory after saving a project file.
 Ideally the dist directory is the document root of a local Webserver like nginx or apache.
+
+## Sponsoring
+
+You can sponsor me through [GitHub Sponsoring](https://github.com/sponsors/vgiselbrecht/).
+
+## License
+
+[Apache License 2.0](LICENSE)
