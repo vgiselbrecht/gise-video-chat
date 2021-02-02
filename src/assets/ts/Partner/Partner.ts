@@ -126,17 +126,12 @@ export class Partner implements IPartner{
                 if(cla.lastPing.getTime() <= new Date().getTime() - cla.millisecondsBeforeHide
                 && cla.lastConnectionLost.getTime() <= new Date().getTime() - cla.millisecondsBeforeHide)
                 {
-                    if(!$('#video-item-'+ cla.id).hasClass("hide")){
-                        console.log("Hide partner video: " + cla.id);
-                        $('#video-item-'+ cla.id).addClass("hide");
-                        cla.videogrid.recalculateLayout();
-                    }
-                } else{
-                    if($('#video-item-'+ cla.id).hasClass("hide")){
-                        $('#video-item-'+ cla.id).removeClass("hide");
-                        cla.videogrid.recalculateLayout();
-                    }
+                    cla.hidePartnerElement();
+                }else{
+                    cla.showPartnerElement();
                 }
+            } else if(cla.connected || cla.checking){
+                cla.showPartnerElement();
             }
         }, 2000);
     }
@@ -192,7 +187,7 @@ export class Partner implements IPartner{
 
     checkingConnection(partner: IPartner){
         partner.checking = true;
-        $('#video-item-'+partner.id).removeClass("hide");
+        partner.showPartnerElement();
     }
 
     onConnected(partner: IPartner){
@@ -205,6 +200,7 @@ export class Partner implements IPartner{
         }
 
         $('#video-item-'+partner.id).removeClass("unconnected");
+        partner.showPartnerElement();
         partner.onConnectedEvent(partner);
         partner.partnerListElement.partnerListElementVueObject.connected = true;
 
@@ -311,6 +307,21 @@ export class Partner implements IPartner{
         setTimeout(function(){
             cla.setSinkId(cla.devices.devicesVueObject.sound);
         }, 1);
+    }
+
+    hidePartnerElement(){
+        if(!$('#video-item-'+ this.id).hasClass("hide")){
+            console.log("Hide partner video: " + this.id);
+            $('#video-item-'+ this.id).addClass("hide");
+            this.videogrid.recalculateLayout();
+        }
+    }
+
+    showPartnerElement(){
+        if($('#video-item-'+ this.id).hasClass("hide")){
+            $('#video-item-'+ this.id).removeClass("hide");
+            this.videogrid.recalculateLayout();
+        }
     }
 
 }

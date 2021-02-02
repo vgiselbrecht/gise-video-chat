@@ -44,5 +44,8 @@ export interface IPartner{
     reloadConnection(): void; 
     setSinkId(sinkId: any): void;
     sendMessage(message: any): void;
-    callPartner(): void
+    callPartner(): void;
+    hidePartnerElement(): void;
+    showPartnerElement(): void;
+    
 }
