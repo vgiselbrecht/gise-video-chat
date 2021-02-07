@@ -81,21 +81,23 @@ export class App{
     }
 
     openConnection(){
-        console.log("Id: " + this.yourId + " Room: " + this.room);
-        this.exchange = new Firebase(this.room, this.yourId, function(){
-            app.exchange.addReadEvent(app.readMessage);
-        });
+        if(!this.closed){
+            console.log("Id: " + this.yourId + " Room: " + this.room);
+            this.exchange = new Firebase(this.room, this.yourId, function(){
+                app.exchange.addReadEvent(app.readMessage);
+            });
 
-        this.textchat.initialDatabase();
-        
-        app.devices.gotDevices(true);
+            this.textchat.initialDatabase();
+            
+            app.devices.gotDevices(true);
 
-        setTimeout(function(){
-            if(!app.called){
-                app.callOther(); 
-            }
-        }, 1000);
-        this.jsEvents();
+            setTimeout(function(){
+                if(!app.called){
+                    app.callOther(); 
+                }
+            }, 1000);
+            this.jsEvents();
+        }
     }
 
     initialCamera(first: boolean = false, reconnectionNeeded: boolean = false) {
@@ -279,12 +281,14 @@ export class App{
     }
 
     hangOut(){
-        this.closed = true;
-        this.exchange.sendMessage({'closing': this.yourId});
-        this.exchange.closeConnection();
-        for (var id in this.partners) {
-            if(this.partners[id]){
-                this.partners[id].closeConnection();
+        if(!this.closed){
+            this.closed = true;
+            this.exchange.sendMessage({'closing': this.yourId});
+            this.exchange.closeConnection();
+            for (var id in this.partners) {
+                if(this.partners[id]){
+                    this.partners[id].closeConnection();
+                }
             }
         }
     }
@@ -298,6 +302,10 @@ export class App{
         $(window).on("beforeunload", function() { 
             app.hangOut();
         });
+        $( window ).on("unload", function() {
+            app.hangOut();
+        });
+        window.onbeforeunload = app.hangOut;
     }
 }
 
