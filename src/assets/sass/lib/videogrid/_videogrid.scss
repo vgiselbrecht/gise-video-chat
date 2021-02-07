@@ -101,5 +101,27 @@
             border-radius: 5px;
         }
     }
-
+    &.yoursmall{
+        #yourVideoArea:not(.big) {
+            max-width: 150px;
+            @media only screen and (max-width: $xs-max) { 
+                max-width: 80px;
+            }
+            width: auto;
+            height: auto;
+            position: absolute;
+            right: 8px;
+            top: 0;
+            z-index: 10;
+            .video-wrap{
+                height: 100%;
+                width: 100%;
+                .video-inner-wrap video{
+                    width: calc(100% + 8px);
+                    height: calc(100% + 8px);
+                    margin: -4px;
+                }
+            }
+        }
+    }
   }

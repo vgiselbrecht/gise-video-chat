@@ -290,6 +290,7 @@ export class App{
                     this.partners[id].closeConnection();
                 }
             }
+            this.videogrid.recalculateLayout();
         }
     }
 
@@ -309,6 +310,9 @@ export class App{
             app.hangOut();
         });
         window.onbeforeunload = app.hangOut;
+        $(app.yourVideo).on("loadeddata", function() {
+            app.videogrid.recalculateLayout();
+        });
     }
 }
 

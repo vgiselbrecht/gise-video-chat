@@ -3,10 +3,24 @@ export class Videogrid{
     recalculateLayout() {
         const gallery = document.getElementById("video-area");
         if (!gallery) return;
-        const aspectRatio = 4 / 3;
+        var videoCount = $(gallery).find(".video-item:not(.hide)").length;
         const screenWidth = gallery.offsetWidth;
         const screenHeight = gallery.offsetHeight;
-        const videoCount = $(gallery).find(".video-item:not(.hide)").length;
+
+        var aspectRatio = 4 / 3;
+        if(videoCount <= 2){
+            var lastElementVideo = $(gallery).find(".video-item:not(.hide)").last().find("video")[0];
+            if(lastElementVideo !== undefined && lastElementVideo.videoWidth > 0 && lastElementVideo.videoHeight > 0){
+                aspectRatio = lastElementVideo.videoWidth / lastElementVideo.videoHeight;
+            }
+        }        
+
+        if(videoCount <= 4 && videoCount > 1){
+            $(gallery).addClass("yoursmall");
+            videoCount -= 1;
+        } else {
+            $(gallery).removeClass("yoursmall");
+        } 
 
         // or use this nice lib: https://github.com/fzembow/rect-scaler
         function calculateLayout(

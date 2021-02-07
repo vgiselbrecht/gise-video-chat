@@ -303,6 +303,9 @@ export class Partner implements IPartner{
             this.videoGridElement = new Video(document.getElementById('video-item-'+this.id), this);
             this.partnerListElement = new PartnerListElement(this);
             this.videogrid.recalculateLayout();
+            $(this.videoElement).on("loadeddata", function() {
+                    cla.videogrid.recalculateLayout();
+            });
         }
         setTimeout(function(){
             cla.setSinkId(cla.devices.devicesVueObject.sound);
