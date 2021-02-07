@@ -84,43 +84,22 @@ export class Textchat{
                     this.message = "";
                 },
                 addfile: function(e){
-                    var vue = this;
                     var fileList = e.target.files;
                     if (!fileList.length) return;
-                    let reader = new FileReader();
                     if(fileList[0] && fileList[0].type.match(/image.*/)) {
-                        reader.onload = (readerEvent) => {
-                            /*vue.image = reader.result.toString();
-                            cla.setImageToExtra(vue.image);*/
-                            var image = new Image();
-                            image.onload = function (imageEvent) {
-                                var canvas = document.createElement('canvas'),
-                                    max_size = cla.textchatMaxImageSize,
-                                    width = image.width,
-                                    height = image.height;
-                                if (width > height) {
-                                    if (width > max_size) {
-                                        height *= max_size / width;
-                                        width = max_size;
-                                    }
-                                } else {
-                                    if (height > max_size) {
-                                        width *= max_size / height;
-                                        height = max_size;
-                                    }
-                                }
-                                canvas.width = width;
-                                canvas.height = height;
-                                canvas.getContext('2d').drawImage(image, 0, 0, width, height);
-                                var dataUrl = canvas.toDataURL('image/jpeg');
-                                cla.setImageToExtra(dataUrl);
-                                vue.image = dataUrl;
-                            }
-                            image.src = readerEvent.target.result.toString();
-                        }
-                        reader.readAsDataURL(fileList[0]);
+                        cla.readImage(fileList[0]);
                     }
                     e.target.value = "";
+                },
+                addfilebypast: function(e){
+                    // @ts-ignore
+                    const clipBoard = e.clipboardData || window.clipboardData;
+                    if(clipBoard != false && clipBoard.files != undefined && clipBoard.files.length > 0){
+                        var item = clipBoard.files[0];
+                        if(item.type.match(/image.*/)){
+                            cla.readImage(item);
+                        }
+                    }
                 },
                 closeExtra: function(){
                     this.image = null;
@@ -371,5 +350,37 @@ export class Textchat{
         this.hasNewMessage = hasNewMessage;
         this.app.controls.setNewMessage(hasNewMessage);
     }
-
+    
+    readImage(image: Blob){
+        var cla = this;
+        let reader = new FileReader();
+        reader.onload = (readerEvent) => {
+            var image = new Image();
+            image.onload = function (imageEvent) {
+                var canvas = document.createElement('canvas'),
+                    max_size = cla.textchatMaxImageSize,
+                    width = image.width,
+                    height = image.height;
+                if (width > height) {
+                    if (width > max_size) {
+                        height *= max_size / width;
+                        width = max_size;
+                    }
+                } else {
+                    if (height > max_size) {
+                        width *= max_size / height;
+                        height = max_size;
+                    }
+                }
+                canvas.width = width;
+                canvas.height = height;
+                canvas.getContext('2d').drawImage(image, 0, 0, width, height);
+                var dataUrl = canvas.toDataURL('image/jpeg');
+                cla.setImageToExtra(dataUrl);
+                cla.textchatVueObject.image = dataUrl;
+            }
+            image.src = readerEvent.target.result.toString();
+        }
+        reader.readAsDataURL(image);
+    }
 }
