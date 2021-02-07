@@ -51,13 +51,9 @@ export class Devices{
                     console.log('Some other kind of source/device: ', deviceInfo);
                 }
             }
-            var reconnectionNeeded = false;
-            if(cla.app.microphoneOnly && haveCamera){
-                reconnectionNeeded = true;
-            }
-            cla.app.microphoneOnly = !haveCamera;
+            cla.app.microphoneOnlyNotChangeable = cla.app.microphoneOnly = !haveCamera;
             cla.setDeviceElements();
-            cla.app.initialCamera(init, reconnectionNeeded);
+            cla.app.initialCamera(init);
             cla.attachSinkId();
         });
     }
