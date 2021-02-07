@@ -302,7 +302,10 @@ export class App{
         $(window).on("beforeunload", function() { 
             app.hangOut();
         });
-        $( window ).on("unload", function() {
+        $(window).on("unload", function() {
+            app.hangOut();
+        });
+        $(window).on("pagehide", function() {
             app.hangOut();
         });
         window.onbeforeunload = app.hangOut;
