@@ -34,6 +34,7 @@ export class App{
     yourVideo: HTMLElement;
     listener: boolean = false;
     microphoneOnly: boolean = false;
+    microphoneOnlyNotChangeable: boolean = false;
     localStream: any;
     localScreenStream: any;
     partners: IPartners = {};
@@ -81,27 +82,32 @@ export class App{
     }
 
     openConnection(){
-        console.log("Id: " + this.yourId + " Room: " + this.room);
-        this.exchange = new Firebase(this.room, this.yourId, function(){
-            app.exchange.addReadEvent(app.readMessage);
-        });
+        if(!this.closed){
+            console.log("Id: " + this.yourId + " Room: " + this.room);
+            this.exchange = new Firebase(this.room, this.yourId, function(){
+                app.exchange.addReadEvent(app.readMessage);
+            });
 
-        this.textchat.initialDatabase();
-        
-        app.devices.gotDevices(true);
+            this.textchat.initialDatabase();
+            
+            app.devices.gotDevices(true);
 
-        setTimeout(function(){
-            if(!app.called){
-                app.callOther(); 
-            }
-        }, 1000);
-        this.jsEvents();
+            setTimeout(function(){
+                if(!app.called){
+                    app.callOther(); 
+                }
+            }, 1000);
+            this.jsEvents();
+        }
     }
 
-    initialCamera(first: boolean = false, reconnectionNeeded: boolean = false) {
+    initialCamera(first: boolean = false) {
         const constraints = {
             audio: {deviceId: this.devices.devicesVueObject.audio ? {exact: this.devices.devicesVueObject.audio} : undefined}
         };
+        if(!this.controls.controlsVueObject.cameraOn){
+            this.microphoneOnly = true;
+        }
         if(!this.microphoneOnly){
             constraints['video'] = {deviceId: this.devices.devicesVueObject.video ? {exact: this.devices.devicesVueObject.video} : undefined}
         }
@@ -122,17 +128,13 @@ export class App{
                 if(first){
                     if(!app.called){
                         app.callOther();  
-                    }else{
-                        app.reloadConnections();  
                     }
-                }
-                if(reconnectionNeeded){
-                    app.reloadConnections();
                 }
             })
             .catch(function(err) {
                 if(!app.microphoneOnly){
                     app.microphoneOnly = true;
+                    app.microphoneOnlyNotChangeable = true;
                     app.initialCamera(first);
                 } else {
                     new Alert(Translator.get("mediaaccesserrormessage"));
@@ -219,31 +221,29 @@ export class App{
         }
     }
 
-    reloadConnections(){
-        for (var id in this.partners) {
-            this.partners[id].reloadConnection();
-        }
-    }
-
     setStreamToPartner(partner: IPartner, initial: boolean = false){
+        var reconnectionNeeded: boolean = false;
         if(app.localStream){
             if(!app.microphoneOnly){
                 var videoTrack = !app.screen.onScreenMode() ? app.localStream.getVideoTracks()[0] : app.localScreenStream.getVideoTracks()[0];
-                app.setTrackToPartner(partner, app.localStream, videoTrack);
+                reconnectionNeeded = app.setTrackToPartner(partner, app.localStream, videoTrack, reconnectionNeeded);
             }else if(app.screen.onScreenMode()){
                 var videoTrack = app.localScreenStream.getVideoTracks()[0];
-                app.setTrackToPartner(partner, app.localStream, videoTrack);
+                reconnectionNeeded = app.setTrackToPartner(partner, app.localStream, videoTrack, reconnectionNeeded);
             }
             var audioTrack = app.localStream.getAudioTracks()[0];
-            app.setTrackToPartner(partner, app.localStream, audioTrack);
+            reconnectionNeeded = app.setTrackToPartner(partner, app.localStream, audioTrack, reconnectionNeeded);
         } else if(app.localScreenStream){
             var videoTrack = app.localScreenStream.getVideoTracks()[0];
-            app.setTrackToPartner(partner, app.localScreenStream, videoTrack);
+            reconnectionNeeded = app.setTrackToPartner(partner, app.localScreenStream, videoTrack, reconnectionNeeded);
+        }
+        if(!initial && reconnectionNeeded){
+            partner.reloadConnection();
         }
         partner.sendMessage(app.userinfo.getUserInfo());
     }
 
-    setTrackToPartner(partner: IPartner, stream: any, track: any){
+    setTrackToPartner(partner: IPartner, stream: any, track: any, reconnectionNeeded: boolean): boolean{
         var sender = partner.connection.getSenders().find(function(s) {
             return s.track && track && s.track.kind == track.kind;
         });
@@ -253,7 +253,9 @@ export class App{
             }
         } else {
             partner.connection.addTrack(track, stream);
+            return true;
         }
+        return reconnectionNeeded;
     }
 
     sendMessageToAllPartners(message: any){
@@ -279,13 +281,16 @@ export class App{
     }
 
     hangOut(){
-        this.closed = true;
-        this.exchange.sendMessage({'closing': this.yourId});
-        this.exchange.closeConnection();
-        for (var id in this.partners) {
-            if(this.partners[id]){
-                this.partners[id].closeConnection();
+        if(!this.closed){
+            this.closed = true;
+            this.exchange.sendMessage({'closing': this.yourId});
+            this.exchange.closeConnection();
+            for (var id in this.partners) {
+                if(this.partners[id]){
+                    this.partners[id].closeConnection();
+                }
             }
+            this.videogrid.recalculateLayout();
         }
     }
 
@@ -297,6 +302,16 @@ export class App{
         }
         $(window).on("beforeunload", function() { 
             app.hangOut();
+        });
+        $(window).on("unload", function() {
+            app.hangOut();
+        });
+        $(window).on("pagehide", function() {
+            app.hangOut();
+        });
+        window.onbeforeunload = app.hangOut;
+        $(app.yourVideo).on("loadeddata", function() {
+            app.videogrid.recalculateLayout();
         });
     }
 }

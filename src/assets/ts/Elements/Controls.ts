@@ -44,8 +44,9 @@ export class Controls{
                     }
                 },
                 toogleCamera: function () {
-                    if(!cla.app.microphoneOnly && cla.app.localStream !== undefined){
+                    if(!cla.app.microphoneOnlyNotChangeable && cla.app.localStream !== undefined){
                         this.cameraOn = !this.cameraOn;
+                        cla.app.microphoneOnly = !this.cameraOn;
                         Cookie.setCookie(cla.cameraCookie, this.cameraOn);
                         cla.toogleStreamCamera();
                         cla.app.sendMessageToAllPartners(cla.app.userinfo.getUserInfo());
@@ -116,11 +117,13 @@ export class Controls{
 
     toogleStreamCamera(changeCamera: boolean = true)
     {
-        if(this.app.microphoneOnly || this.app.localStream == undefined){
+        if(this.app.microphoneOnlyNotChangeable || this.app.localStream == undefined){
             this.controlsVueObject.cameraOn = false;  
         } else {
-            this.app.localStream.getVideoTracks()[0].enabled = this.controlsVueObject.cameraOn;
-            if(changeCamera && this.controlsVueObject.cameraOn){
+            if(this.app.localStream.getVideoTracks()[0] != undefined){
+                this.app.localStream.getVideoTracks()[0].enabled = this.controlsVueObject.cameraOn;
+            }
+            if(changeCamera){
                 this.app.initialCamera();
             }
         }
