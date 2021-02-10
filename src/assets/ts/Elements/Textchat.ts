@@ -299,7 +299,7 @@ export class Textchat{
                 return '<a target="_blank" href="http://' + url + '">' + url + '</a>';
             }
         })
-        message = message.replaceAll("\n", "<br>");
+        message = message.replace(/(?:\r\n|\r|\n)/g, "<br>");
         return message;
     }
 
