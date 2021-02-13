@@ -1,10 +1,21 @@
 $active-color: #009e97;
 $active-hover-color: darken($active-color, 5%);
 $passive-color: #555;
+$main-background: linear-gradient(45deg, $active-color, lighten($active-color, 20%), $active-color);
+$footer-button-background: #fff;
+$footer-button-color: #555;
+
+$textchat-own-color: #fff;
+$textchat-own-background: $active-color;
+$textchat-own-border: 1px solid #888;
+$textchat-other-color: #000;
+$textchat-other-background: #ececec;
+$textchat-other-border: 1px solid #ccc;
+
+$default-font: Arial, Helvetica, sans-serif;
 
 $video-background: #666;
 $notificationColor: orange;
-
 
 $footer-height: 70px; 
 $sidebar-header-height: 62px;

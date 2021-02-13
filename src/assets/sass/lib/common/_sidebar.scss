@@ -1,0 +1,94 @@
+#sidebar{
+    height: 100%;
+    background: #fff;
+    display: none;
+    overflow: hidden;
+    box-shadow: 0px 0 10px 1px #555;
+    padding: 8px;
+    box-sizing: border-box;
+    max-width: 100%;
+    .tabs-content{
+      height: calc(100% - #{$sidebar-header-height});
+    }
+  
+    #userinfo{
+      border-bottom: 1px solid $active-color;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      label{
+        font-weight: bold;
+        padding: 3px;
+        font-size: 18px;
+        padding-top: 7px;
+      }
+      input{
+        width: 100%;
+        padding: 6px;
+        font-size: 18px;
+        margin-bottom: 20px;
+        &:focus{
+          outline: none;
+        }
+      }
+    }
+    #devices{
+      border-bottom: 1px solid $active-color;
+      margin-bottom: 20px;
+      label{
+        font-weight: bold;
+        padding: 3px;
+        font-size: 18px;
+        padding-top: 7px; 
+      }
+      select{
+        width: 100%;
+        padding: 6px;
+        margin-bottom: 20px;
+        font-size: 18px;
+        &:focus{
+          outline: none;
+        }
+      }
+      .row.sound{
+        display: none;
+        &.allowed{
+          display: flex;
+        }
+      }
+    }
+    #linkarea{
+      border-bottom: 1px solid $active-color;
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      > .row{
+        > a{
+          display: block;
+          padding: 5px 3px;
+          color: #000;
+          text-decoration: none;
+          font-size: 18px;
+          &:hover{
+            color: $active-color;
+          }
+        }
+      }
+    }
+    #systeminfo{
+      padding: 0px 3px;
+      font-size: 14px;
+      .row{
+        padding: 2px 0px;
+      }
+      a{
+        text-decoration: none;
+        color:  $active-color;
+        &:hover{
+          color:  $active-hover-color;
+        }
+      }
+    }
+  }
+  
+  #tab-settings{
+    overflow-y: auto;
+  }

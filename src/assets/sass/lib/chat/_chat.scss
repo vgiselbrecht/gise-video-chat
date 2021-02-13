@@ -1,10 +1,4 @@
-$chat-body-bg: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-$chat-msger-bg: #fff;
-$chat-left-msg-bg: #ececec;
-$chat-right-msg-bg: $active-color;
-
 #textchat{
-
   height: 100%;
 
   .msger {
@@ -14,7 +8,7 @@ $chat-right-msg-bg: $active-color;
     width: 100%;
     height: 100%;
     border: 2px solid $active-color;
-    background: $chat-msger-bg;
+    background: #fff;
     box-sizing: border-box;
   }
   
@@ -59,8 +53,9 @@ $chat-right-msg-bg: $active-color;
     padding: 10px;
     border-radius: 10px;
     box-sizing: border-box;
-    background: $chat-left-msg-bg;
-    border: 1px solid #ccc;
+    background: $textchat-other-background;
+    color: $textchat-other-color;
+    border: $textchat-other-border;
   }
   .msg-info {
     display: flex;
@@ -110,10 +105,10 @@ $chat-right-msg-bg: $active-color;
     flex-direction: row-reverse;
   }
   .right-msg .msg-bubble {
-    background: $chat-right-msg-bg;
-    color: #fff;
+    background: $textchat-own-background;
+    color: $textchat-own-color;
     border-bottom-right-radius: 0;
-    border: 1px solid #888;
+    border: $textchat-own-border;
   }
   .right-msg .msg-img {
     margin: 0 0 0 10px;
