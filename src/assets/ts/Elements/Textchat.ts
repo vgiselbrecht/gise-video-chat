@@ -1,3 +1,4 @@
+import { Picker } from 'emoji-picker-element';
 import { App } from "../app";
 import { IPartner } from "../Partner/IPartner";
 import { IDatabase } from "../Database/IDatabase";
@@ -35,6 +36,7 @@ export class Textchat{
     constructor(app: App){
         this.app = app;
         this.initialElements();
+        this.initalEmojiPicker();
         var cla = this;
         setInterval(function(){
             if(cla.isChatVisible()){
@@ -55,6 +57,7 @@ export class Textchat{
                 result: "",
                 extrainfo: "",
                 extrainfoVisible: false,
+                emojiVisible: false,
                 image: null,
                 yourmessage: Translator.get("yourmessage")
             },
@@ -81,6 +84,7 @@ export class Textchat{
                     }
                     this.image = null;
                     this.extrainfoVisible = false;
+                    this.emojiVisible = false;
                     this.message = "";
                 },
                 addfile: function(e){
@@ -104,8 +108,25 @@ export class Textchat{
                 closeExtra: function(){
                     this.image = null;
                     this.extrainfoVisible = false;
+                },
+                toogleEmoji: function(){
+                    this.emojiVisible = !this.emojiVisible
                 }
             }
+        });
+    }
+
+    initalEmojiPicker(){
+        var cla = this;
+        const picker = new Picker({
+            // @ts-ignore
+            i18n: this.getEmojiTranslations()
+        });
+        $("#textchat .msger-emoji-area").append(picker);
+        $("#textchat .msger-emoji-area").on('emoji-click', function(event ){
+            // @ts-ignore
+            cla.insertAtCaret($("#textchat .msger-input").get(0), event.detail.unicode);
+            cla.textchatVueObject.message = $("#textchat .msger-input").val();
         });
     }
 
@@ -374,5 +395,62 @@ export class Textchat{
             image.src = readerEvent.target.result.toString();
         }
         reader.readAsDataURL(image);
+    }
+
+    insertAtCaret(txtarea, text) {
+        if (!txtarea) {
+          return;
+        }
+      
+        var scrollPos = txtarea.scrollTop;
+        var strPos = 0;
+        strPos = txtarea.selectionStart;
+      
+        var front = (txtarea.value).substring(0, strPos);
+        var back = (txtarea.value).substring(strPos, txtarea.value.length);
+        txtarea.value = front + text + back;
+        strPos = strPos + text.length;
+        txtarea.selectionStart = strPos;
+        txtarea.selectionEnd = strPos;
+        txtarea.focus();
+      
+        txtarea.scrollTop = scrollPos;
+    }
+
+    getEmojiTranslations(){
+        return {
+            "categories": {
+              "custom": "Custom",
+              "smileys-emotion": "Smileys and emoticons",
+              "people-body": "People and body",
+              "animals-nature": "Animals and nature",
+              "food-drink": "Food and drink",
+              "travel-places": "Travel and places",
+              "activities": "Activities",
+              "objects": "Objects",
+              "symbols": "Symbols",
+              "flags": "Flags"
+            },
+            "categoriesLabel": "Categories",
+            "emojiUnsupportedMessage": "Your browser does not support color emoji.",
+            "favoritesLabel": "Favorites",
+            "loadingMessage": "Loading…",
+            "networkErrorMessage": "Could not load emoji. Try refreshing.",
+            "regionLabel": "Emoji picker",
+            "searchDescription": "When search results are available, press up or down to select and enter to choose.",
+            "searchLabel": Translator.get("search"),
+            "searchResultsLabel": "Search results",
+            "skinToneDescription": "When expanded, press up or down to select and enter to choose.",
+            "skinToneLabel": "Choose a skin tone (currently {skinTone})",
+            "skinTones": [
+              "Default",
+              "Light",
+              "Medium-Light",
+              "Medium",
+              "Medium-Dark",
+              "Dark"
+            ],
+            "skinTonesLabel": "Skin tones"
+        }
     }
 }
