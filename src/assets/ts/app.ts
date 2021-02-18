@@ -50,6 +50,7 @@ export class App{
     invite: Invite;
     closed: boolean = false;
     called: boolean = false;
+    stateIsSet: boolean = false;
     yourVideoElement: Video;
     partnerListElement: PartnerListElement;
 
@@ -273,10 +274,17 @@ export class App{
         this.videogrid.recalculateLayout();
         //fix bug when calculation was wrong in the first calculation
         this.videogrid.recalculateLayout();
-        if(open){
-            window.history.pushState('forward', null, null);
-        }else{
-            window.history.replaceState('back', null, null);
+        if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+            if(open){
+                if(this.stateIsSet){
+                    window.history.replaceState('forward', null, null);
+                }else{
+                    window.history.pushState('forward', null, null);
+                    this.stateIsSet = true;
+                }
+            }else{
+                window.history.replaceState('back', null, null);
+            }
         }
     }
 
@@ -307,13 +315,14 @@ export class App{
             }
         }
         addEventListener("popstate",function(e){
-            if(app.controls.controlsVueObject.optionOn){
-                app.controls.controlsVueObject.toogleOption();
-            }else{
-                if(e.state !== "forward"){
+            if(app.stateIsSet){
+                if(app.controls.controlsVueObject.optionOn){
+                    app.controls.controlsVueObject.toogleOption();
+                } else {
                     window.history.back();
                 }
             }
+            app.stateIsSet = false;
         });
         $(window).on("beforeunload", function() { 
             app.hangOut();
