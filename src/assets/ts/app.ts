@@ -84,6 +84,7 @@ export class App{
     openConnection(){
         if(!this.closed){
             console.log("Id: " + this.yourId + " Room: " + this.room);
+            document.title = decodeURIComponent(this.room) + " | " + document.title;
             this.exchange = new Firebase(this.room, this.yourId, function(){
                 app.exchange.addReadEvent(app.readMessage);
             });
@@ -272,6 +273,9 @@ export class App{
         this.videogrid.recalculateLayout();
         //fix bug when calculation was wrong in the first calculation
         this.videogrid.recalculateLayout();
+        if(open){
+            window.history.pushState('forward', null, null);
+        }
     }
 
     setAsListener(listener: boolean){
@@ -300,6 +304,14 @@ export class App{
                 location.reload();
             }
         }
+        $(window).on('popstate', function () {
+            debugger
+            if(app.controls.controlsVueObject.optionOn){
+                app.controls.controlsVueObject.toogleOption();
+            }else{
+                window.history.back();
+            }
+        });
         $(window).on("beforeunload", function() { 
             app.hangOut();
         });
