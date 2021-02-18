@@ -275,6 +275,8 @@ export class App{
         this.videogrid.recalculateLayout();
         if(open){
             window.history.pushState('forward', null, null);
+        }else{
+            window.history.replaceState('back', null, null);
         }
     }
 
@@ -304,12 +306,13 @@ export class App{
                 location.reload();
             }
         }
-        $(window).on('popstate', function () {
-            debugger
+        addEventListener("popstate",function(e){
             if(app.controls.controlsVueObject.optionOn){
                 app.controls.controlsVueObject.toogleOption();
             }else{
-                window.history.back();
+                if(e.state !== "forward"){
+                    window.history.back();
+                }
             }
         });
         $(window).on("beforeunload", function() { 
