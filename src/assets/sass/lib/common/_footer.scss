@@ -3,6 +3,7 @@
     #controls{
       text-align: center;
       padding: 10px;
+      user-select: None;
       span{
         color: $footer-button-color;
         background: $footer-button-background;

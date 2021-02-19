@@ -10,6 +10,7 @@
       max-width: 100%;
       position: relative;
       height: calc(100% - #{$footer-height});
+      user-select: None;
       .video-item{
         &.big{
           width: 100%;

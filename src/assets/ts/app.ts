@@ -274,6 +274,7 @@ export class App{
         this.videogrid.recalculateLayout();
         //fix bug when calculation was wrong in the first calculation
         this.videogrid.recalculateLayout();
+        //add history state on mobile to close sidebar on back button
         if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
             if(open){
                 if(this.stateIsSet){
