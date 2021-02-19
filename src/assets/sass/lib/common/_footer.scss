@@ -1,0 +1,84 @@
+#footer{
+    height: $footer-height;
+    #controls{
+      text-align: center;
+      padding: 10px;
+      user-select: None;
+      span{
+        color: $footer-button-color;
+        background: $footer-button-background;
+        height: 50px;
+        display: inline-block;
+        width: 50px;
+        border-radius: 5px;
+        font-size: 20px;
+        padding-top: 15px;
+        box-sizing: border-box;
+        margin: 0px 5px;
+        box-shadow: 0 0 2px 1px #555;
+        transition: box-shadow 0.3s ease-in-out;
+        @media only screen and (max-width: $xs-max) { 
+          margin: 0px 2px;
+        }
+        &:hover{
+          box-shadow: 0 0 6px 1px #555;
+        }
+        cursor: pointer;
+        &.fa-phone{
+          background: red;
+          color: #fff;
+          &.green{
+            background: green;
+          }
+        }
+        &.screen{
+          &.screenon{
+            background: red;
+            color: #fff;
+          }
+          &.disabled{
+            display: none;
+          }
+        }
+        &.option{
+          position: relative;
+          &.optionon{
+            background: red;
+            color: #fff;
+          }
+          &.newMessage::after{
+            width: 12px;
+            height: 12px;
+            border-radius: 6px;
+            background: $notificationColor;
+            content: "";
+            display: block;
+            position: absolute;
+            top: -3px;
+            right: -3px;
+          }
+        }
+        &.optionclose{
+          display: none;
+          position: absolute;
+          right: 2px;
+          top: 2px;
+          font-size: 24px;
+          background: transparent;
+          color: #555;
+          border-radius: 0;
+          box-shadow: none;
+          z-index: 40;
+          padding: 0;
+          width: auto;
+          height: auto;
+          &.optiononclose{
+            display: block;
+          }
+          &:hover{
+            color: $active-hover-color;
+          }
+        }
+      }
+    }
+  }

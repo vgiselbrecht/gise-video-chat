@@ -23,5 +23,6 @@ export default{
    "imprint": "Impressum",
    "privacy": "Datenschutz",
    "cannotstartcamera": "Es kann nicht auf eine Kamera zugegriffen werden!",
-   "cannotstartmicrophone": "Es kann nicht auf ein Mikrofon zugegriffen werden!"
+   "cannotstartmicrophone": "Es kann nicht auf ein Mikrofon zugegriffen werden!",
+   "search": "Suchen..."
 }

@@ -1,21 +1,16 @@
-$chat-body-bg: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-$chat-msger-bg: #fff;
-$chat-left-msg-bg: #ececec;
-$chat-right-msg-bg: $active-color;
-
 #textchat{
-
   height: 100%;
 
   .msger {
     display: flex;
-    flex-flow: column wrap;
+    flex-flow: column;
     justify-content: space-between;
     width: 100%;
     height: 100%;
     border: 2px solid $active-color;
-    background: $chat-msger-bg;
+    background: #fff;
     box-sizing: border-box;
+    overflow-y: auto;
   }
   
   .msger-chat {
@@ -59,8 +54,9 @@ $chat-right-msg-bg: $active-color;
     padding: 10px;
     border-radius: 10px;
     box-sizing: border-box;
-    background: $chat-left-msg-bg;
-    border: 1px solid #ccc;
+    background: $textchat-other-background;
+    color: $textchat-other-color;
+    border: $textchat-other-border;
   }
   .msg-info {
     display: flex;
@@ -83,7 +79,7 @@ $chat-right-msg-bg: $active-color;
   }
   .msg-text{
     overflow: hidden;
-    line-break: anywhere;
+    word-break: break-word;
     a{
       text-decoration: none;
       color: #002284;
@@ -99,6 +95,7 @@ $chat-right-msg-bg: $active-color;
   }
   .msg-info-time {
     font-size: 0.85em;
+    text-align: right;
   }
   
   .left-msg .msg-bubble {
@@ -109,10 +106,10 @@ $chat-right-msg-bg: $active-color;
     flex-direction: row-reverse;
   }
   .right-msg .msg-bubble {
-    background: $chat-right-msg-bg;
-    color: #fff;
+    background: $textchat-own-background;
+    color: $textchat-own-color;
     border-bottom-right-radius: 0;
-    border: 1px solid #888;
+    border: $textchat-own-border;
   }
   .right-msg .msg-img {
     margin: 0 0 0 10px;
@@ -138,6 +135,7 @@ $chat-right-msg-bg: $active-color;
     flex: 1;
     height: 15px;
     resize: none;
+    line-height: 1.2;
   }
   .msger-send-btn {
     background: $active-color;
@@ -148,6 +146,39 @@ $chat-right-msg-bg: $active-color;
   }
   .msger-send-btn:hover {
     background: $active-hover-color;
+  }
+  .msger-emoji-area{
+    display: flex;
+    padding: 0px;
+    max-width: 100%;
+    box-sizing: border-box;
+    border-top: 1px solid $active-color;
+    position: relative;
+    &.hidden{
+      display: none;
+    }
+    .close{
+      color: #555;
+      margin: 2px 4px;
+      position: absolute;
+      right: 0;
+      cursor: pointer;
+      &:hover{
+        color: $active-hover-color;
+      }
+    }
+    emoji-picker{
+      width: 100%;
+      height: 250px;
+      --input-border-radius: 0;
+      --input-font-size: 14px;
+      --input-padding: 2px 4px;
+      --emoji-padding: 0.4rem;
+      --indicator-color: #{$active-color};
+      --input-placeholder-color: #666;
+      --outline-color: #{$active-color};
+      --input-border-color: #{$active-color};
+    }
   }
   .msger-extrainfo{
     display: flex;
@@ -178,7 +209,8 @@ $chat-right-msg-bg: $active-color;
       }
     }
   }
-  .msger-imgupload{
+  .msger-imgupload,
+  .msger-emoji{
     background: #fff;
     color: #555;
     transition: color 0.3s ease-in-out;
@@ -193,6 +225,9 @@ $chat-right-msg-bg: $active-color;
       overflow: hidden;
       position: absolute;
       z-index: -1;
+    }
+    &.msger-emoji{
+      padding: 10px 2px;
     }
   }
 }

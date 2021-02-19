@@ -7,7 +7,7 @@
     height: 100%;
     z-index: 200;
     background: #ddd;
-    background: linear-gradient(45deg, $active-color, lighten($active-color, 20%), $active-color);
+    background: $main-background;
     &.show{
         display: block;
     }

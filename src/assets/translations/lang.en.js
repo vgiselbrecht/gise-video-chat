@@ -23,5 +23,6 @@ export default{
     "imprint": "Imprint",
     "privacy": "Privacy",
     "cannotstartcamera": "A camera cannot be accessed!",
-    "cannotstartmicrophone": "A microphone cannot be accessed!!"
+    "cannotstartmicrophone": "A microphone cannot be accessed!",
+    "search": "Search..."
 }
