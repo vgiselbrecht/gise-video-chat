@@ -26,5 +26,4 @@ export class Alert{
             $("#alert-"+cla.id).remove();
         });
     }
-
 }

@@ -20,6 +20,7 @@ import { Lightbox } from "./Elements/Lightbox";
 import { Invite } from "./Elements/Invite";
 import { CreateRoom } from "./Elements/CreateRoom";
 import { SystemInfo } from "./Elements/SystemInfo";
+import { BodyPix } from "./Elements/BodyPix";
 import { JQueryUtils } from "./Utils/JQuery";
 import { Alert } from "./Elements/Alert";
 import { Translator } from "./Utils/Translator";
@@ -47,6 +48,7 @@ export class App{
     lightbox: Lightbox;
     createRoom: CreateRoom;
     systemInfo: SystemInfo;
+    bodyPix: BodyPix;
     invite: Invite;
     closed: boolean = false;
     called: boolean = false;
@@ -67,6 +69,7 @@ export class App{
         this.invite = new Invite(this);
         this.createRoom = new CreateRoom(this);
         this.systemInfo = new SystemInfo(this);
+        this.bodyPix = new BodyPix(this);
         this.videogrid = new Videogrid();
         this.videogrid.init();
     }
@@ -132,6 +135,7 @@ export class App{
                         app.callOther();  
                     }
                 }
+                app.loadBodyPix();
             })
             .catch(function(err) {
                 if(!app.microphoneOnly){
@@ -338,6 +342,10 @@ export class App{
         $(app.yourVideo).on("loadeddata", function() {
             app.videogrid.recalculateLayout();
         });
+    }
+
+    loadBodyPix(){
+        this.bodyPix.loadBodyPix();
     }
 }
 

@@ -20,6 +20,14 @@
                     height: calc(100% + 2px);
                     margin: -1px;
                 }
+                canvas{
+                    width: calc(100% + 2px);
+                    height: calc(100% + 2px);
+                    margin: -1px;
+                    position: absolute;
+                    left: 0;
+                    right: 0;
+                }
             }
             .video-info-wrap{
                 position: absolute;

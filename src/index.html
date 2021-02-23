@@ -16,6 +16,8 @@
         <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-database.js"></script>
         <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-analytics.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.2"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/body-pix@2.0"></script>
         <script src="assets/bundle.js?v=@@version"></script> 
     </head>
     <body>
@@ -26,7 +28,8 @@
                         <div class="video-item" id="yourVideoArea">
                             <div class="video-wrap">
                                 <div class="video-inner-wrap">
-                                    <video id="yourVideo" autoplay muted playsinline></video>
+                                    <video width="800px" height="600px" id="yourVideo" autoplay muted playsinline></video>
+                                    <canvas id="yourVideoCanvas"></canvas>
                                 </div>
                             </div>
                         </div>
