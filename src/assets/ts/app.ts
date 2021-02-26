@@ -23,6 +23,7 @@ import { SystemInfo } from "./Elements/SystemInfo";
 import { JQueryUtils } from "./Utils/JQuery";
 import { Alert } from "./Elements/Alert";
 import { Translator } from "./Utils/Translator";
+import { IceServers } from "./Utils/IceServers";
 
 export class App{
 
@@ -50,6 +51,7 @@ export class App{
     invite: Invite;
     closed: boolean = false;
     called: boolean = false;
+    readyToCall: boolean = false;
     stateIsSet: boolean = false;
     yourVideoElement: Video;
     partnerListElement: PartnerListElement;
@@ -89,18 +91,27 @@ export class App{
             this.exchange = new Firebase(this.room, this.yourId, function(){
                 app.exchange.addReadEvent(app.readMessage);
             });
-
-            this.textchat.initialDatabase();
             
-            app.devices.gotDevices(true);
+            this.preloadElements(function(){
+                app.readyToCall = true;
+                if(app.called){
+                    app.callOther();
+                }
+            });
 
+            app.devices.gotDevices(true);
             setTimeout(function(){
                 if(!app.called){
                     app.callOther(); 
                 }
             }, 1000);
-            this.jsEvents();
+            app.jsEvents();
         }
+    }
+
+    preloadElements(callback: () => void){
+        this.textchat.initialDatabase();
+        IceServers.loadIceServers(callback);
     }
 
     initialCamera(first: boolean = false) {
@@ -152,7 +163,9 @@ export class App{
 
     callOther(){
         this.called = true;
-        this.exchange.sendMessage({'call': 'init'});
+        if(this.readyToCall){
+            this.exchange.sendMessage({'call': 'init'});
+        }
     }
 
     readMessage(sender: number, dataroom: string, msg) {

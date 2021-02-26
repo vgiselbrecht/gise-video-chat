@@ -100,7 +100,8 @@ Copy the firebase configuration to the src/config.json file in exchangeServices/
             "iceServers": [
                 {"urls": "stun:stun.services.mozilla.com"}, 
                 {"urls": "stun:stun.l.google.com:19302"}
-            ]
+            ],
+            "iceServersFromUrl": ""
         }
     }
 }
