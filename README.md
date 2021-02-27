@@ -110,6 +110,8 @@ Additional STUN / TURN Server can also be added in communication/webrtc/iceServe
 
 [List of free STUN and TURN Server](https://gist.github.com/sagivo/3a4b2f2c7ac6e1b5267c2f1f59ac6c6b)
 
+With certain systems (e.g. Twilio) it is necessary that the IceServers change frequently. Therefore it is possible to load the IceServer configuration dynamically with communication/webrtc/iceServersFromUrl. In the given URL, a return in JSON format is requested in the same way as with the iceServers Parameter ([{"urls": ""},...]).
+
 #### Adjust the design
 
 You can add your SASS design adaptations into the file "src/assets/sass/_custom.scss". 
