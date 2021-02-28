@@ -22,6 +22,7 @@ import { CreateRoom } from "./Elements/CreateRoom";
 import { SystemInfo } from "./Elements/SystemInfo";
 import { JQueryUtils } from "./Utils/JQuery";
 import { Alert } from "./Elements/Alert";
+import { NoInternet } from "./Elements/NoInternet";
 import { Translator } from "./Utils/Translator";
 import { IceServers } from "./Utils/IceServers";
 
@@ -48,6 +49,7 @@ export class App{
     lightbox: Lightbox;
     createRoom: CreateRoom;
     systemInfo: SystemInfo;
+    noInternet: NoInternet;
     invite: Invite;
     closed: boolean = false;
     called: boolean = false;
@@ -69,6 +71,7 @@ export class App{
         this.invite = new Invite(this);
         this.createRoom = new CreateRoom(this);
         this.systemInfo = new SystemInfo(this);
+        this.noInternet = new NoInternet(this);
         this.videogrid = new Videogrid();
         this.videogrid.init();
     }
@@ -328,6 +331,9 @@ export class App{
                 location.reload();
             }
         }
+        setInterval(function(){
+            app.noInternet.setNoInternet(!window.navigator.onLine);
+        }, 500);
         addEventListener("popstate",function(e){
             if(app.stateIsSet){
                 if(app.controls.controlsVueObject.optionOn){

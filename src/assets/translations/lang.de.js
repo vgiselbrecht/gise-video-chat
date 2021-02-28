@@ -24,5 +24,6 @@ export default{
    "privacy": "Datenschutz",
    "cannotstartcamera": "Es kann nicht auf eine Kamera zugegriffen werden!",
    "cannotstartmicrophone": "Es kann nicht auf ein Mikrofon zugegriffen werden!",
-   "search": "Suchen..."
+   "search": "Suchen...",
+   "nointernet": "Keine Internet Verbindung!"
 }
