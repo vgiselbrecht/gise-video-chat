@@ -41,7 +41,7 @@ module.exports = function(grunt) {
               ],
             },
             {
-              test: /\.(eot|svg|ttf|woff|woff2|png|jpg|jpeg)$/i,
+              test: /\.(eot|svg|ttf|woff|woff2|png|jpg|jpeg|mp3)$/i,
               use: [
                 {
                   loader: 'url-loader',

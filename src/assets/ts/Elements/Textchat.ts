@@ -10,6 +10,7 @@ import { IDatabaseQuery } from "../Database/IDatabase";
 import { IndexedDB } from "../Database/IndexedDB";
 import { Alert } from "./Alert";
 import { Translator } from "../Utils/Translator";
+import { Sounds } from '../Utils/Sounds';
 
 declare var Vue: any;
 
@@ -353,6 +354,7 @@ export class Textchat{
         if(!this.isChatVisible()){
             this.setHasNewMessage(true);
         }
+        Sounds.playSound(Sounds.messagealertsound);
     }
 
     isChatVisible(){
