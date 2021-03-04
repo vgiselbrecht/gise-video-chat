@@ -220,6 +220,7 @@ export class App{
         this.partners[partnerId] = new Partner(partnerId, this.exchange, this.devices, this.textchat, this.videogrid, this.partnerOnConnected, this.partnerOnConnectionClosed, this.partnerOnConnectionLosed); 
         this.setStreamToPartner(this.partners[partnerId], true);
         this.videogrid.recalculateLayout();
+        Sounds.playSound(Sounds.newpartnersound, this);
     }
 
     partnerOnConnected(partner: IPartner){
@@ -323,6 +324,7 @@ export class App{
                     this.partners[id].closeConnection();
                 }
             }
+            Sounds.playSound(Sounds.hangoutsound, this);
             this.videogrid.recalculateLayout();
         }
     }

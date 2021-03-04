@@ -1,11 +1,15 @@
 import '../../sounds/messagealert.mp3';
 import '../../sounds/reload.mp3';
+import '../../sounds/newpartner.mp3';
+import '../../sounds/hangout.mp3';
 import { App } from '../app';
 
 export class Sounds{
 
     static readonly messagealertsound: string = 'messagealert';
     static readonly reloadsound: string = 'reload';
+    static readonly newpartnersound: string = 'newpartner';
+    static readonly hangoutsound: string = 'hangout';
 
     static playSound(name: string, app: App, loop: boolean = false): HTMLAudioElement{
         var audi = new Audio('assets/'+name+'.mp3');
@@ -22,6 +26,8 @@ export class Sounds{
     static preloadSounds(){
         this.preloadSound(this.messagealertsound);
         this.preloadSound(this.reloadsound);
+        this.preloadSound(this.newpartnersound);
+        this.preloadSound(this.hangoutsound);
     }
 
     static preloadSound(name: string){
