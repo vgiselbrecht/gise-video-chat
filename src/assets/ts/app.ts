@@ -25,6 +25,7 @@ import { Alert } from "./Elements/Alert";
 import { NoInternet } from "./Elements/NoInternet";
 import { Translator } from "./Utils/Translator";
 import { IceServers } from "./Utils/IceServers";
+import { Sounds } from "./Utils/Sounds";
 
 export class App{
 
@@ -114,6 +115,7 @@ export class App{
 
     preloadElements(callback: () => void){
         this.textchat.initialDatabase();
+        Sounds.preloadSounds();
         IceServers.loadIceServers(callback);
     }
 

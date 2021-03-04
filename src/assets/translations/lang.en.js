@@ -25,5 +25,5 @@ export default{
     "cannotstartcamera": "A camera cannot be accessed!",
     "cannotstartmicrophone": "A microphone cannot be accessed!",
     "search": "Search...",
-    "nointernet": "No internet connection!"
+    "nointernet": "No internet connection..."
 }

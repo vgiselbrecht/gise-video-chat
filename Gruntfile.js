@@ -41,7 +41,7 @@ module.exports = function(grunt) {
               ],
             },
             {
-              test: /\.(eot|svg|ttf|woff|woff2|png|jpg|jpeg|mp3)$/i,
+              test: /\.(eot|svg|ttf|woff|woff2|png|jpg|jpeg)$/i,
               use: [
                 {
                   loader: 'url-loader',
@@ -52,7 +52,7 @@ module.exports = function(grunt) {
               ]
             },
             {
-              test: /chat\.png$/,
+              test: /(chat\.png|\.mp3)$/,
               use: 'file-loader?name=[name].[ext]',
             },
           ],

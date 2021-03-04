@@ -259,7 +259,10 @@ export class Partner implements IPartner{
     setSinkId(sinkId: any): void{
         if(this.videoElement != undefined){
             // @ts-ignore
-            this.videoElement.setSinkId(sinkId);
+            if(typeof this.videoElement.sinkId !== 'undefined'){
+                // @ts-ignore
+                this.videoElement.setSinkId(sinkId);
+            }
         }
     }
 

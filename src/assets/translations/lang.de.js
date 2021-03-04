@@ -25,5 +25,5 @@ export default{
    "cannotstartcamera": "Es kann nicht auf eine Kamera zugegriffen werden!",
    "cannotstartmicrophone": "Es kann nicht auf ein Mikrofon zugegriffen werden!",
    "search": "Suchen...",
-   "nointernet": "Keine Internet Verbindung!"
+   "nointernet": "Keine Internet Verbindung..."
 }

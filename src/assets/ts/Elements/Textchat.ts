@@ -354,7 +354,7 @@ export class Textchat{
         if(!this.isChatVisible()){
             this.setHasNewMessage(true);
         }
-        Sounds.playSound(Sounds.messagealertsound);
+        Sounds.playSound(Sounds.messagealertsound, this.app);
     }
 
     isChatVisible(){

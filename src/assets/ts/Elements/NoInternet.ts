@@ -1,11 +1,13 @@
 import { Translator } from "../Utils/Translator";
 import { App } from "../app";
+import { Sounds } from "../Utils/Sounds";
 
 export class NoInternet{
 
     app: App;
 
     noInternet: boolean = false;
+    sound: HTMLAudioElement = null;
 
     constructor(app: App){
         this.app = app;
@@ -15,9 +17,12 @@ export class NoInternet{
         if(noInternet != this.noInternet){
             if(noInternet){
                 this.addNoInternetBox();
+                this.sound = Sounds.playSound(Sounds.reloadsound, this.app, true);
             }else{
                 this.removeNoInternetBox();
                 this.app.exchange.sendMessage({'call': 'recall'});
+                this.sound.pause();
+                delete this.sound;
             }
         }
         this.noInternet = noInternet;
