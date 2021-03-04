@@ -1,11 +1,11 @@
 
 import { ICommunication } from "./ICommunication";
 import { IPartner } from "../Partner/IPartner";
-import config from "../../../config.json"
+import { IceServers } from "../Utils/IceServers";
 
-export class WebRTC implements ICommunication{
-    
-    servers = {'iceServers': config.communication.webrtc.iceServers}; 
+export class WebRTC implements ICommunication{  
+
+    servers = {'iceServers': IceServers.iceServers}; 
     partner: IPartner;
     onicecandidateEvent: (candidate: any, partner: IPartner) => void;
     onaddtrackEvent: (stream: any, partner: IPartner) => void;

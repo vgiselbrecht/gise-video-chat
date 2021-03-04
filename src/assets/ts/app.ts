@@ -22,7 +22,10 @@ import { CreateRoom } from "./Elements/CreateRoom";
 import { SystemInfo } from "./Elements/SystemInfo";
 import { JQueryUtils } from "./Utils/JQuery";
 import { Alert } from "./Elements/Alert";
+import { NoInternet } from "./Elements/NoInternet";
 import { Translator } from "./Utils/Translator";
+import { IceServers } from "./Utils/IceServers";
+import { Sounds } from "./Utils/Sounds";
 
 export class App{
 
@@ -47,9 +50,11 @@ export class App{
     lightbox: Lightbox;
     createRoom: CreateRoom;
     systemInfo: SystemInfo;
+    noInternet: NoInternet;
     invite: Invite;
     closed: boolean = false;
     called: boolean = false;
+    readyToCall: boolean = false;
     stateIsSet: boolean = false;
     yourVideoElement: Video;
     partnerListElement: PartnerListElement;
@@ -67,6 +72,7 @@ export class App{
         this.invite = new Invite(this);
         this.createRoom = new CreateRoom(this);
         this.systemInfo = new SystemInfo(this);
+        this.noInternet = new NoInternet(this);
         this.videogrid = new Videogrid();
         this.videogrid.init();
     }
@@ -89,18 +95,28 @@ export class App{
             this.exchange = new Firebase(this.room, this.yourId, function(){
                 app.exchange.addReadEvent(app.readMessage);
             });
-
-            this.textchat.initialDatabase();
             
-            app.devices.gotDevices(true);
+            this.preloadElements(function(){
+                app.readyToCall = true;
+                if(app.called){
+                    app.callOther();
+                }
+            });
 
+            app.devices.gotDevices(true);
             setTimeout(function(){
                 if(!app.called){
                     app.callOther(); 
                 }
             }, 1000);
-            this.jsEvents();
+            app.jsEvents();
         }
+    }
+
+    preloadElements(callback: () => void){
+        this.textchat.initialDatabase();
+        Sounds.preloadSounds();
+        IceServers.loadIceServers(callback);
     }
 
     initialCamera(first: boolean = false) {
@@ -152,7 +168,9 @@ export class App{
 
     callOther(){
         this.called = true;
-        this.exchange.sendMessage({'call': 'init'});
+        if(this.readyToCall){
+            this.exchange.sendMessage({'call': 'init'});
+        }
     }
 
     readMessage(sender: number, dataroom: string, msg) {
@@ -202,6 +220,7 @@ export class App{
         this.partners[partnerId] = new Partner(partnerId, this.exchange, this.devices, this.textchat, this.videogrid, this.partnerOnConnected, this.partnerOnConnectionClosed, this.partnerOnConnectionLosed); 
         this.setStreamToPartner(this.partners[partnerId], true);
         this.videogrid.recalculateLayout();
+        Sounds.playSound(Sounds.newpartnersound, this);
     }
 
     partnerOnConnected(partner: IPartner){
@@ -305,6 +324,7 @@ export class App{
                     this.partners[id].closeConnection();
                 }
             }
+            Sounds.playSound(Sounds.hangoutsound, this);
             this.videogrid.recalculateLayout();
         }
     }
@@ -315,6 +335,9 @@ export class App{
                 location.reload();
             }
         }
+        setInterval(function(){
+            app.noInternet.setNoInternet(!window.navigator.onLine);
+        }, 500);
         addEventListener("popstate",function(e){
             if(app.stateIsSet){
                 if(app.controls.controlsVueObject.optionOn){

@@ -52,7 +52,7 @@ module.exports = function(grunt) {
               ]
             },
             {
-              test: /chat\.png$/,
+              test: /(chat\.png|\.mp3)$/,
               use: 'file-loader?name=[name].[ext]',
             },
           ],

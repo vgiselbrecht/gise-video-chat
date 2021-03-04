@@ -1,4 +1,9 @@
 # Video chat for your own web server
+[![Author](https://img.shields.io/badge/Author-vgiselbrecht-brightgreen.svg)](https://github.com/vgiselbrecht)
+[![GitHub license](https://img.shields.io/github/license/vgiselbrecht/chat)](https://github.com/vgiselbrecht/chat/blob/master/LICENSE)
+[![Sponsor](https://img.shields.io/badge/Sponsor-GitHub-ff69b4.svg)](https://github.com/sponsors/vgiselbrecht/)
+[![Demo](https://img.shields.io/badge/Demo-Link-blueviolet.svg)](https://chat.gise.at)
+![GitHub package.json version](https://img.shields.io/github/package-json/v/vgiselbrecht/chat)
 
 ![Video Chat Demo](https://www.gise.at/images/VideoChat.PNG)
 
@@ -95,7 +100,8 @@ Copy the firebase configuration to the src/config.json file in exchangeServices/
             "iceServers": [
                 {"urls": "stun:stun.services.mozilla.com"}, 
                 {"urls": "stun:stun.l.google.com:19302"}
-            ]
+            ],
+            "iceServersFromUrl": ""
         }
     }
 }
@@ -103,6 +109,8 @@ Copy the firebase configuration to the src/config.json file in exchangeServices/
 Additional STUN / TURN Server can also be added in communication/webrtc/iceServers. To use this video chat behind some Firewalls and NATs, you need a TURN server. 
 
 [List of free STUN and TURN Server](https://gist.github.com/sagivo/3a4b2f2c7ac6e1b5267c2f1f59ac6c6b)
+
+With certain systems (e.g. Twilio) it is necessary that the IceServers change frequently. Therefore it is possible to load the IceServer configuration dynamically with communication/webrtc/iceServersFromUrl. In the given URL, a return in JSON format is requested in the same way as with the iceServers Parameter ([{"urls": ""},...]).
 
 #### Adjust the design
 
