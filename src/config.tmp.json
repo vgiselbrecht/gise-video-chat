@@ -30,5 +30,8 @@
             ],
             "iceServersFromUrl": ""
         }
+    },
+    "features": {
+        "soundEffects": true
     }
 }

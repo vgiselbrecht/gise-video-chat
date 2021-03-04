@@ -21,8 +21,10 @@ export class NoInternet{
             }else{
                 this.removeNoInternetBox();
                 this.app.exchange.sendMessage({'call': 'recall'});
-                this.sound.pause();
-                delete this.sound;
+                if(this.sound != null){
+                    this.sound.pause();
+                    delete this.sound;
+                }
             }
         }
         this.noInternet = noInternet;
