@@ -142,6 +142,10 @@ Ideally the dist directory is the document root of a local web server like nginx
 
 You can sponsor me through [GitHub Sponsoring](https://github.com/sponsors/vgiselbrecht/).
 
+As a recognition, i would be happy to receive a star.
+
+Suggestions and pull requests for extensions are always welcome.
+
 ## License
 
 [Apache License 2.0](LICENSE)
