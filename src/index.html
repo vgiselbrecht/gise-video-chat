@@ -122,6 +122,12 @@
                                         </select>
                                     </div>
                                 </div>
+                                <div id="configuration">
+                                    <div class="row">
+                                        <label class="col-xs-6" >{{soundeffects}}:</label>
+                                        <input type="checkbox" v-model="soundEffectsOn" @change="toogleSoundEffects">
+                                    </div>
+                                </div>
                                 <div id="linkarea">
                                     <div class="row">
                                         <a target="_blank" href="https://github.com/vgiselbrecht/chat#own-installation">

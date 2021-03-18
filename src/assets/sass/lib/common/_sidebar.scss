@@ -56,6 +56,27 @@
         }
       }
     }
+    #configuration{
+      border-bottom: 1px solid $active-color;
+      margin-bottom: 20px;
+      label{
+        font-weight: bold;
+        padding: 3px;
+        font-size: 18px;
+        padding-top: 7px; 
+      }
+      input{
+        padding: 6px;
+        margin-bottom: 30px;
+        margin-top: 12px;
+        font-size: 18px;
+        transform: scale(1.4);
+        margin-left: 5px;
+        &:focus{
+          outline: none;
+        }
+      }
+    }
     #linkarea{
       border-bottom: 1px solid $active-color;
       margin-bottom: 20px;

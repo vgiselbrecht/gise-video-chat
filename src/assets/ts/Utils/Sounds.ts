@@ -14,7 +14,7 @@ export class Sounds{
     static readonly hangoutsound: string = 'hangout';
 
     static playSound(name: string, app: App, loop: boolean = false): HTMLAudioElement{
-        if(this.allowedToPlaySound()){
+        if(this.allowedToPlaySound() && app.configuration.configurationVueObject.soundEffectsOn){
             var audi = new Audio('assets/'+name+'.mp3');
             // @ts-ignore
             if(typeof audi.sinkId !== 'undefined'){

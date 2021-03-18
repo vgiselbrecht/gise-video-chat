@@ -20,6 +20,7 @@ import { Lightbox } from "./Elements/Lightbox";
 import { Invite } from "./Elements/Invite";
 import { CreateRoom } from "./Elements/CreateRoom";
 import { SystemInfo } from "./Elements/SystemInfo";
+import { Configuration } from "./Elements/Configuration";
 import { JQueryUtils } from "./Utils/JQuery";
 import { Alert } from "./Elements/Alert";
 import { NoInternet } from "./Elements/NoInternet";
@@ -50,6 +51,7 @@ export class App{
     lightbox: Lightbox;
     createRoom: CreateRoom;
     systemInfo: SystemInfo;
+    configuration: Configuration;
     noInternet: NoInternet;
     invite: Invite;
     closed: boolean = false;
@@ -72,6 +74,7 @@ export class App{
         this.invite = new Invite(this);
         this.createRoom = new CreateRoom(this);
         this.systemInfo = new SystemInfo(this);
+        this.configuration = new Configuration(this);
         this.noInternet = new NoInternet(this);
         this.videogrid = new Videogrid();
         this.videogrid.init();
