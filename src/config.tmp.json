@@ -11,6 +11,7 @@
         "gdpr": ""
     },
     "exchangeServices": { 
+        "service": "firebase", 
         "firebase": {
             "apiKey": "",
             "authDomain": "",
@@ -20,6 +21,9 @@
             "messagingSenderId": "",
             "appId": "",
             "measurementId": ""
+        },
+        "chat-server": {
+            "host": "ws://"
         }
     },
     "communication": {
