@@ -68,7 +68,7 @@ copy src\assets\sass\_custom.tmp.scss src\assets\sass\_custom.scss
 
 The full configuration can be made in the src/config.json file.
 
-The most importing think is the "exchangeServices" for signaling.
+The most important thing is the "exchangeServices" for signaling.
 There are two ways for signaling, over the node.js base [Chat Server](https://github.com/vgiselbrecht/chat-server) or a free [Firebase Project](https://console.firebase.google.com/u/0/).
 
 In "exchangeServices/service" it is specified whether the Chat Server (chat-server) or Firebase (firebase) is used.
