@@ -78,13 +78,50 @@ In "exchangeServices/service" it is specified whether the Chat Server (chat-serv
 For connection to Chat Server you have to install [Chat Server](https://github.com/vgiselbrecht/chat-server) on an own server. 
 In "exchangeServices/chat-server/host" you have to add the Web Socket URI to this server.
 
+```json
+{
+    "exchangeServices": { 
+        "service": "chat-server",
+        "chat-server": {
+            "host": "ws://chat-server.example.com"
+        }
+    },
+}
+```
+
 ##### Firebase
 
 You need to create a free [Firebase Project](https://console.firebase.google.com/u/0/) with anonymous authentication and realtime database.
 The Firebase configuration must be deposited at "exchangeServices/firebase". 
 
+```json
+{
+    "exchangeServices": { 
+        "service": "firebase",
+        "firebase": {
+            "apiKey": "",
+            "authDomain": "",
+            "databaseURL": "",
+            "projectId": "",
+            "storageBucket": "",
+            "messagingSenderId": "",
+            "appId": "",
+            "measurementId": ""
+        }
+    },
+}
+```
 
-##### Example chat configuration
+##### STUN and TURN Server
+
+Additional STUN / TURN Server can also be added in communication/webrtc/iceServers. To use this video chat behind some Firewalls and NATs, you need a TURN server. 
+
+[List of free STUN and TURN Server](https://gist.github.com/sagivo/3a4b2f2c7ac6e1b5267c2f1f59ac6c6b)
+
+With certain systems (e.g. Twilio) it is necessary that the IceServers change frequently. Therefore it is possible to load the IceServer configuration dynamically with communication/webrtc/iceServersFromUrl. In the given URL, a return in JSON format is requested in the same way as with the iceServers Parameter ([{"urls": ""},...]).
+
+
+##### Example full chat configuration
 ```json
 {
     "meta": {
@@ -99,17 +136,7 @@ The Firebase configuration must be deposited at "exchangeServices/firebase".
         "gdpr": ""
     },
     "exchangeServices": { 
-        "service": "firebase", // or chat-server
-        "firebase": {
-            "apiKey": "",
-            "authDomain": "",
-            "databaseURL": "",
-            "projectId": "",
-            "storageBucket": "",
-            "messagingSenderId": "",
-            "appId": "",
-            "measurementId": ""
-        },
+        "service": "chat-server",
         "chat-server": {
             "host": "ws://"
         }
@@ -125,14 +152,6 @@ The Firebase configuration must be deposited at "exchangeServices/firebase".
     }
 }
 ```
-
-##### STUN and TURN Server
-
-Additional STUN / TURN Server can also be added in communication/webrtc/iceServers. To use this video chat behind some Firewalls and NATs, you need a TURN server. 
-
-[List of free STUN and TURN Server](https://gist.github.com/sagivo/3a4b2f2c7ac6e1b5267c2f1f59ac6c6b)
-
-With certain systems (e.g. Twilio) it is necessary that the IceServers change frequently. Therefore it is possible to load the IceServer configuration dynamically with communication/webrtc/iceServersFromUrl. In the given URL, a return in JSON format is requested in the same way as with the iceServers Parameter ([{"urls": ""},...]).
 
 #### Adjust the design
 
