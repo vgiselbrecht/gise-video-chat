@@ -1,6 +1,8 @@
 import "../sass/main.scss";
 import '../images/chat.png'; 
 
+import config from "../../config.json"
+
 import { IExchange } from "./Exchange/IExchange";
 import { Firebase } from "./Exchange/Firebase";
 import { ICommunication } from "./Communication/ICommunication";
@@ -27,6 +29,8 @@ import { NoInternet } from "./Elements/NoInternet";
 import { Translator } from "./Utils/Translator";
 import { IceServers } from "./Utils/IceServers";
 import { Sounds } from "./Utils/Sounds";
+import { Settings } from "./Utils/Settings";
+import { ChatServer } from "./Exchange/ChatServer";
 
 export class App{
 
@@ -95,9 +99,8 @@ export class App{
         if(!this.closed){
             console.log("Id: " + this.yourId + " Room: " + this.room);
             document.title = decodeURIComponent(this.room) + " | " + document.title;
-            this.exchange = new Firebase(this.room, this.yourId, function(){
-                app.exchange.addReadEvent(app.readMessage);
-            });
+
+            this.addExchange();
             
             this.preloadElements(function(){
                 app.readyToCall = true;
@@ -113,6 +116,17 @@ export class App{
                 }
             }, 1000);
             app.jsEvents();
+        }
+    }
+
+    addExchange(){
+        if(Settings.getValue(config, "exchangeServices.service") == "chat-server"){
+            this.exchange = new ChatServer(this.room, this.yourId);
+            app.exchange.addReadEvent(app.readMessage);
+        } else {
+            this.exchange = new Firebase(this.room, this.yourId, function(){
+                app.exchange.addReadEvent(app.readMessage);
+            });
         }
     }
 
@@ -177,7 +191,7 @@ export class App{
     }
 
     readMessage(sender: number, dataroom: string, msg) {
-        if(app !== undefined && !this.closed){
+        if(app !== undefined && !app.closed){
             console.log("Exchange message from: " + sender)
             console.log(msg)
             if (!(sender in app.partners) && (msg.call !== undefined || msg.sdp !== undefined))
