@@ -1,7 +1,7 @@
 $active-color: #009e97;
 $active-hover-color: darken($active-color, 5%);
 $passive-color: #555;
-$main-background: linear-gradient(45deg, $active-color, lighten($active-color, 20%), $active-color);
+$main-background: linear-gradient(180deg, lighten($active-color,10%), lighten($active-color, 20%), lighten($active-color,10%));
 $footer-button-background: #fff;
 $footer-button-color: #555;
 
