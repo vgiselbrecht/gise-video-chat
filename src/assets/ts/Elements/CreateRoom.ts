@@ -1,5 +1,7 @@
 import { App } from "../app";
 import { Translator } from "../Utils/Translator";
+import { Settings } from "../Utils/Settings";
+import config from "../../../config.json"
 
 declare var Vue: any;
 
@@ -21,7 +23,9 @@ export class CreateRoom{
             data: {
                 showDialog: false,
                 roomNameLabel: Translator.get("roomname"),
-                roomName: ""
+                roomName: "",
+                imprint: Settings.getValueOrDefault(config, "privacy.imprint"),
+                gdpr: Settings.getValueOrDefault(config, "privacy.gdpr")
             },
             methods: {
                 createRoom: function(){

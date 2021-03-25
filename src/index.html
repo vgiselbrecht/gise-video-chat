@@ -180,6 +180,15 @@
                     <div class="button-area">
                         <button type="submit" data-lang="create" class="button">Create</button>
                     </div>
+                    <div class="bottomlinks">
+                        <span class="imprint" v-show="imprint">
+                            <a v-bind:href="imprint" target="_blank" data-lang="imprint">Imprint</a>
+                        </span>
+                        <span v-show="imprint && gdpr"> | </span>
+                        <span class="gdpr" v-show="gdpr">
+                            <a v-bind:href="gdpr" target="_blank" data-lang="privacy">Privacy</a>
+                        </span>
+                    </div>
                 </form>
             </div>
         </div>

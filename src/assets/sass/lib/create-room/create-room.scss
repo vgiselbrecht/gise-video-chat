@@ -44,5 +44,17 @@
             padding: 15px;
             text-align: right;
         }
+        .bottomlinks{
+            text-align: right;
+            padding: 5px 15px;
+            font-size: 12px;
+            a{
+                text-decoration: none;
+                color: $active-color;
+                &:hover{
+                    color: $active-hover-color;
+                }
+            }
+        }
     }
 }
