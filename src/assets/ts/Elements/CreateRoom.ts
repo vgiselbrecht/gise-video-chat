@@ -36,6 +36,9 @@ export class CreateRoom{
                         cla.app.invite.resetLink();
                         this.showDialog = false;
                     }
+                },
+                setRandomName: function(){
+                    this.roomName = cla.randomName(20);
                 }
             }
         });
@@ -44,4 +47,14 @@ export class CreateRoom{
     showCreateRoom(show: boolean = true){
         this.createRoomVueObject.showDialog = show;
     }
+
+    randomName(length) {
+        var result           = '';
+        var characters       = 'abcdefghijklmnopqrstuvwxyz';
+        var charactersLength = characters.length;
+        for ( var i = 0; i < length; i++ ) {
+           result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return result;
+     }
 }

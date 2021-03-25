@@ -171,11 +171,12 @@
                 <form v-on:submit.prevent="createRoom">
                     <div class="message" data-lang="createaroom">Create a room</div>
                     <div class="room-input">
-                        <input type="text" 
+                        <input autofocus type="text" 
                         :placeholder="[[roomNameLabel]]" 
                         v-model="roomName"
                         @keydown.enter.exact.prevent
                         @keyup.enter.exact="createRoom">
+                        <button type="button" v-on:click="setRandomName" class="fas fa-random"></button>
                     </div>
                     <div class="button-area">
                         <button type="submit" data-lang="create" class="button">Create</button>

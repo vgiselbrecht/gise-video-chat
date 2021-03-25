@@ -13,7 +13,7 @@
     }
     .create-room-inner{
         position: absolute;
-        top: 35%;
+        top: 30%;
         left: 50%;
         width: 320px;
         margin-left: -160px;
@@ -30,11 +30,33 @@
         } 
         .room-input{
             padding: 10px 15px;
+            display: flex;
+            background: #eee;
+            border-top: 1px solid #ccc;
+            border-bottom: 1px solid #ccc;
             input{
                 width: 100%;
                 box-sizing: border-box;
                 padding: 6px;
-                font-size: 18px;
+                font-size: 16px;
+                border-radius: 0px;
+                border: 0px;
+                border-right: 0;
+                &:focus{
+                    outline: none;
+                }
+            }
+            button{
+                width: 35px;
+                background: $active-color;
+                color: #fff;
+                font-weight: bold;
+                cursor: pointer;
+                transition: background 0.23s;
+                border: 0;
+                &:hover{
+                    background: $active-hover-color;
+                }
                 &:focus{
                     outline: none;
                 }
@@ -48,6 +70,7 @@
             text-align: right;
             padding: 5px 15px;
             font-size: 12px;
+            border-top: 1px solid #ccc;
             a{
                 text-decoration: none;
                 color: $active-color;

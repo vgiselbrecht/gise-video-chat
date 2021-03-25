@@ -13,7 +13,7 @@ export default{
     "chat": "Chat",
     "participant": "Participant",
     "settings": "Settings",
-    "ok": "Ok",
+    "ok": "ok",
     "buildownvideochat": "Build your own Video Chat",
     "reportabug": "Report a bug",
     "createaroom": "Create a room",
