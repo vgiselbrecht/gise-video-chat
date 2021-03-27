@@ -24,6 +24,7 @@ export class CreateRoom{
                 showDialog: false,
                 roomNameLabel: Translator.get("roomname"),
                 roomName: "",
+                title: Settings.getValueOrDefault(config, "meta.title"),
                 imprint: Settings.getValueOrDefault(config, "privacy.imprint"),
                 gdpr: Settings.getValueOrDefault(config, "privacy.gdpr")
             },

@@ -169,6 +169,7 @@
         <div id="create-room" v-bind:class="{'show': showDialog}">
             <div class="create-room-inner">
                 <form v-on:submit.prevent="createRoom">
+                    <div class="title">{{title}}</div>
                     <div class="message" data-lang="createaroom">Create a room</div>
                     <div class="room-input">
                         <input autofocus type="text" 
