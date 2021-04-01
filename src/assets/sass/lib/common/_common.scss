@@ -53,16 +53,17 @@ html,body{
   button.button{
     background: $active-color;
     border: 0;
-    padding: 5px 20px;
+    padding: 5px 20px 4px;
     color: #fff;
     border-radius: 2px;
-    box-shadow: 0 0 2px 1px #555;
+    //box-shadow: 0 0 2px 1px #555;
     transition: box-shadow 0.3s ease-in-out;
     font-size: 16px;
     user-select: None;
     cursor: pointer;
     &:hover{
-        box-shadow: 0 0 5px 1px #555;
+        //box-shadow: 0 0 5px 1px #555;
+        background: $active-hover-color;
     }
     &:focus{
         outline: none;

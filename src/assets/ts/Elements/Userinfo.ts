@@ -26,16 +26,24 @@ export class Userinfo{
             el: '#userinfo',
             data: {
                 name: Cookie.getCookie(cla.nameCookie) ?? "",
-                namelabel: Translator.get("name")
+                namelabel: Translator.get("name"),
+                yournamelabel: Translator.get("yourname")
             },
             methods: {
                 changeUserinfo: function(){
-                    cla.app.sendMessageToAllPartners(cla.getUserInfo()); 
-                    Cookie.setCookie(cla.nameCookie, this.name);
-                    cla.app.yourName = this.name;
+                    cla.setUserInfo();
                 }
             }
         });
+    }
+
+    setUserInfo(name: string = null){
+        if(name !== null){
+            this.userinfoVueObject.name = name;
+        }
+        this.app.sendMessageToAllPartners(this.getUserInfo()); 
+        Cookie.setCookie(this.nameCookie, this.userinfoVueObject.name);
+        this.app.yourName = this.userinfoVueObject.name;
     }
 
     getUserInfo(){
