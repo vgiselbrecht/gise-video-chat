@@ -89,7 +89,7 @@ export class App{
 
     run(){ 
         if (location.hash) {
-            this.room = location.hash.substring(1);
+            this.room = decodeURIComponent(location.hash.substring(1));
             this.openConnection();
         } else{
             this.createRoom.showCreateRoom();
@@ -101,7 +101,7 @@ export class App{
     openConnection(newRoom: boolean = false){
         if(!this.closed){
             console.log("Id: " + this.yourId + " Room: " + this.room);
-            document.title = decodeURIComponent(this.room) + " | " + document.title;
+            document.title = this.room + " | " + document.title;
             this.welcome.openDialog(newRoom, this.yourName ? false : true);
 
             this.addExchange();
@@ -352,7 +352,7 @@ export class App{
 
     jsEvents(){
         window.onhashchange = function() {
-            if(app.room !== location.hash.substring(1)){
+            if(app.room !== decodeURIComponent(location.hash.substring(1))){
                 location.reload();
             }
         }
