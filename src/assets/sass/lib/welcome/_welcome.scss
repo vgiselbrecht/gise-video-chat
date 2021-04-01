@@ -1,0 +1,100 @@
+#welcome{
+    top: -270px;
+    z-index: 210;
+    position: absolute;
+    width: 100%;
+    transition: top 0.5s ease-in-out;
+    &.open{
+        top: 50px; 
+    }
+    .welcome-inner{
+        background: #fff;
+        box-shadow: 0 0 5px 1px #555;
+        border-radius: 5px;
+        padding: 20px 20px;
+        max-width: 500px;
+        width: calc(100% - 20px);
+        margin: 0 auto;
+        box-sizing: border-box;
+        position: relative;
+        .invite, .setname{
+            display: none;
+            &.show{
+                display: block;
+            }
+            .invite-header, .setname-header{
+                padding: 0px;
+                font-weight: bold;
+                margin-bottom: 5px;
+                font-size: 18px;
+            }
+            .invite-content, .setname-content{
+                border: 1px solid #555;
+                border-radius: 2px;
+                font-size: 18px;
+                padding: 0;
+                height: 35px;
+                input, button{
+                    padding: 6px;
+                    font-size: 18px;
+                    border: 0;
+                    background: transparent;
+                    &:focus{
+                        outline: none;
+                    }
+                }
+            }
+            .invite-content{
+                input{
+                    width: calc(100% - 45px);
+                }
+                button{
+                    font-size: 18px;
+                    color: #000;
+                    cursor: pointer;
+                    &.fa-copy{
+                        color: #555;
+                        &:hover{
+                            color: #000;
+                        }
+                    }
+                }
+            }
+            .setname-content{
+                input{
+                    width: 100%;
+                    box-sizing: border-box;
+                }
+            }
+        }
+        .invite + .setname{
+            margin-top: 15px;
+        }
+        .close{
+            position: absolute;
+            right: 5px;
+            top: 2px;
+            font-size: 20px;
+            background: transparent;
+            color: #555;
+            border-radius: 0;
+            box-shadow: none;
+            z-index: 40;
+            padding: 0;
+            width: auto;
+            height: auto;
+            cursor: pointer;
+            &:hover {
+                color: $active-color;
+            }
+        }
+        .starting{
+            float: right;
+            margin-top: 15px;
+            display: none;
+            &.show{
+                display: block;
+            }
+        }
+    }
+}

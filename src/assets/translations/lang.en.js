@@ -26,5 +26,7 @@ export default{
     "cannotstartmicrophone": "A microphone cannot be accessed!",
     "search": "Search...",
     "nointernet": "No internet connection...",
-    "soundeffects": "Sound effects"
+    "soundeffects": "Sound effects",
+    "yourname": "Your name",
+    "starting": "Start"
 }

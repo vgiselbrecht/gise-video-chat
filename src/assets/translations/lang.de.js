@@ -26,5 +26,7 @@ export default{
    "cannotstartmicrophone": "Es kann nicht auf ein Mikrofon zugegriffen werden!",
    "search": "Suchen...",
    "nointernet": "Keine Internet Verbindung...",
-   "soundeffects": "Sound Effekte"
+   "soundeffects": "Sound Effekte",
+   "yourname": "Dein Name",
+   "starting": "Starten"
 }

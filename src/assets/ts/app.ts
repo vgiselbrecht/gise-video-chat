@@ -26,6 +26,7 @@ import { Configuration } from "./Elements/Configuration";
 import { JQueryUtils } from "./Utils/JQuery";
 import { Alert } from "./Elements/Alert";
 import { NoInternet } from "./Elements/NoInternet";
+import { Welcome } from "./Elements/Welcome";
 import { Translator } from "./Utils/Translator";
 import { IceServers } from "./Utils/IceServers";
 import { Sounds } from "./Utils/Sounds";
@@ -57,6 +58,7 @@ export class App{
     systemInfo: SystemInfo;
     configuration: Configuration;
     noInternet: NoInternet;
+    welcome: Welcome;
     invite: Invite;
     closed: boolean = false;
     called: boolean = false;
@@ -80,6 +82,7 @@ export class App{
         this.systemInfo = new SystemInfo(this);
         this.configuration = new Configuration(this);
         this.noInternet = new NoInternet(this);
+        this.welcome = new Welcome(this);
         this.videogrid = new Videogrid();
         this.videogrid.init();
     }
@@ -95,10 +98,11 @@ export class App{
         this.videogrid.recalculateLayout();
     }
 
-    openConnection(){
+    openConnection(newRoom: boolean = false){
         if(!this.closed){
             console.log("Id: " + this.yourId + " Room: " + this.room);
             document.title = decodeURIComponent(this.room) + " | " + document.title;
+            this.welcome.openDialog(newRoom, this.yourName ? false : true);
 
             this.addExchange();
             

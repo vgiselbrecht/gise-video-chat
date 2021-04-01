@@ -31,6 +31,25 @@
                                 </div>
                             </div>
                         </div>
+                        <div id="welcome" class="welcome-messages" v-bind:class="{'open': open}">
+                            <div class="welcome-inner">
+                                <span class="close fas fa-times" v-on:click="close"></span>
+                                <div class="invite row" v-bind:class="{'show': showInvite}">
+                                    <div class="col-xs-12 invite-header">{{inviteotherwithlink}}:</div>
+                                    <div class="col-xs-12 invite-content">
+                                        <input v-model="link" readonly type="text" id="invite-link"><button v-bind:class="{'fa-copy': !copied, 'fa-check': copied}" v-on:click="copy" class="fas"></button>
+                                    </div>
+                                </div>
+                                <div class="setname row" v-bind:class="{'show': showSetName}">
+                                    <div class="col-xs-12 setname-header">{{yournamelabel}}:</div>
+                                    <div class="col-xs-12 setname-content">
+                                        <input v-model="name" @blur="changeUserinfo" autofocus placeholder="..." @keydown.enter.exact.prevent @keyup.enter.exact="close">
+                                    </div>
+                                </div>
+                                <button v-bind:class="{'show': showSetName}" v-on:click="close" type="submit" data-lang="starting" class="button starting">Starting</button>
+                                <div class="row"></div>
+                            </div>
+                        </div>
                     </div>
                     <div class="row center-xs" id="footer">
                         <div class="col-xs-12" id="controls">
@@ -94,7 +113,7 @@
                                 <div id="userinfo">
                                     <div class="row">
                                         <label class="col-xs-6" >{{namelabel}}:</label>
-                                        <input class="col-xs-6" v-model="name" @blur="changeUserinfo" placeholder="Ihr Name">
+                                        <input class="col-xs-6" v-model="name" @blur="changeUserinfo" placeholder="..." >
                                     </div>
                                 </div>
                                 <div id="devices">

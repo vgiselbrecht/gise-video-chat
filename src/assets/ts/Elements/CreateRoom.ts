@@ -33,7 +33,7 @@ export class CreateRoom{
                     if(this.roomName !== ""){
                         cla.app.room = this.roomName;
                         location.hash = this.roomName;
-                        cla.app.openConnection();
+                        cla.app.openConnection(true);
                         cla.app.invite.resetLink();
                         this.showDialog = false;
                     }
