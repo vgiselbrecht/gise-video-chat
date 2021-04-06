@@ -38,7 +38,7 @@ export class Sounds{
     }
 
     static allowedToPlaySound(): boolean{
-        return Settings.getValueOrDefault(config, "features.soundEffects", true)
+        return Settings.getValueOrDefault(config, "features.soundEffects", false)
     }
 
     static preloadSound(name: string){

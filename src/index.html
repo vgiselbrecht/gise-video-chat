@@ -142,9 +142,9 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div id="configuration">
-                                    <div class="row">
-                                        <label class="col-xs-6" >{{soundeffects}}:</label>
+                                <div id="configuration" v-if="soundEffectsEnabled">
+                                    <div class="row" v-if="soundEffectsEnabled">
+                                        <label class="col-xs-6" >{{soundeffectsLabel}}:</label>
                                         <input type="checkbox" v-model="soundEffectsOn" @change="toogleSoundEffects">
                                     </div>
                                 </div>

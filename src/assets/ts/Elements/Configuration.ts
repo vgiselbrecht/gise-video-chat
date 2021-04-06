@@ -1,6 +1,8 @@
 import { App } from "../app";
 import { Cookie } from "../Utils/Cookie";
+import { Settings } from "../Utils/Settings";
 import { Translator } from "../Utils/Translator";
+import config from "../../../config.json"
 
 declare var Vue: any;
 
@@ -22,7 +24,8 @@ export class Configuration{
             el: '#configuration',
             data: {
                 soundEffectsOn: Cookie.getCookie(cla.soundEffectsCookie) == 'false' ? false : true,
-                soundeffects: Translator.get("soundeffects")
+                soundeffectsLabel: Translator.get("soundeffects"),
+                soundEffectsEnabled: Settings.getValueOrDefault(config, "features.soundEffects", false)
             },
             methods: {
                 toogleSoundEffects: function () {

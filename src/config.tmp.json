@@ -36,6 +36,6 @@
         }
     },
     "features": {
-        "soundEffects": true
+        "soundEffects": false
     }
 }
