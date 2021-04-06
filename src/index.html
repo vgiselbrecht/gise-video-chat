@@ -37,7 +37,7 @@
                                 <div class="invite row" v-bind:class="{'show': showInvite}">
                                     <div class="col-xs-12 invite-header">{{inviteotherwithlink}}:</div>
                                     <div class="col-xs-12 invite-content">
-                                        <input v-model="link" readonly type="text" id="invite-link"><button v-bind:class="{'fa-copy': !copied, 'fa-check': copied}" v-on:click="copy" class="fas"></button>
+                                        <input v-model="link" readonly type="text" id="invite-link-welcome"><button v-bind:class="{'fa-copy': !copied, 'fa-check': copied}" v-on:click="copy" class="fas"></button>
                                     </div>
                                 </div>
                                 <div class="setname row" v-bind:class="{'show': showSetName}">
@@ -142,9 +142,9 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div id="configuration">
-                                    <div class="row">
-                                        <label class="col-xs-6" >{{soundeffects}}:</label>
+                                <div id="configuration" v-if="soundEffectsEnabled">
+                                    <div class="row" v-if="soundEffectsEnabled">
+                                        <label class="col-xs-6" >{{soundeffectsLabel}}:</label>
                                         <input type="checkbox" v-model="soundEffectsOn" @change="toogleSoundEffects">
                                     </div>
                                 </div>

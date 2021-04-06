@@ -30,7 +30,7 @@ export class Welcome{
             },
             methods: {
                 copy: function(){
-                    var copyText = document.getElementById("invite-link");
+                    var copyText = document.getElementById("invite-link-welcome");
                     // @ts-ignore
                     copyText.select();
                     // @ts-ignore
