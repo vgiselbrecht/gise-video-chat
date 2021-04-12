@@ -1,4 +1,4 @@
-# Gise Video Chat: Video chat software for your own web server
+# Gise Video Chat: Video chat application for your web server
 [![Author](https://img.shields.io/badge/Author-vgiselbrecht-brightgreen.svg)](https://github.com/vgiselbrecht)
 [![GitHub license](https://img.shields.io/github/license/vgiselbrecht/chat)](https://github.com/vgiselbrecht/chat/blob/master/LICENSE)
 [![Sponsor](https://img.shields.io/badge/Sponsor-GitHub-ff69b4.svg)](https://github.com/sponsors/vgiselbrecht/)
