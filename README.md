@@ -1,4 +1,4 @@
-# Video chat for your own web server
+# Gise Video Chat: Video chat application for your web server
 [![Author](https://img.shields.io/badge/Author-vgiselbrecht-brightgreen.svg)](https://github.com/vgiselbrecht)
 [![GitHub license](https://img.shields.io/github/license/vgiselbrecht/chat)](https://github.com/vgiselbrecht/chat/blob/master/LICENSE)
 [![Sponsor](https://img.shields.io/badge/Sponsor-GitHub-ff69b4.svg)](https://github.com/sponsors/vgiselbrecht/)
@@ -12,7 +12,7 @@
 * Open-Source
 * For small groups
 * Browser based
-* Signaling over [Chat Server](https://github.com/vgiselbrecht/chat-server) or Firebase
+* Signaling over [Chat Server](https://github.com/vgiselbrecht/gise-video-chat-server) or Firebase
 * No media server
 * Screen sharing
 * Text-Chat with images
@@ -34,7 +34,7 @@ Therefore simply forward the current URL to invite others.
 ## Own installation
 
 This video chat is made to install it on an own web server.
-For signaling you can use a free Firebase project or using the [Chat Server](https://github.com/vgiselbrecht/chat-server) base on node.js.
+For signaling you can use a free Firebase project or using the [Chat Server](https://github.com/vgiselbrecht/gise-video-chat-server) base on node.js.
 
 ### Prerequisites
 * Local development environment
@@ -68,14 +68,14 @@ copy src\assets\sass\_custom.tmp.scss src\assets\sass\_custom.scss
 
 The full configuration can be made in the src/config.json file.
 
-The most importing think is the "exchangeServices" for signaling.
-There are two ways for signaling, over the node.js base [Chat Server](https://github.com/vgiselbrecht/chat-server) or a free [Firebase Project](https://console.firebase.google.com/u/0/).
+The most important thing is the "exchangeServices" for signaling.
+There are two ways for signaling, over the node.js base [Chat Server](https://github.com/vgiselbrecht/gise-video-chat-server) or a free [Firebase Project](https://console.firebase.google.com/u/0/).
 
 In "exchangeServices/service" it is specified whether the Chat Server (chat-server) or Firebase (firebase) is used.
 
 ##### Chat Server
 
-For connection to Chat Server you have to install [Chat Server](https://github.com/vgiselbrecht/chat-server) on an own server. 
+For connection to Chat Server you have to install [Chat Server](https://github.com/vgiselbrecht/gise-video-chat-server) on an own server. 
 In "exchangeServices/chat-server/host" you have to add the Web Socket URI to this server.
 
 ```json
@@ -182,6 +182,10 @@ Ideally the dist directory is the document root of a local web server like nginx
 ## Sponsoring
 
 You can sponsor me through [GitHub Sponsoring](https://github.com/sponsors/vgiselbrecht/).
+
+As a recognition, i would be happy to receive a star.
+
+Suggestions and pull requests for extensions are always welcome.
 
 ## License
 
