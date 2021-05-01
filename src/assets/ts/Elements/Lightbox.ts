@@ -46,4 +46,10 @@ export class Lightbox{
         this.lightboxVueObject.mode = 'video';
         this.lightboxVueObject.closed = false;
     }
+
+    addYouTube(code: string){
+        this.lightboxVueObject.src = 'https://www.youtube-nocookie.com/embed/' + code + '?autoplay=1&showinfo=0&modestbranding=1';
+        this.lightboxVueObject.mode = 'youtube';
+        this.lightboxVueObject.closed = false;
+    }
 }

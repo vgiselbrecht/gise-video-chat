@@ -183,6 +183,7 @@
         <div id="lightbox" v-on:dblclick="closeLightbox" v-bind:class="{'open': !closed}">
             <img id="lightboxImageElement"  :src="src" v-bind:class="{'active': mode == 'image'}">
             <video id="lightboxVideoElement" controls autoplay :src="src" v-bind:class="{'active': mode == 'video'}"></video>
+            <iframe :src="src" v-bind:class="{'active': mode == 'youtube'}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             <span class="close fas fa-times" v-on:click="closeLightbox"></span>
         </div>
         <div id="create-room" v-bind:class="{'show': showDialog}">
