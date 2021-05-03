@@ -227,6 +227,8 @@ export class Textchat{
                 this.addImageToChat(sender, {image: message.trim(), text: ""}, datetime, self); 
             } else if(this.checkMessageIsVideo(message)) {
                 this.addVideoToChat(sender, {video: message.trim(), text: ""}, datetime, self);
+            } else if(this.checkMessageIsYouTubeVideo(message)) {
+                this.addYouTubeVideoToChat(sender, {video: message.trim(), text: ""}, datetime, self);
             } else {
                 this.addTextToChat(sender, message, datetime, self);
             }
@@ -263,7 +265,7 @@ export class Textchat{
                     <div class="msg-info-name">${sender}</div>
                     <div class="msg-info-time">${this.formatDate(datetime)}</div>
                 </div>
-                <div class="msg-image"><img src="${message.image}"/></div>
+                <div class="msg-image"><img class="image" src="${message.image}"/></div>
                 <div class="msg-text">${this.formatMessage(message.text)}</div>
             </div>
             </div>
@@ -272,8 +274,8 @@ export class Textchat{
         setTimeout(function(){
             cla.scrollToBottom();
         }, 200);
-        $("#textchat img").off();
-        $("#textchat img").on("click", function(){
+        $("#textchat img.image").off();
+        $("#textchat img.image").on("click", function(){
             cla.app.lightbox.addImage($(this).attr("src"));
         });
     }
@@ -288,7 +290,7 @@ export class Textchat{
                     <div class="msg-info-name">${sender}</div>
                     <div class="msg-info-time">${this.formatDate(datetime)}</div>
                 </div>
-                <div class="msg-image"><video src="${message.video}"/></div>
+                <div class="msg-image"><video class="video" src="${message.video}"/></div>
                 <div class="msg-text">${this.formatMessage(message.text)}</div>
             </div>
             </div>
@@ -297,9 +299,36 @@ export class Textchat{
         setTimeout(function(){
             cla.scrollToBottom();
         }, 200);
-        $("#textchat video").off();
-        $("#textchat video").on("click", function(){
+        $("#textchat video.video").off();
+        $("#textchat video.video").on("click", function(){
             cla.app.lightbox.addVideo($(this).attr("src"));
+        });
+    }
+
+    addYouTubeVideoToChat(sender: string, message: any, datetime: Date = new Date(), self: boolean = false){
+        var cla = this;
+        var match = message.video.match(/^(http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?‌​[\w\?‌​=]*)?)$/i)
+        var code = match[2];
+        var side = self ? "right" : "left";
+        const msgHTML = `
+            <div class="msg ${side}-msg">
+            <div class="msg-bubble">
+                <div class="msg-info">
+                    <div class="msg-info-name">${sender}</div>
+                    <div class="msg-info-time">${this.formatDate(datetime)}</div>
+                </div>
+                <div class="msg-image msg-youtube"><img class="youtube" data-code="${code}" src="https://img.youtube.com/vi/${code}/hqdefault.jpg"/></div>
+                <div class="msg-text">${this.formatMessage(message.text)}</div>
+            </div>
+            </div>
+        `;
+        $("#textchat .msger-chat").append(msgHTML); 
+        setTimeout(function(){
+            cla.scrollToBottom();
+        }, 200);
+        $("#textchat .msg-youtube").off();
+        $("#textchat .msg-youtube").on("click", function(){
+            cla.app.lightbox.addYouTube($(this).find("img").data("code"));
         });
     }
 
@@ -347,6 +376,11 @@ export class Textchat{
 
     checkMessageIsVideo(message: string){
         var patter = /^(https?:\/\/.*\.(?:mp4|webm|m4v|ogv|ogg))$/i;
+        return patter.test(message.trim());
+    }
+
+    checkMessageIsYouTubeVideo(message: string){
+        var patter = /^(http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?‌​[\w\?‌​=]*)?)$/i;
         return patter.test(message.trim());
     }
 

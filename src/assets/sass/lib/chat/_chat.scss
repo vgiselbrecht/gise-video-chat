@@ -76,6 +76,23 @@
       height:auto;
       vertical-align:middle;
     }
+    &.msg-youtube{
+      position: relative;
+      &::after {
+        font-family: "Font Awesome 5 Free"; 
+        font-weight: 900; 
+        content: "\f04b";
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        left: 50%;
+        top: 50%;
+        margin-top: -10px;
+        margin-left: -10px;
+        font-size: 20px;
+        color: #fff;
+      }
+    }
   }
   .msg-text{
     overflow: hidden;

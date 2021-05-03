@@ -150,13 +150,13 @@
                                 </div>
                                 <div id="linkarea">
                                     <div class="row">
-                                        <a target="_blank" href="https://github.com/vgiselbrecht/chat#own-installation">
+                                        <a target="_blank" href="https://github.com/vgiselbrecht/gise-video-chat#own-installation">
                                             <span class="fas fa-plus-circle"></span>
                                             <span data-lang="buildownvideochat">Build your own Video Chat</span>
                                         </a>
                                     </div>
                                     <div class="row">
-                                        <a target="_blank" href="https://github.com/vgiselbrecht/chat/issues">
+                                        <a target="_blank" href="https://github.com/vgiselbrecht/gise-video-chat/issues">
                                             <span class="fas fa-bug"></span>
                                             <span data-lang="reportabug">Report a bug</span>
                                         </a>
@@ -183,6 +183,7 @@
         <div id="lightbox" v-on:dblclick="closeLightbox" v-bind:class="{'open': !closed}">
             <img id="lightboxImageElement"  :src="src" v-bind:class="{'active': mode == 'image'}">
             <video id="lightboxVideoElement" controls autoplay :src="src" v-bind:class="{'active': mode == 'video'}"></video>
+            <iframe :src="src" v-bind:class="{'active': mode == 'youtube'}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             <span class="close fas fa-times" v-on:click="closeLightbox"></span>
         </div>
         <div id="create-room" v-bind:class="{'show': showDialog}">
