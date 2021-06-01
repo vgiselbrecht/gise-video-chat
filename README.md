@@ -47,8 +47,8 @@ For signaling you can use a free Firebase project or using the [Chat Server](htt
 ### Configuration
 Load code and dependencies in your local development environment:
 ```
-git clone https://github.com/vgiselbrecht/chat.git chat
-cd chat
+git clone https://github.com/vgiselbrecht/gise-video-chat.git gise-video-chat
+cd gise-video-chat
 npm install
 ```
 
