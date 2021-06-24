@@ -1,6 +1,6 @@
 {
   "name": "chat",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "author": "Valentin Giselbrecht",
   "contributors": [],
   "repository": {
@@ -28,6 +28,7 @@
     "url-loader": "^4.1.1",
     "webpack": "^5.11.1",
     "hosted-git-info": ">=2.8.9",
-    "postcss": ">=8.2.10"
+    "postcss": ">=8.2.10",
+    "glob-parent": ">=5.1.2"
   }
 }
