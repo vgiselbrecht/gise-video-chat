@@ -12,6 +12,7 @@ export class Controls{
 
     readonly microphoneCookie: string = 'microphoneOn';
     readonly cameraCookie: string = 'cameraOn';
+    readonly muteType: string = 'mute';
 
     constructor(app: App){
         this.app = app;
@@ -155,6 +156,12 @@ export class Controls{
 
     hangOut(){
         this.app.hangOut();
+    }
+
+    setToMuted(){
+        if(this.controlsVueObject.microphoneOn){
+            this.controlsVueObject.toogleMicrophone();
+        }
     }
 
     setNewMessage(hasNewMessage){

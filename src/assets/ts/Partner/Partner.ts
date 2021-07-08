@@ -6,6 +6,7 @@ import { Devices } from "../Elements/Devices";
 import { Textchat } from "../Elements/Textchat";
 import { Userinfo } from "../Elements/Userinfo";
 import { Videogrid } from "../Elements/Videogrid";
+import { Controls } from "../Elements/Controls";
 import { Video } from "../Elements/Video";
 import { PartnerListElement } from "../Elements/PartnerListElement";
 
@@ -23,8 +24,9 @@ export class Partner implements IPartner{
     dataChannel: any;
     devices: Devices;
     textchat: Textchat;
-    exchange: IExchange
-    videogrid: Videogrid
+    exchange: IExchange;
+    videogrid: Videogrid;
+    controls: Controls;
     connected: boolean = false;
     checking: boolean = false;
     messages: Array<any> = Array<any>();
@@ -51,6 +53,7 @@ export class Partner implements IPartner{
         devices: Devices, 
         textchat: Textchat, 
         videogrid: Videogrid, 
+        controls: Controls,
         onConnectedEvent: (partner: IPartner) => void,
         onConnectionClosedEvent: (partner: IPartner) => void,
         onConnectionLosedEvent: (partner: IPartner) => void){
@@ -59,6 +62,7 @@ export class Partner implements IPartner{
             this.devices = devices;
             this.textchat = textchat;
             this.videogrid = videogrid;
+            this.controls = controls;
             this.onConnectedEvent = onConnectedEvent;
             this.onConnectionClosedEvent = onConnectionClosedEvent;
             this.onConnectionLosedEvent = onConnectionLosedEvent;
@@ -294,6 +298,8 @@ export class Partner implements IPartner{
                 partner.setCameraOff(message.message.cameraOff);
                 partner.setScreenSharing(message.message.screenSharing);
                 partner.setListener(message.message.listener);
+            } else if(message.type === partner.controls.muteType){
+                partner.controls.setToMuted();
             }
         }
     }

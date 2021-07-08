@@ -3,6 +3,7 @@ import { Devices } from "../Elements/Devices";
 import { Textchat } from "../Elements/Textchat"; 
 import { Videogrid } from "../Elements/Videogrid";
 import { Video } from "../Elements/Video";
+import { Controls } from "../Elements/Controls";
 import { PartnerListElement } from "../Elements/PartnerListElement";
 
 export interface IPartner{
@@ -24,6 +25,7 @@ export interface IPartner{
     lastConnectionLost: Date;
     calls: number;
     videogrid: Videogrid;
+    controls: Controls;
     videoGridElement: Video;
     partnerListElement: PartnerListElement;
     stream: any;

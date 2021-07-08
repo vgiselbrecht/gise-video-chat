@@ -28,5 +28,8 @@ export default{
    "nointernet": "Keine Internet Verbindung...",
    "soundeffects": "Sound Effekte",
    "yourname": "Dein Name",
-   "starting": "Starten"
+   "starting": "Starten",
+   "fullscreenon": "Vollbild ein",
+   "fullscreenoff": "Vollbild aus",
+   "mute": "Stumm schalten"
 }

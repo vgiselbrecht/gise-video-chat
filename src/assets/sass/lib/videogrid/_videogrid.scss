@@ -51,18 +51,6 @@
                         }
                     }
                 }
-                .expand {
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    padding: 1px 3px;
-                    border-radius: 5px 0px 0px 0px;
-                    color: #fff;
-                    //background: rgba(0,0,0,0.2);
-                    width: auto;
-                    height: auto;
-                    cursor: pointer;
-                }
                 .connect{
                     display: none;
                     position: absolute;
@@ -86,6 +74,52 @@
                     .text{
                         font-size: 16px;
                         line-height: 40px;
+                    }
+                }
+                .menu{
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    padding: 1px 3px;
+                    border-radius: 0px 5px 0px 0px;
+                    text-align: left;
+                    width: auto;
+                    height: auto;
+                    .menu-icon{
+                        cursor: pointer;
+                        color: #fff;
+                        width: auto;
+                        height: auto;
+                        margin: 0px 5px;
+                    }
+                    ul{
+                        display: none;
+                        margin: 0;
+                        padding: 5px 0px;
+                        background: #fff;
+                        list-style: none;
+                        border-radius: 2px;
+                        li{
+                            padding: 5px 10px;
+                            box-sizing: border-box;
+                            text-align: left;
+                            cursor: pointer;
+                            white-space: nowrap;
+                            i{
+                                display: inline-block;
+                                padding-right: 7px;
+                                width: 20px;
+                                text-align: center;
+                            }
+                            &:hover{
+                                background: #ddd;
+                            }
+                        }
+                    }
+                    &:hover{
+                        ul{
+                            display: block;
+                        } 
                     }
                 }
             }
@@ -116,10 +150,19 @@
             .video-wrap{
                 height: 100%;
                 width: 100%;
-                .video-inner-wrap video{
-                    width: calc(100% + 8px);
-                    height: calc(100% + 8px);
-                    margin: -4px;
+                .video-inner-wrap {
+                    video{
+                        width: calc(100% + 8px);
+                        height: calc(100% + 8px);
+                        margin: -4px;
+                    }
+                }
+                .video-info-wrap{
+                    .menu{
+                        left: auto;
+                        right: 0;
+                        text-align: right;
+                    }
                 }
             }
         }

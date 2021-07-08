@@ -26,7 +26,14 @@ export class Video{
                 <span v-bind:class="{'on': !cameraOff || listener}" class="camera fas fa-video-slash"></span>
                 <span v-bind:class="{'on': !screenSharing}" class="screen fas fa-desktop"></span>
                 </div>
-                <div v-on:click="expand" v-bind:class="{'fa-compress-arrows-alt': expanded, 'fa-expand-arrows-alt': !expanded}" class="expand fas"></div>
+                <div class="menu">
+                    <span class="menu-icon fas fa-ellipsis-h"></span>
+                    <ul>
+                        <li v-if="!expanded" v-on:click="expand"><i class="fas fa-expand-arrows-alt"></i>${Translator.get("fullscreenon")}</li>
+                        <li v-if="expanded" v-on:click="expand"><i class="fas fa-compress-arrows-alt"></i>${Translator.get("fullscreenoff")}</li>
+                        <li v-if="!self && !muted" v-on:click="setToMute"><i class="fas fa-microphone-slash"></i>${Translator.get("mute")}</li>
+                    </ul>
+                </div>
                 <div class="connect">
                     <span class="fas fa-sync"></span>
                     <span class="text">${Translator.get("connect")}</span>
@@ -45,12 +52,16 @@ export class Video{
                 muted: false,
                 cameraOff: false,
                 screenSharing: false,
-                listener: false
+                listener: false,
+                self: cla.partner ? false : true
             },
             methods: {
                 expand: function(){
                     $(cla.element).toggleClass("big");
                     this.expanded = !this.expanded;
+                },
+                setToMute: function(){
+                    cla.partner.sendMessage({type: cla.partner.controls.muteType, message: ""});
                 }
             }
         });
