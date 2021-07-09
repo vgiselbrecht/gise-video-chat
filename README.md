@@ -122,17 +122,10 @@ With certain systems (e.g. Twilio) it is necessary that the IceServers change fr
 
 ##### Features
 
-
-```json
-{
-    "features": {
-        "soundEffects": false, //activate sound effects for diffrent events
-        "mutePartner": true, //function to mute partner for all
-        "soundOffPartner": true //function to put the sound off at one for a partner
-    }
-}
-
-```
+Some features can be activated individually per installation.
+* soundEffects (false) -> activate sound effects for diffrent events
+* mutePartner (true) -> function to mute partner for all
+* soundOffPartner (true) -> function to put the sound off at one for a partner
 
 ##### Example full chat configuration
 ```json
