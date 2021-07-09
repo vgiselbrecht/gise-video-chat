@@ -1,5 +1,8 @@
 import { IPartner } from "../Partner/IPartner";
 import { Translator } from "../Utils/Translator";
+import { Settings } from "../Utils/Settings";
+import config from "../../../config.json"
+
 
 declare var Vue: any;
 
@@ -32,9 +35,9 @@ export class Video{
                     <ul>
                         <li v-if="!expanded" v-on:click="expand"><i class="fas fa-expand-arrows-alt"></i>${Translator.get("fullscreenon")}</li>
                         <li v-if="expanded" v-on:click="expand"><i class="fas fa-compress-arrows-alt"></i>${Translator.get("fullscreenoff")}</li>
-                        <li v-if="!self && !muted" v-on:click="setToMute"><i class="fas fa-microphone-slash"></i>${Translator.get("mute")}</li>
-                        <li v-if="!soundOff && !self" v-on:click="toogleSound"><i class="fas fa-volume-mute"></i>${Translator.get("sound off")}</li>
-                        <li v-if="soundOff && !self" v-on:click="toogleSound"><i class="fas fa-volume-up"></i>${Translator.get("sound on")}</li>
+                        <li v-if="!self && !muted && mutePartnerActive" v-on:click="setToMute"><i class="fas fa-microphone-slash"></i>${Translator.get("mute")}</li>
+                        <li v-if="!soundOff && !self && soundOffPartnerActive" v-on:click="toogleSound"><i class="fas fa-volume-mute"></i>${Translator.get("sound off")}</li>
+                        <li v-if="soundOff && !self && soundOffPartnerActive" v-on:click="toogleSound"><i class="fas fa-volume-up"></i>${Translator.get("sound on")}</li>
                     </ul>
                 </div>
                 <div class="connect">
@@ -57,7 +60,9 @@ export class Video{
                 screenSharing: false,
                 listener: false,
                 self: cla.partner ? false : true,
-                soundOff: false
+                soundOff: false,
+                mutePartnerActive: Settings.getValueOrDefault(config, "features.mutePartner", true),
+                soundOffPartnerActive: Settings.getValueOrDefault(config, "features.soundOffPartner", true)
             },
             methods: {
                 expand: function(){

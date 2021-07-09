@@ -36,6 +36,8 @@
         }
     },
     "features": {
-        "soundEffects": false
+        "soundEffects": false,
+        "mutePartner": true,
+        "soundOffPartner": true
     }
 }
