@@ -238,7 +238,7 @@ export class App{
             delete this.partners[partnerId];
         }
         this.partners[partnerId] = null;
-        this.partners[partnerId] = new Partner(partnerId, this.exchange, this.devices, this.textchat, this.videogrid, this.partnerOnConnected, this.partnerOnConnectionClosed, this.partnerOnConnectionLosed); 
+        this.partners[partnerId] = new Partner(partnerId, this.exchange, this.devices, this.textchat, this.videogrid, this.controls, this.partnerOnConnected, this.partnerOnConnectionClosed, this.partnerOnConnectionLosed); 
         this.setStreamToPartner(this.partners[partnerId], true);
         this.videogrid.recalculateLayout();
         Sounds.playSound(Sounds.newpartnersound, this);
