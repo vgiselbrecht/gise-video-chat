@@ -85,7 +85,6 @@
                     text-align: left;
                     width: auto;
                     height: auto;
-                    z-index: 220;
                     .menu-icon{
                         cursor: pointer;
                         color: #fff;
@@ -100,6 +99,7 @@
                         background: #fff;
                         list-style: none;
                         border-radius: 2px;
+                        box-shadow: 0 0 5px 1px #555;
                         li{
                             padding: 5px 10px;
                             box-sizing: border-box;
@@ -118,6 +118,7 @@
                         }
                     }
                     &:hover{
+                        z-index: 220;
                         ul{
                             display: block;
                         } 
