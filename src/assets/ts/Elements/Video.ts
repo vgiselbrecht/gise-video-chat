@@ -74,6 +74,7 @@ export class Video{
                 },
                 toogleSound: function(){
                     this.soundOff = !this.soundOff;
+                    cla.partner.partnerListElement.partnerListElementVueObject.soundOff = this.soundOff;
                     $(cla.element).find("video").prop('muted', this.soundOff)
                 },
                 nothing: function(){
