@@ -31,5 +31,7 @@ export default{
    "starting": "Starten",
    "fullscreenon": "Vollbild ein",
    "fullscreenoff": "Vollbild aus",
-   "mute": "Stumm schalten"
+   "mute": "Stumm schalten",
+   "sound off": "Ton aus",
+   "sound on": "Ton ein"
 }

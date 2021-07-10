@@ -10,7 +10,8 @@
             .microphone,
             .camera,
             .screen,
-            .listener{
+            .listener,
+            .sound{
                 display: inline; 
                 &.on{
                     display: none; 

@@ -9,6 +9,8 @@ import { Videogrid } from "../Elements/Videogrid";
 import { Controls } from "../Elements/Controls";
 import { Video } from "../Elements/Video";
 import { PartnerListElement } from "../Elements/PartnerListElement";
+import { Settings } from "../Utils/Settings";
+import config from "../../../config.json"
 
 
 export class Partner implements IPartner{
@@ -298,7 +300,7 @@ export class Partner implements IPartner{
                 partner.setCameraOff(message.message.cameraOff);
                 partner.setScreenSharing(message.message.screenSharing);
                 partner.setListener(message.message.listener);
-            } else if(message.type === partner.controls.muteType){
+            } else if(message.type === partner.controls.muteType && Settings.getValueOrDefault(config, "features.mutePartner", true)){
                 partner.controls.setToMuted();
             }
         }

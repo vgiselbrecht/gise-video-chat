@@ -31,5 +31,7 @@ export default{
     "starting": "Start",
     "fullscreenon": "Fullscreen on",
     "fullscreenoff": "Fullscreen off",
-    "mute": "Mute"
+    "mute": "Mute",
+    "sound off": "Sound off",
+    "sound on": "Sound on"
 }

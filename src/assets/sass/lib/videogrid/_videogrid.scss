@@ -43,7 +43,8 @@
                     .microphone, 
                     .camera,
                     .screen,
-                    .listener{
+                    .listener,
+                    .sound{
                         display: inline;
                         margin-left: 5px;
                         &.on{

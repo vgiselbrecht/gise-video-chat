@@ -120,6 +120,12 @@ Additional STUN / TURN Server can also be added in communication/webrtc/iceServe
 
 With certain systems (e.g. Twilio) it is necessary that the IceServers change frequently. Therefore it is possible to load the IceServer configuration dynamically with communication/webrtc/iceServersFromUrl. In the given URL, a return in JSON format is requested in the same way as with the iceServers Parameter ([{"urls": ""},...]).
 
+##### Features
+
+Some features can be activated individually per installation.
+* soundEffects (false) -> activate sound effects for diffrent events
+* mutePartner (true) -> function to mute partner for all
+* soundOffPartner (true) -> function to put the sound off at one for a partner
 
 ##### Example full chat configuration
 ```json
@@ -149,6 +155,11 @@ With certain systems (e.g. Twilio) it is necessary that the IceServers change fr
             ],
             "iceServersFromUrl": ""
         }
+    },
+    "features": {
+        "soundEffects": false,
+        "mutePartner": true, 
+        "soundOffPartner": true
     }
 }
 ```

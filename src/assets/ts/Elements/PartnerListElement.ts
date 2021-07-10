@@ -22,6 +22,7 @@ export class PartnerListElement{
             <li id="partnerlistelement-${this.partner ? this.partner.id : 0}" v-bind:class="{'unconnected': !connected}">
                 {{ name }} 
                 <span v-bind:class="{'on': !listener}" class="listener fas fa-eye"></span>
+                <span v-bind:class="{'on': !soundOff}" class="sound fas fa-volume-mute"></span> 
                 <span v-bind:class="{'on': !muted || listener}" class="microphone fas fa-microphone-slash"></span> 
                 <span v-bind:class="{'on': !cameraOff || listener}" class="camera fas fa-video-slash"></span>
                 <span v-bind:class="{'on': !screenSharing}" class="screen fas fa-desktop"></span>
@@ -39,7 +40,8 @@ export class PartnerListElement{
                 connected: true,
                 cameraOff: false,
                 screenSharing: false,
-                listener: false
+                listener: false,
+                soundOff: false
             },
             methods: { 
             }
