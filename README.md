@@ -83,7 +83,7 @@ In "exchangeServices/chat-server/host" you have to add the Web Socket URI to thi
     "exchangeServices": { 
         "service": "chat-server",
         "chat-server": {
-            "host": "ws://chat-server.example.com"
+            "host": "wss://chat-server.example.com"
         }
     },
 }
@@ -144,7 +144,7 @@ Some features can be activated individually per installation.
     "exchangeServices": { 
         "service": "chat-server",
         "chat-server": {
-            "host": "ws://"
+            "host": "wss://"
         }
     },
     "communication": {
