@@ -23,7 +23,7 @@
             "measurementId": ""
         },
         "chat-server": {
-            "host": "ws://"
+            "host": "wss://"
         }
     },
     "communication": {
