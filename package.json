@@ -18,7 +18,7 @@
     "grunt": "^1.5.3",
     "grunt-contrib-clean": "^2.0.1",
     "grunt-contrib-watch": "~1.1.0",
-    "grunt-replace": "^1.0.1",
+    "grunt-replace": "^2.0.2",
     "grunt-webpack": "^4.0.3",
     "hosted-git-info": "^4.1.0",
     "lodash": ">=4.17.21",
