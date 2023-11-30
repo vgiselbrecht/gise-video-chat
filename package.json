@@ -1,6 +1,6 @@
 {
   "name": "chat",
-  "version": "1.0.21",
+  "version": "1.0.22",
   "author": "Valentin Giselbrecht",
   "contributors": [],
   "repository": {
@@ -19,11 +19,11 @@
     "grunt-contrib-clean": "^2.0.1",
     "grunt-contrib-watch": "~1.1.0",
     "grunt-replace": "^2.0.2",
-    "grunt-webpack": "^4.0.3",
+    "grunt-webpack": "^6.0.0",
     "hosted-git-info": "^4.1.0",
     "lodash": ">=4.17.21",
     "minimist": "^1.2.7",
-    "postcss": "^8.4.20",
+    "postcss": ">=8.4.31",
     "sass": "^1.57.1",
     "sass-loader": "^10.4.1",
     "style-loader": "^2.0.0",
